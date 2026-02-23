@@ -2,12 +2,12 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Tymon\JWTAuth\Contracts\JWTSubject; // <--- AGREGAR ESTO
 
-class User extends Authenticatable
+class User extends Authenticatable implements JWTSubject // <--- AGREGAR "implements JWTSubject"
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable;
@@ -44,5 +44,21 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    /**
+     * MÉTODOS OBLIGATORIOS PARA JWT
+     */
+
+    public function getJWTIdentifier()
+    {
+        // Devuelve el ID del usuario
+        return $this->getKey();
+    }
+
+    public function getJWTCustomClaims()
+    {
+        // Puedes añadir datos extra al token aquí si quieres (ej. 'role' => 'admin')
+        return [];
     }
 }

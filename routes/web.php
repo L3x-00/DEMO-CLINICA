@@ -1,12 +1,34 @@
 <?php
-
-use App\Http\Controllers\PacienteController;
 use Illuminate\Support\Facades\Route;
-
-// Redirigir la raíz al listado de pacientes
+use App\Http\Controllers\CitaController; // 👈 ¡Esta es la clave!
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\PacienteController;
+use App\Http\Controllers\HomeController;
+// 🏠 Ruta de Bienvenida (Página de inicio pública)
 Route::get('/', function () {
-    return redirect()->route('pacientes.index');
+    return view('welcome'); // Así se llamará nuestro nuevo archivo
 });
+// Rutas de Autenticación (Públicas)
 
-// Ruta de recurso que conecta con todos los métodos del controlador
-Route::resource('pacientes', PacienteController::class);
+Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
+Route::post('/login', [AuthController::class, 'login']);
+Route::get('/register', [AuthController::class, 'showRegister'])->name('register');
+Route::post('/register', [AuthController::class, 'register']);
+Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+
+
+// Rutas Protegidas (Solo usuarios logueados) 🔐
+Route::middleware(['auth'])->group(function () {
+    Route::get('/home', [HomeController::class, 'index'])->name('home');
+    
+    Route::resource('pacientes', PacienteController::class);
+    
+    // Rutas de Citas
+    Route::get('/citas', [CitaController::class, 'index'])->name('citas.index');
+    Route::get('/citas/crear', [CitaController::class, 'create'])->name('citas.create');
+    Route::post('/citas', [CitaController::class, 'store'])->name('citas.store');
+    Route::patch('/citas/{id}/estado', [CitaController::class, 'cambiarEstado'])->name('citas.estado');
+    
+    // Esta es la ruta que llama el JavaScript de TomSelect 🔍
+    Route::get('/buscar-pacientes', [CitaController::class, 'buscarPaciente'])->name('pacientes.buscar');
+});

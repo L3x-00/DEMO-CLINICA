@@ -6,6 +6,19 @@ use Illuminate\Database\Eloquent\Model;
 
 class Paciente extends Model
 {
-    // Permitimos que estos campos se llenen masivamente desde el formulario
-    protected $fillable = ['nombre', 'apellido', 'dni', 'telefono', 'historial_medico'];
+    // Agregamos los campos que el formulario puede llenar ✍️
+protected $fillable = [
+    'tipo_documento', 'dni', 'nombre', 'apellido', 'sexo', 'fecha_nacimiento', 
+    'edad', 'lugar_nacimiento', 'email', 'telefono', 'direccion', 'provincia', 
+    'nacionalidad', 'distrito', 'profesion', 'lugar_laboral', 'ocupacion', 
+    'estado_civil', 'alergias'
+];
+
+    // Tu relación con citas...
+    public function citas()
+    {
+        return $this->hasMany(Cita::class);
+    }
+    
 }
+
