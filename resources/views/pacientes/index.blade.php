@@ -8,15 +8,7 @@
 @section('content')
 <div class="container mt-4 mb-5">
     
-    {{-- Info del Doctor (Opcional si ya lo tienes en el layout nuevo) --}}
-    <div class="d-flex justify-content-end mb-4">
-        <div class="card shadow-sm border-primary bg-white" style="width: 280px;">
-            <div class="card-body py-2 px-3 text-end">
-                <h6 class="mb-0 text-primary">👨‍⚕️ {{ auth()->user()->name }}</h6>
-                <small class="text-muted d-block">Doctor Conectado</small>
-            </div>
-        </div>
-    </div>
+   
 
     @if(session('success'))
         <div class="alert alert-success alert-dismissible fade show shadow-sm mb-4" role="alert">
@@ -45,7 +37,7 @@
         {{-- Tabla --}}
         <div class="card shadow border-0">
             <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center py-3">
-                <h5 class="mb-0"><i class="bi bi-person-lines-fill me-2"></i> Base de Datos Médica</h5>
+                <h5 class="mb-0"><i class="bi bi-person-lines-fill me-2"></i> Lista de pacientes</h5>
                 <a href="{{ route('pacientes.create') }}" class="btn btn-light fw-bold text-primary shadow-sm btn-sm">
                     <i class="bi bi-person-plus-fill me-1"></i> Nuevo Paciente
                 </a>

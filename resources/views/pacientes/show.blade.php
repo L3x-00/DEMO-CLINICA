@@ -81,8 +81,13 @@
                                     <span class="text-dark">{{ $paciente->estado_civil ?? '---' }}</span>
                                 </div>
                                 <div class="col-sm-6">
-                                    <label class="text-muted small d-block">Procedencia</label>
-                                    <span class="text-dark">{{ $paciente->procedencia ?? '---' }}</span>
+                                    
+                                    <label class="text-muted small d-block">Provincia</label>
+                                    <span class="text-dark">{{ $paciente->provincia ?? '---' }}</span>
+                                </div>
+                                <div class="col-sm-6">
+                                    <label class="text-muted small d-block">Distrito</label>
+                                    <span class="text-dark">{{ $paciente->distrito ?? '---' }}</span>
                                 </div>
                             </div>
                         </div>

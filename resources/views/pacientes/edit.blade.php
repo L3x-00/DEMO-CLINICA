@@ -29,12 +29,17 @@
                         <select name="sexo" class="form-select border-primary" required>
                             <option value="Masculino" {{ $paciente->sexo == 'Masculino' ? 'selected' : '' }}>Masculino</option>
                             <option value="Femenino" {{ $paciente->sexo == 'Femenino' ? 'selected' : '' }}>Femenino</option>
-                            <option value="Otro" {{ $paciente->sexo == 'Otro' ? 'selected' : '' }}>Otro</option>
+                            
                         </select>
                     </div>
                     <div class="col-md-3">
                         <label class="form-label fw-bold">Estado Civil</label>
-                        <input type="text" name="estado_civil" class="form-control" value="{{ $paciente->estado_civil }}">
+                        <select name="estado_civil" class="form-control border-primary" required>
+                            <option value="Masculino" {{ $paciente->estado_civil == 'Soltero/a' ? 'selected' : '' }}>Soltero/a</option>
+                            <option value="Femenino" {{ $paciente->estado_civil == 'Casado/a' ? 'selected' : '' }}>Casado/a</option>
+                            <option value="Masculino" {{ $paciente->estado_civil == 'Divorciado/a' ? 'selected' : '' }}>Divorciado/a</option>
+                            <option value="Femenino" {{ $paciente->estado_civil == 'Viudo/a' ? 'selected' : '' }}>Viudo/a</option>
+                        </select>
                     </div>
                 </div>
 
@@ -76,12 +81,20 @@
                         <input type="text" name="direccion" class="form-control" value="{{ $paciente->direccion }}">
                     </div>
                     <div class="col-md-3">
-                        <label class="form-label fw-bold">Localidad</label>
-                        <input type="text" name="localidad" class="form-control" value="{{ $paciente->localidad }}">
+                        <label class="form-label fw-bold">Provincia</label>
+                        <input type="text" name="Provincia" class="form-control" value="{{ $paciente->provincia }}">
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label fw-bold">Distrito</label>
+                        <input type="text" name="Distrito" class="form-control" value="{{ $paciente->distrito }}">
                     </div>
                     <div class="col-md-3">
                         <label class="form-label fw-bold">Teléfono</label>
                         <input type="text" name="telefono" class="form-control" value="{{ $paciente->telefono }}">
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label fw-bold">Correo Electrónico</label>
+                        <input type="text" name="Coreo Electronic" class="form-control" value="{{ $paciente->email }}">
                     </div>
                 </div>
 

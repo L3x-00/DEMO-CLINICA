@@ -15,7 +15,7 @@
                     <div class="col-md-3">
                         <label class="form-label fw-bold">Tipo de Doc.</label>
                         <select name="tipo_documento" class="form-select border-primary" required>
-                            <option value="DNI">DNI (Perú)</option>
+                            <option value="DNI">DNI</option>
                             <option value="CUI">CUI (Extranjero)</option>
                         </select>
                     </div>
@@ -82,11 +82,11 @@
                     </div>
                     <div class="col-md-3">
                         <label class="form-label fw-bold">Provincia</label>
-                        <input type="text" name="localidad" class="form-control">
+                        <input type="text" name="Provincia" class="form-control">
                     </div>
                     <div class="col-md-3">
                         <label class="form-label fw-bold">Distrito</label>
-                        <input type="text" name="procedencia" class="form-control">
+                        <input type="text" name="Distrito" class="form-control">
                     </div>
                 </div>
 
