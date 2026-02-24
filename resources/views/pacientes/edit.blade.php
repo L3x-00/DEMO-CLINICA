@@ -82,11 +82,11 @@
                     </div>
                     <div class="col-md-3">
                         <label class="form-label fw-bold">Provincia</label>
-                        <input type="text" name="Provincia" class="form-control" value="{{ $paciente->provincia }}">
+                        <input type="text" name="provincia" class="form-control" value="{{ $paciente->provincia }}">
                     </div>
                     <div class="col-md-3">
                         <label class="form-label fw-bold">Distrito</label>
-                        <input type="text" name="Distrito" class="form-control" value="{{ $paciente->distrito }}">
+                        <input type="text" name="distrito" class="form-control" value="{{ $paciente->distrito }}">
                     </div>
                     <div class="col-md-3">
                         <label class="form-label fw-bold">Teléfono</label>

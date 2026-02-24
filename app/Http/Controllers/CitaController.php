@@ -13,7 +13,6 @@ class CitaController extends Controller
      */
     public function index()
     {
-        // Cargamos la relación 'paciente' (Eager Loading) para evitar múltiples consultas a la BD
         $citas = Cita::with('paciente')
             ->orderBy('fecha', 'asc')
             ->orderBy('hora', 'asc')
@@ -23,14 +22,20 @@ class CitaController extends Controller
     }
 
     /**
+     * Muestra el detalle de una cita específica (BOTÓN OJO).
+     */
+    public function show($id)
+    {
+        $cita = Cita::with('paciente')->findOrFail($id);
+        return view('citas.show', compact('cita'));
+    }
+
+    /**
      * Muestra el formulario para crear una nueva cita.
-     * Soporta pre-selección de paciente vía URL (?paciente_id=X).
      */
     public function create(Request $request)
     {
         $pacientePreseleccionado = null;
-        
-        // Si recibimos un ID por la URL, buscamos al paciente para mostrar sus datos en la vista
         if ($request->has('paciente_id')) {
             $pacientePreseleccionado = Paciente::find($request->paciente_id);
         }
@@ -39,11 +44,10 @@ class CitaController extends Controller
     }
 
     /**
-     * Guarda la nueva cita en la base de datos.
+     * Guarda la nueva cita.
      */
     public function store(Request $request)
     {
-        // Validamos los datos 🛡️
         $request->validate([
             'paciente_id' => 'required|exists:pacientes,id',
             'fecha'       => 'required|date|after_or_equal:today',
@@ -51,7 +55,6 @@ class CitaController extends Controller
             'motivo'      => 'nullable|string|max:500',
         ]);
 
-        // Creamos el registro
         Cita::create([
             'paciente_id' => $request->paciente_id,
             'fecha'       => $request->fecha,
@@ -64,13 +67,51 @@ class CitaController extends Controller
     }
 
     /**
-     * Actualiza el estado de una cita (Pendiente, Concluido, etc.).
+     * Muestra el formulario de edición (BOTÓN LÁPIZ).
+     */
+    public function edit($id)
+    {
+        $cita = Cita::with('paciente')->findOrFail($id);
+        return view('citas.edit', compact('cita'));
+    }
+
+    /**
+     * Procesa la actualización de la cita (Formulario de Editar).
+     */
+    public function update(Request $request, $id)
+    {
+        $cita = Cita::findOrFail($id);
+
+        $request->validate([
+            'fecha'  => 'required|date',
+            'hora'   => 'required',
+            'estado' => 'required|in:Pendiente,Concluido,No presentado,Reprogramado',
+            'motivo' => 'nullable|string|max:500',
+        ]);
+
+        $cita->update($request->all());
+
+        return redirect()->route('citas.index')->with('success', 'Cita actualizada correctamente.');
+    }
+
+    /**
+     * Elimina la cita de la base de datos (BOTÓN BASURA).
+     */
+    public function destroy($id)
+    {
+        $cita = Cita::findOrFail($id);
+        $cita->delete();
+
+        return redirect()->route('citas.index')->with('success', 'La cita ha sido eliminada.');
+    }
+
+    /**
+     * Actualiza solo el estado (Usado en el Home y Dropdowns).
      */
     public function cambiarEstado(Request $request, $id)
     {
         $cita = Cita::findOrFail($id);
         
-        // Validamos que el estado enviado sea uno de los permitidos en tu ENUM de la BD
         $request->validate([
             'estado' => 'required|in:Pendiente,Concluido,No presentado,Reprogramado'
         ]);
@@ -92,11 +133,10 @@ class CitaController extends Controller
             return response()->json([]);
         }
 
-        // Buscamos por nombre, apellido o DNI
         $pacientes = Paciente::where('nombre', 'LIKE', "%$term%")
             ->orWhere('apellido', 'LIKE', "%$term%")
             ->orWhere('dni', 'LIKE', "%$term%")
-            ->limit(10) // Limitamos a 10 resultados para mayor velocidad
+            ->limit(10)
             ->get(['id', 'nombre', 'apellido', 'dni']); 
 
         return response()->json($pacientes);

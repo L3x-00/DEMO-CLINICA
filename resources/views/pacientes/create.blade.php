@@ -82,11 +82,11 @@
                     </div>
                     <div class="col-md-3">
                         <label class="form-label fw-bold">Provincia</label>
-                        <input type="text" name="Provincia" class="form-control">
+                        <input type="text" name="provincia" class="form-control">
                     </div>
                     <div class="col-md-3">
                         <label class="form-label fw-bold">Distrito</label>
-                        <input type="text" name="Distrito" class="form-control">
+                        <input type="text" name="distrito" class="form-control">
                     </div>
                 </div>
 

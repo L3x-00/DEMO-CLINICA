@@ -19,16 +19,26 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 // Rutas Protegidas (Solo usuarios logueados) 🔐
 Route::middleware(['auth'])->group(function () {
-    Route::get('/home', [HomeController::class, 'index'])->name('home');
+Route::get('/home', [HomeController::class, 'index'])->name('home');
     
-    Route::resource('pacientes', PacienteController::class);
+Route::resource('pacientes', PacienteController::class);
     
     // Rutas de Citas
-    Route::get('/citas', [CitaController::class, 'index'])->name('citas.index');
-    Route::get('/citas/crear', [CitaController::class, 'create'])->name('citas.create');
-    Route::post('/citas', [CitaController::class, 'store'])->name('citas.store');
-    Route::patch('/citas/{id}/estado', [CitaController::class, 'cambiarEstado'])->name('citas.estado');
+Route::get('/citas', [CitaController::class, 'index'])->name('citas.index');
+Route::get('/citas/crear', [CitaController::class, 'create'])->name('citas.create');
+Route::post('/citas', [CitaController::class, 'store'])->name('citas.store');
+Route::patch('/citas/{id}/estado', [CitaController::class, 'cambiarEstado'])->name('citas.estado');
     
     // Esta es la ruta que llama el JavaScript de TomSelect 🔍
+Route::get('/buscar-pacientes', [CitaController::class, 'buscarPaciente'])->name('pacientes.buscar');
+Route::middleware(['auth'])->group(function () {
+    // Esta línea crea automáticamente las 7 rutas del CRUD (incluyendo show, edit y destroy)
+    Route::resource('citas', CitaController::class);
+
+    // Mantenemos tu ruta personalizada para cambiar el estado desde el Home
+    Route::patch('/citas/{id}/estado', [CitaController::class, 'cambiarEstado'])->name('citas.estado');
+    
+    // Ruta para el buscador AJAX
     Route::get('/buscar-pacientes', [CitaController::class, 'buscarPaciente'])->name('pacientes.buscar');
+});
 });
