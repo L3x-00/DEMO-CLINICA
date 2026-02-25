@@ -7,7 +7,8 @@
             <h3 class="mb-0 text-center">✏️ Editar Expediente: {{ $paciente->nombre }} {{ $paciente->apellido }}</h3>
         </div>
         <div class="card-body p-4">
-            <form action="{{ route('pacientes.update', $paciente->id) }}" method="POST">
+            {{-- CORRECCIÓN: Un solo formulario, método PATCH/PUT y ENCTYPE para la imagen --}}
+            <form action="{{ route('pacientes.update', $paciente->id) }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 @method('PUT')
 
@@ -29,16 +30,15 @@
                         <select name="sexo" class="form-select border-primary" required>
                             <option value="Masculino" {{ $paciente->sexo == 'Masculino' ? 'selected' : '' }}>Masculino</option>
                             <option value="Femenino" {{ $paciente->sexo == 'Femenino' ? 'selected' : '' }}>Femenino</option>
-                            
                         </select>
                     </div>
                     <div class="col-md-3">
                         <label class="form-label fw-bold">Estado Civil</label>
-                        <select name="estado_civil" class="form-control border-primary" required>
-                            <option value="Masculino" {{ $paciente->estado_civil == 'Soltero/a' ? 'selected' : '' }}>Soltero/a</option>
-                            <option value="Femenino" {{ $paciente->estado_civil == 'Casado/a' ? 'selected' : '' }}>Casado/a</option>
-                            <option value="Masculino" {{ $paciente->estado_civil == 'Divorciado/a' ? 'selected' : '' }}>Divorciado/a</option>
-                            <option value="Femenino" {{ $paciente->estado_civil == 'Viudo/a' ? 'selected' : '' }}>Viudo/a</option>
+                        <select name="estado_civil" class="form-select border-primary" required>
+                            <option value="Soltero/a" {{ $paciente->estado_civil == 'Soltero/a' ? 'selected' : '' }}>Soltero/a</option>
+                            <option value="Casado/a" {{ $paciente->estado_civil == 'Casado/a' ? 'selected' : '' }}>Casado/a</option>
+                            <option value="Divorciado/a" {{ $paciente->estado_civil == 'Divorciado/a' ? 'selected' : '' }}>Divorciado/a</option>
+                            <option value="Viudo/a" {{ $paciente->estado_civil == 'Viudo/a' ? 'selected' : '' }}>Viudo/a</option>
                         </select>
                     </div>
                 </div>
@@ -88,13 +88,15 @@
                         <label class="form-label fw-bold">Distrito</label>
                         <input type="text" name="distrito" class="form-control" value="{{ $paciente->distrito }}">
                     </div>
-                    <div class="col-md-3">
+                </div>
+                <div class="row g-3 mb-4">
+                    <div class="col-md-4">
                         <label class="form-label fw-bold">Teléfono</label>
                         <input type="text" name="telefono" class="form-control" value="{{ $paciente->telefono }}">
                     </div>
-                    <div class="col-md-3">
+                    <div class="col-md-8">
                         <label class="form-label fw-bold">Correo Electrónico</label>
-                        <input type="text" name="Coreo Electronic" class="form-control" value="{{ $paciente->email }}">
+                        <input type="email" name="email" class="form-control" value="{{ $paciente->email }}">
                     </div>
                 </div>
 
@@ -103,8 +105,33 @@
                     <textarea name="alergias" class="form-control border-danger" rows="3">{{ $paciente->alergias }}</textarea>
                 </div>
 
-                <div class="d-flex justify-content-end gap-2">
-                    <a href="{{ route('pacientes.index') }}" class="btn btn-secondary px-4">Cancelar</a>
+                <div class="row mb-4">
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold">Antecedentes Médicos</label>
+                        <textarea name="antecedentes" class="form-control" rows="3">{{ $paciente->antecedentes }}</textarea>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold">Observaciones</label>
+                        <textarea name="observaciones" class="form-control" rows="3">{{ $paciente->observaciones }}</textarea>
+                    </div>
+                </div>
+
+                <div class="row mb-5">
+                    <div class="col-12">
+                        <label class="form-label fw-bold"><i class="bi bi-camera me-2 text-primary"></i>Actualizar Evidencia (Imagen)</label>
+                        @if($paciente->evidencia)
+                            <div class="mb-2">
+                                <small class="text-muted">Imagen actual:</small><br>
+                                <img src="{{ asset('storage/' . $paciente->evidencia) }}" width="100" class="rounded border">
+                            </div>
+                        @endif
+                        <input type="file" name="evidencia" class="form-control" accept="image/*">
+                        <div class="form-text text-muted small">Deja este campo vacío si no deseas cambiar la imagen.</div>
+                    </div>
+                </div>
+
+                <div class="d-flex justify-content-end gap-2 border-top pt-4">
+                    <a href="{{ route('pacientes.index') }}" class="btn btn-light border px-4">Cancelar</a>
                     <button type="submit" class="btn btn-warning px-5 fw-bold shadow">Actualizar Expediente</button>
                 </div>
             </form>
@@ -113,7 +140,6 @@
 </div>
 
 <script>
-    // Mantenemos la lógica de cálculo de edad en edición
     document.getElementById('fecha_nacimiento').addEventListener('change', function() {
         const fechaNacimiento = new Date(this.value);
         const hoy = new Date();

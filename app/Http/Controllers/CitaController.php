@@ -1,11 +1,8 @@
 <?php
-
 namespace App\Http\Controllers;
-
 use Illuminate\Http\Request;
 use App\Models\Paciente;
 use App\Models\Cita;
-
 class CitaController extends Controller
 {
     /**
@@ -20,7 +17,6 @@ class CitaController extends Controller
         
         return view('citas.index', compact('citas'));
     }
-
     /**
      * Muestra el detalle de una cita específica (BOTÓN OJO).
      */
@@ -39,10 +35,8 @@ class CitaController extends Controller
         if ($request->has('paciente_id')) {
             $pacientePreseleccionado = Paciente::find($request->paciente_id);
         }
-
         return view('citas.create', compact('pacientePreseleccionado'));
     }
-
     /**
      * Guarda la nueva cita.
      */
@@ -54,7 +48,6 @@ class CitaController extends Controller
             'hora'        => 'required',
             'motivo'      => 'nullable|string|max:500',
         ]);
-
         Cita::create([
             'paciente_id' => $request->paciente_id,
             'fecha'       => $request->fecha,
@@ -65,7 +58,6 @@ class CitaController extends Controller
 
         return redirect()->route('citas.index')->with('success', '¡Cita programada con éxito! 😊');
     }
-
     /**
      * Muestra el formulario de edición (BOTÓN LÁPIZ).
      */
@@ -74,26 +66,21 @@ class CitaController extends Controller
         $cita = Cita::with('paciente')->findOrFail($id);
         return view('citas.edit', compact('cita'));
     }
-
     /**
      * Procesa la actualización de la cita (Formulario de Editar).
      */
     public function update(Request $request, $id)
     {
         $cita = Cita::findOrFail($id);
-
         $request->validate([
             'fecha'  => 'required|date',
             'hora'   => 'required',
             'estado' => 'required|in:Pendiente,Concluido,No presentado,Reprogramado',
             'motivo' => 'nullable|string|max:500',
         ]);
-
         $cita->update($request->all());
-
         return redirect()->route('citas.index')->with('success', 'Cita actualizada correctamente.');
     }
-
     /**
      * Elimina la cita de la base de datos (BOTÓN BASURA).
      */
@@ -104,7 +91,6 @@ class CitaController extends Controller
 
         return redirect()->route('citas.index')->with('success', 'La cita ha sido eliminada.');
     }
-
     /**
      * Actualiza solo el estado (Usado en el Home y Dropdowns).
      */
@@ -115,13 +101,31 @@ class CitaController extends Controller
         $request->validate([
             'estado' => 'required|in:Pendiente,Concluido,No presentado,Reprogramado'
         ]);
-
         $cita->estado = $request->estado;
         $cita->save();
 
         return back()->with('success', 'Estado de la cita actualizado correctamente.');
     }
+    public function reprogramar(Request $request, $id)
+{
+    $request->validate([
+        'fecha' => 'required|date',
+        'hora' => 'required',
+        'motivo' => 'required|string|max:255',
+    ]);
 
+    $cita = Cita::findOrFail($id);
+    
+    // Actualizamos la cita
+    $cita->update([
+        'fecha' => $request->fecha,
+        'hora' => $request->hora,
+        'estado' => 'Reprogramado',
+        'observaciones' => $cita->observaciones . "\n-- Motivo Reprogramación: " . $request->motivo
+    ]);
+
+    return redirect()->back()->with('success', 'La cita ha sido reprogramada con éxito.');
+}
     /**
      * Motor de búsqueda AJAX para TomSelect.
      */

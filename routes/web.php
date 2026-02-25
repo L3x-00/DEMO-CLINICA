@@ -28,6 +28,7 @@ Route::get('/citas', [CitaController::class, 'index'])->name('citas.index');
 Route::get('/citas/crear', [CitaController::class, 'create'])->name('citas.create');
 Route::post('/citas', [CitaController::class, 'store'])->name('citas.store');
 Route::patch('/citas/{id}/estado', [CitaController::class, 'cambiarEstado'])->name('citas.estado');
+Route::patch('/citas/{id}/reprogramar', [App\Http\Controllers\CitaController::class, 'reprogramar'])->name('citas.reprogramar');
     
     // Esta es la ruta que llama el JavaScript de TomSelect 🔍
 Route::get('/buscar-pacientes', [CitaController::class, 'buscarPaciente'])->name('pacientes.buscar');

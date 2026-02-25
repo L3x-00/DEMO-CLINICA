@@ -7,7 +7,8 @@
             <h3 class="mb-0 flex-grow-1 text-center">📝 Registro de Historia Clínica</h3>
         </div>
         <div class="card-body p-4">
-            <form action="{{ route('pacientes.store') }}" method="POST">
+            {{-- SE CORRIGIÓ: Un solo formulario con enctype para permitir imágenes --}}
+            <form action="{{ route('pacientes.store') }}" method="POST" enctype="multipart/form-data">
                 @csrf
 
                 <h5 class="text-primary border-bottom pb-2 mb-3">1. Datos de Identificación</h5>
@@ -26,10 +27,8 @@
                     <div class="col-md-3">
                         <label class="form-label fw-bold">Sexo</label>
                         <select name="sexo" class="form-select border-primary" required>
-                            
                             <option value="Masculino">Masculino</option>
                             <option value="Femenino">Femenino</option>
-                            
                         </select>
                     </div>
                     <div class="col-md-3">
@@ -119,14 +118,32 @@
 
                 <div class="mb-4">
                     <label class="form-label fw-bold text-danger">⚠️ Alergias y Advertencias Médicas</label>
-                    <textarea name="alergias" class="form-control border-danger" rows="3" placeholder="Describa alergias a medicamentos, alimentos o ninguna..."></textarea>
+                    <textarea name="alergias" class="form-control border-danger" rows="3" placeholder="Describa alergias..."></textarea>
                 </div>
 
-                <hr>
+                <div class="row mb-4">
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold"><i class="bi bi-clipboard2-pulse me-2"></i>Antecedentes Médicos</label>
+                        <textarea name="antecedentes" class="form-control" rows="3" placeholder="Cirugías, enfermedades..."></textarea>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold"><i class="bi bi-chat-left-text me-2"></i>Observaciones</label>
+                        <textarea name="observaciones" class="form-control" rows="3" placeholder="Notas adicionales..."></textarea>
+                    </div>
+                </div>
 
-                <div class="d-flex justify-content-end gap-2">
-                    <a href="{{ route('pacientes.index') }}" class="btn btn-secondary px-4">Cancelar</a>
-                    <button type="submit" class="btn btn-primary px-5 fw-bold shadow">Guardar Paciente</button>
+                {{-- SECCIÓN DE EVIDENCIA --}}
+                <div class="row mb-5">
+                    <div class="col-12">
+                        <label class="form-label fw-bold"><i class="bi bi-camera me-2 text-primary"></i>Subir Evidencia (Imagen)</label>
+                        <input type="file" name="evidencia" class="form-control" accept="image/*">
+                        <div class="form-text text-muted small">Formatos permitidos: JPG, PNG, WEBP.</div>
+                    </div>
+                </div>
+
+                <div class="d-flex justify-content-end gap-2 border-top pt-4">
+                    <a href="{{ route('pacientes.index') }}" class="btn btn-light border px-4">Cancelar</a>
+                    <button type="submit" class="btn btn-primary px-5 fw-bold shadow">Guardar Registro Médico</button>
                 </div>
             </form>
         </div>
@@ -137,14 +154,11 @@
     document.getElementById('fecha_nacimiento').addEventListener('change', function() {
         const fechaNacimiento = new Date(this.value);
         const hoy = new Date();
-        
         let edad = hoy.getFullYear() - fechaNacimiento.getFullYear();
         const mes = hoy.getMonth() - fechaNacimiento.getMonth();
-        
         if (mes < 0 || (mes === 0 && hoy.getDate() < fechaNacimiento.getDate())) {
             edad--;
         }
-        
         document.getElementById('edad').value = isNaN(edad) ? 0 : edad;
     });
 </script>

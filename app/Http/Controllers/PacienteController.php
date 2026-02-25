@@ -5,34 +5,20 @@ namespace App\Http\Controllers;
 use App\Models\Paciente;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Storage;
 
 class PacienteController extends Controller
 {
     /**
      * Muestra la lista de pacientes.
-     * Implementa un filtro obligatorio por fecha (hoy por defecto)
-     * e integra una barra de búsqueda sobre esos resultados.
      */
     public function index(Request $request)
     {
-        // 1. Capturamos la fecha del filtro. Si no existe, usamos la fecha actual del sistema.
         $fechaBusqueda = $request->get('fecha', Carbon::now()->format('Y-m-d'));
-
-        // 2. Iniciamos la consulta base (Query Builder)
         $query = Paciente::query();
 
-        /**
-         * FILTRO POR FECHA:
-         * Compara solo la parte de la fecha (Y-m-d) de la columna 'created_at'.
-         * Esto permite que el panel se mantenga "limpio" cada día nuevo.
-         */
         $query->whereDate('created_at', $fechaBusqueda);
 
-        /**
-         * BARRA DE BÚSQUEDA:
-         * Si el usuario escribe en el buscador, filtramos dentro de los resultados del día.
-         * Buscamos coincidencias en Nombre, Apellido o DNI.
-         */
         if ($request->filled('buscar')) {
             $buscar = $request->buscar;
             $query->where(function($q) use ($buscar) {
@@ -42,11 +28,8 @@ class PacienteController extends Controller
             });
         }
 
-        // 3. Ejecutamos la consulta ordenando por los más recientes primero
         $pacientes = $query->orderBy('created_at', 'desc')->get();
-
-        // 4. Retornamos la vista pasando la colección y la fecha de búsqueda para el input date
-        return view('pacientes.index', compact('pacientes', 'fechaBusqueda'));
+        return view('pacientes.index', compact('pacientes', 'fechaBusqueda')); 
     }
 
     /**
@@ -59,28 +42,40 @@ class PacienteController extends Controller
 
     /**
      * Almacena un nuevo paciente en la base de datos.
-     * Usa $request->all() asumiendo que el $fillable en el Modelo está correcto.
      */
     public function store(Request $request)
     {
-        // Validación de datos obligatorios
+        // 1. Validación
         $request->validate([
             'nombre' => 'required|string|max:255',
             'apellido' => 'required|string|max:255',
             'dni' => 'required|min:8|max:20|unique:pacientes,dni', 
+            'antecedentes' => 'nullable|string',
+            'observaciones' => 'nullable|string',
             'sexo' => 'required',
             'fecha_nacimiento' => 'nullable|date',
+            'evidencia' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:4096', 
         ]);
 
-        // Creación masiva
-        Paciente::create($request->all());
+        // 2. Capturamos todos los datos en una variable
+        $data = $request->all();
+
+        // 3. Procesamos la imagen si existe
+        if ($request->hasFile('evidencia')) {
+            $path = $request->file('evidencia')->store('evidencias', 'public');
+            $data['evidencia'] = $path; // Actualizamos el valor en nuestro array $data
+        
+            }
+        
+        // 4. ERROR CORREGIDO: Usamos $data en lugar de $request->all()
+        Paciente::create($data);
 
         return redirect()->route('pacientes.index')
             ->with('success', 'Paciente registrado correctamente.');
     }
 
     /**
-     * Muestra la ficha completa (Historia Clínica) de un paciente específico.
+     * Muestra la ficha completa.
      */
     public function show(string $id)
     {
@@ -89,7 +84,7 @@ class PacienteController extends Controller
     }
 
     /**
-     * Muestra el formulario para editar los datos de un paciente existente.
+     * Muestra el formulario de edición.
      */
     public function edit(string $id)
     {
@@ -99,7 +94,6 @@ class PacienteController extends Controller
 
     /**
      * Actualiza los datos en la base de datos.
-     * El DNI ignora al paciente actual en la validación 'unique' para evitar errores al guardar.
      */
     public function update(Request $request, string $id)
     {
@@ -108,20 +102,39 @@ class PacienteController extends Controller
             'apellido' => 'required|string|max:255',
             'dni'      => 'required|min:8|max:20|unique:pacientes,dni,' . $id,
             'sexo'     => 'required',
+            'evidencia' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2096',
         ]);
 
         $paciente = Paciente::findOrFail($id);
-        $paciente->update($request->all());
+        $data = $request->all();
+
+        // Lógica para actualizar imagen
+        if ($request->hasFile('evidencia')) {
+            // Eliminar imagen vieja si existe para ahorrar espacio
+            if ($paciente->evidencia) {
+                Storage::disk('public')->delete($paciente->evidencia);
+            }
+            $path = $request->file('evidencia')->store('evidencias', 'public');
+            $data['evidencia'] = $path;
+        }
+
+        // Usamos $data para incluir la nueva ruta de la imagen
+        $paciente->update($data);
 
         return redirect()->route('pacientes.index')
             ->with('success', 'Expediente actualizado correctamente.');
     }
 
     /**
-     * Elimina el registro de un paciente (Borrado físico).
+     * Elimina el registro de un paciente.
      */
     public function destroy(Paciente $paciente)
     {
+        // Opcional: Eliminar la imagen del disco al borrar al paciente
+        if ($paciente->evidencia) {
+            Storage::disk('public')->delete($paciente->evidencia);
+        }
+        
         $paciente->delete();
         return redirect()->route('pacientes.index')
             ->with('success', 'Paciente eliminado del sistema.');

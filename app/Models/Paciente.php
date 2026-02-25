@@ -8,10 +8,29 @@ class Paciente extends Model
 {
     // Agregamos los campos que el formulario puede llenar ✍️
 protected $fillable = [
-    'tipo_documento', 'dni', 'nombre', 'apellido', 'sexo', 'fecha_nacimiento', 
-    'edad', 'lugar_nacimiento', 'email', 'telefono', 'direccion', 'provincia', 
-    'nacionalidad', 'distrito', 'profesion', 'lugar_laboral', 'ocupacion', 
-    'estado_civil', 'alergias'
+    'tipo_documento', 
+    'dni', 
+    'nombre', 
+    'apellido', 
+    'sexo', 
+    'fecha_nacimiento', 
+    'edad', 
+    'lugar_nacimiento', 
+    'email', 
+    'telefono', 
+    'direccion', 
+    'provincia', 
+    'nacionalidad', 
+    'distrito', 
+    'profesion', 
+    'lugar_laboral', 
+    'ocupacion', 
+    'estado_civil', 
+    'alergias',
+    'antecedentes',
+    'observaciones',
+    'evidencia'
+
 ];
 
     // Tu relación con citas...
