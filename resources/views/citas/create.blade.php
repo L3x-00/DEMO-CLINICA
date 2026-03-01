@@ -1,5 +1,4 @@
 @extends('layouts.app')
-
 @section('content')
 <div class="container mt-4">
     <div class="row justify-content-center">
@@ -11,10 +10,8 @@
                 <div class="card-body p-4">
                     <form action="{{ route('citas.store') }}" method="POST">
                         @csrf
-
                         <div class="mb-3">
-                            <label for="paciente_id" class="form-label fw-bold">Paciente</label>
-                            
+                            <label for="paciente_id" class="form-label fw-bold">Paciente</label>   
                             @if($pacientePreseleccionado)
                                 {{-- Vista cuando ya seleccionamos al paciente desde su ficha --}}
                                 <div class="alert alert-info border-0 shadow-sm d-flex justify-content-between align-items-center mb-1">
@@ -33,7 +30,6 @@
                                 <div id="paciente-error" class="text-danger small mt-1"></div>
                             @endif
                         </div>
-
                         <div class="row">
                             <div class="col-md-6 mb-3">
                                 <label class="form-label fw-bold">Fecha 📅</label>
@@ -46,7 +42,7 @@
                         </div>
 
                         <div class="mb-4">
-                            <label class="form-label fw-bold">Motivo de la consulta 🦴</label>
+                            <label class="form-label fw-bold">Descripción 🦴</label>
                             <textarea name="motivo" class="form-control" rows="3" placeholder="Ej: Evaluación de fractura, dolor crónico, etc..." required></textarea>
                         </div>
 
@@ -62,14 +58,11 @@
         </div>
     </div>
 </div>
-
 <link href="https://cdn.jsdelivr.net/npm/tom-select@2.2.2/dist/css/tom-select.bootstrap5.min.css" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/tom-select@2.2.2/dist/js/tom-select.complete.min.js"></script>
-
 <script>
 document.addEventListener("DOMContentLoaded", function() {
     const selectElement = document.querySelector('#paciente_id');
-    
     // Solo inicializamos TomSelect si el elemento existe (no está preseleccionado)
     if (selectElement && selectElement.tagName === 'SELECT') {
         new TomSelect("#paciente_id", {
@@ -79,9 +72,7 @@ document.addEventListener("DOMContentLoaded", function() {
             maxItems: 1,
             load: function(query, callback) {
                 if (!query.length) return callback();
-                
                 const url = "{{ url('buscar-pacientes') }}?q=" + encodeURIComponent(query);
-                
                 fetch(url)
                     .then(response => response.json())
                     .then(json => {

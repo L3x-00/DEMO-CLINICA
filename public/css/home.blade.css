@@ -1,0 +1,117 @@
+/* Paleta de Colores y Variables */
+:root {
+    --primary: #0d6efd;
+    --primary-dark: #0a58ca;
+    --secondary: #6c757d;
+    --accent: #00d2ff;
+    --bg-light: #f8faff;
+    --glass: rgba(255, 255, 255, 0.9);
+    --shadow-sm: 0 10px 30px rgba(0,0,0,0.03);
+    --shadow-md: 0 20px 40px rgba(13, 110, 253, 0.08);
+}
+body { 
+    font-family: 'Plus Jakarta Sans', sans-serif; 
+    color: #1e293b;
+    background-color: #fff;
+    overflow-x: hidden;
+}
+/* Navbar Estilo Glassmorphism */
+.navbar-custom {
+    backdrop-filter: blur(15px);
+    background: rgba(255, 255, 255, 0.8) !important;
+    border-bottom: 1px solid rgba(0,0,0,0.05);
+    transition: all 0.3s ease;
+}
+/* Hero Section con Parallax-like effect */
+.hero-section {
+    background: linear-gradient(135deg, rgba(13, 110, 253, 0.85), rgba(30, 41, 59, 0.9)), 
+                url('https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?auto=format&fit=crop&w=1350&q=80');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    min-height: 80vh;
+    display: flex;
+    align-items: center;
+    position: relative;
+    clip-path: ellipse(150% 100% at 50% 0%); /* Curva elegante en la base */
+}
+.hero-title {
+    font-size: 3.5rem;
+    line-height: 1.1;
+    letter-spacing: -1px;
+}
+/* Botones Personalizados */
+.btn-welcome {
+    padding: 14px 32px;
+    font-weight: 700;
+    border-radius: 14px;
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    text-transform: capitalize;
+}
+.btn-welcome:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 24px rgba(13, 110, 253, 0.2);
+}
+/* Carrusel con Bordes Orgánicos */
+.carousel-modern {
+    border-radius: 40px;
+    overflow: hidden;
+    box-shadow: 0 30px 60px rgba(0,0,0,0.12);
+}
+.carousel-item img {
+    height: 550px;
+    object-fit: cover;
+    filter: brightness(0.9);
+}
+.carousel-caption-custom {
+    background: var(--glass);
+    backdrop-filter: blur(10px);
+    color: #1e293b;
+    border-radius: 24px;
+    padding: 30px;
+    bottom: 40px;
+    border: 1px solid rgba(255,255,255,0.3);
+}
+/* Tarjetas de Características (Features) */
+.card-feature {
+    border: none;
+    background: #fff;
+    padding: 40px;
+    border-radius: 30px;
+    box-shadow: var(--shadow-sm);
+    transition: all 0.4s ease;
+    text-align: center;
+}
+.card-feature:hover {
+    transform: translateY(-12px);
+    box-shadow: var(--shadow-md);
+    background: linear-gradient(to bottom, #fff, #f0f7ff);
+}
+.feature-icon-box {
+    width: 70px;
+    height: 70px;
+    background: #eef4ff;
+    color: var(--primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 20px;
+    margin: 0 auto 25px;
+    font-size: 1.8rem;
+    transition: all 0.3s ease;
+}
+.card-feature:hover .feature-icon-box {
+    background: var(--primary);
+    color: #fff;
+    transform: rotateY(180deg);
+}
+/* Footer Decorativo */
+.footer-simple {
+    background: #f8f9fa;
+    border-top: 1px solid #eee;
+    padding: 60px 0;
+}
+/* Animaciones */
+[data-aos] {
+    transition-duration: 800ms;
+}

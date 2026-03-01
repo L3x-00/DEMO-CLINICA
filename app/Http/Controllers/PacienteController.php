@@ -16,9 +16,6 @@ class PacienteController extends Controller
     {
         $fechaBusqueda = $request->get('fecha', Carbon::now()->format('Y-m-d'));
         $query = Paciente::query();
-
-        $query->whereDate('created_at', $fechaBusqueda);
-
         if ($request->filled('buscar')) {
             $buscar = $request->buscar;
             $query->where(function($q) use ($buscar) {
@@ -26,12 +23,15 @@ class PacienteController extends Controller
                   ->orWhere('apellido', 'LIKE', "%$buscar%")
                   ->orWhere('dni', 'LIKE', "%$buscar%");
             });
-        }
+            
+        }else {
+                // 2. Si NO está buscando nada, aplicamos el filtro de fecha por defecto
+                $query->whereDate('created_at', $fechaBusqueda);
+            }
 
         $pacientes = $query->orderBy('created_at', 'desc')->get();
         return view('pacientes.index', compact('pacientes', 'fechaBusqueda')); 
     }
-
     /**
      * Muestra el formulario para registrar un nuevo paciente.
      */
@@ -39,7 +39,6 @@ class PacienteController extends Controller
     {
         return view('pacientes.create');
     }
-
     /**
      * Almacena un nuevo paciente en la base de datos.
      */
@@ -50,13 +49,10 @@ class PacienteController extends Controller
             'nombre' => 'required|string|max:255',
             'apellido' => 'required|string|max:255',
             'dni' => 'required|min:8|max:20|unique:pacientes,dni', 
-            'antecedentes' => 'nullable|string',
-            'observaciones' => 'nullable|string',
             'sexo' => 'required',
             'fecha_nacimiento' => 'nullable|date',
             'evidencia' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:4096', 
         ]);
-
         // 2. Capturamos todos los datos en una variable
         $data = $request->all();
 
@@ -65,15 +61,12 @@ class PacienteController extends Controller
             $path = $request->file('evidencia')->store('evidencias', 'public');
             $data['evidencia'] = $path; // Actualizamos el valor en nuestro array $data
         
-            }
-        
+            } 
         // 4. ERROR CORREGIDO: Usamos $data en lugar de $request->all()
         Paciente::create($data);
-
         return redirect()->route('pacientes.index')
             ->with('success', 'Paciente registrado correctamente.');
     }
-
     /**
      * Muestra la ficha completa.
      */

@@ -4,6 +4,7 @@ use App\Http\Controllers\CitaController; // 👈 ¡Esta es la clave!
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\PacienteController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\ReporteMedicoController;
 // 🏠 Ruta de Bienvenida (Página de inicio pública)
 Route::get('/', function () {
     return view('welcome'); // Así se llamará nuestro nuevo archivo
@@ -20,7 +21,7 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 // Rutas Protegidas (Solo usuarios logueados) 🔐
 Route::middleware(['auth'])->group(function () {
 Route::get('/home', [HomeController::class, 'index'])->name('home');
-    
+Route::resource('reportes', ReporteMedicoController::class);   
 Route::resource('pacientes', PacienteController::class);
     
     // Rutas de Citas

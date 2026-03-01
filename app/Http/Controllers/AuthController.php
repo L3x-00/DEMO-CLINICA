@@ -1,12 +1,9 @@
 <?php
-
 namespace App\Http\Controllers;
-
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
-
 class AuthController extends Controller
 {
     // Mostrar formulario de Login
@@ -25,10 +22,13 @@ class AuthController extends Controller
             return back()->withErrors(['error' => 'Credenciales inválidas']);
         }
 
-        // Si es correcto, guardamos el token en una cookie o sesión para la web
-        // En este caso, para simplificar la muestra, usaremos la sesión de Laravel
-        return redirect()->route('pacientes.index')->with('success', 'Bienvenido al sistema');
+        // Al usar ->with() enviamos variables "Flash" a la sesión
+        // Estas variables solo duran UNA carga de página (ideal para el Splash Screen)
+        return redirect()->route('home')
+            ->with('success', 'Bienvenido al sistema')
+            ->with('mostrar_bienvenida', true);
     }
+    
 
     // Mostrar formulario de Registro
     public function showRegister()

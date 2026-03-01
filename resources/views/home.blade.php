@@ -11,11 +11,16 @@
             <p class="text-muted small">Este es el resumen operativo de su consultorio para hoy.</p>
         </div>
         <div class="col-md-6 text-md-end">
-            <div class="btn-group shadow-sm">
-                <a href="{{ route('pacientes.index') }}" class="btn btn-white border px-3">
+            <div class="btn-group shadow-sm rounded-3 overflow-hidden">
+                {{-- Botón adaptable: cambia de gris claro a gris carbón --}}
+                <a href="{{ route('pacientes.index') }}" 
+                class="btn bg-body-secondary text-body-emphasis border px-3 d-inline-flex align-items-center">
                     <i class="bi bi-people me-2 text-primary"></i> Pacientes
                 </a>
-                <a href="{{ route('pacientes.create') }}" class="btn btn-primary px-3">
+                
+                {{-- Botón primario: se mantiene azul pero con sombra optimizada --}}
+                <a href="{{ route('pacientes.create') }}" 
+                class="btn btn-primary px-3 d-inline-flex align-items-center">
                     <i class="bi bi-plus-lg me-1"></i> Nuevo Registro
                 </a>
             </div>
@@ -96,103 +101,113 @@
         </div>
     </div>
 
-    {{-- SECCIÓN DE AGENDA --}}
-    <div class="card border-0 shadow-sm rounded-4 overflow-hidden">
-        <div class="card-header bg-white py-3 px-4 d-flex justify-content-between align-items-center border-bottom">
-            <h5 class="mb-0 fw-bold">
-                <i class="bi bi-calendar-range me-2 text-primary"></i>Próximas Atenciones (7 días)
-            </h5>
-            <span class="badge rounded-pill bg-light text-dark border px-3">En agenda: {{ $proximasCitas->count() }}</span>
-        </div>
-        
-        <div class="table-responsive">
-            <table class="table table-hover align-middle mb-0">
-                <thead class="bg-light text-muted small text-uppercase">
-                    <tr>
-                        <th class="ps-4 py-3">Horario</th>
-                        <th class="py-3">Paciente</th>
-                        <th class="py-3">Documento</th>
-                        <th class="py-3 text-center">Acción / Estado</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @forelse($proximasCitas as $cita)
-                    <tr>
-                        <td class="ps-4">
-                            <div class="fw-bold text-dark">{{ \Carbon\Carbon::parse($cita->fecha)->format('d/m/Y') }}</div>
-                            <div class="text-muted small"><i class="bi bi-clock-history me-1"></i>{{ \Carbon\Carbon::parse($cita->hora)->format('h:i A') }}</div>
-                        </td>
-                        <td>
-                            <div class="fw-bold">{{ $cita->paciente->nombre }} {{ $cita->paciente->apellido }}</div>
-                            <a href="{{ route('pacientes.show', $cita->paciente->id) }}" class="text-decoration-none small">Ver Historia Clínica</a>
-                        </td>
-                        <td>
-                            <span class="badge bg-light text-secondary border-0 fw-normal">DNI: {{ $cita->paciente->dni }}</span>
-                        </td>
-                        <td class="text-center pe-4">
-                            <div class="dropdown">
-                                <button class="btn btn-sm btn-light border rounded-pill dropdown-toggle px-3" type="button" data-bs-toggle="dropdown">
-                                    @if($cita->estado == 'Pendiente')
-                                        <span class="text-warning fw-bold">⏳ Pendiente</span>
-                                    @elseif($cita->estado == 'Concluido')
-                                        <span class="text-success fw-bold">✅ Concluido</span>
-                                    @elseif($cita->estado == 'No presentado')
-                                        <span class="text-danger fw-bold">❌ No asistió</span>
-                                    @else
-                                        <span class="text-info fw-bold">{{ $cita->estado }}</span>
-                                    @endif
-                                </button>
-
-                                <ul class="dropdown-menu shadow border-0 p-2">
-                                    <li><h6 class="dropdown-header">Actualizar estado:</h6></li>
-                                    <li>
-                                        <form action="{{ route('citas.estado', $cita->id) }}" method="POST">
-                                            @csrf @method('PATCH')
-                                            <input type="hidden" name="estado" value="Concluido">
-                                            <button type="submit" class="dropdown-item rounded py-2">
-                                                <i class="bi bi-check-circle text-success me-2"></i> Marcar Concluido
-                                            </button>
-                                        </form>
-                                    </li>
-                                    <li>
-                                        <form action="{{ route('citas.estado', $cita->id) }}" method="POST">
-                                            @csrf @method('PATCH')
-                                            <input type="hidden" name="estado" value="No presentado">
-                                            <button type="submit" class="dropdown-item rounded py-2 text-danger">
-                                                <i class="bi bi-x-circle me-2"></i> Paciente no asistió
-                                            </button>
-                                        </form>
-                                    </li>
-                                    <li><hr class="dropdown-divider"></li>
-                                    <li>
-                                        <button type="button" class="dropdown-item rounded py-2" 
-                                                data-bs-toggle="modal" 
-                                                data-bs-target="#modalReprogramar" 
-                                                data-cita-id="{{ $cita->id }}"
-                                                data-paciente="{{ $cita->paciente->nombre }} {{ $cita->paciente->apellido }}">
-                                            <i class="bi bi-calendar-event text-primary me-2"></i> Reprogramar Cita
+   {{-- SECCIÓN DE AGENDA --}}
+<div class="card border-0 shadow-sm rounded-4 overflow-hidden">
+    {{-- Eliminado bg-white para que se adapte al tema --}}
+    <div class="card-header py-3 px-4 d-flex justify-content-between align-items-center border-bottom">
+        <h5 class="mb-0 fw-bold">
+            <i class="bi bi-calendar-range me-2 text-primary"></i>Próximas Atenciones (7 días)
+        </h5>
+        {{-- Badge adaptable usando bg-body-secondary --}}
+        <span class="badge rounded-pill bg-body-secondary text-body-emphasis border px-3">
+            En agenda: {{ $proximasCitas->count() }}
+        </span>
+    </div>
+    
+    <div class="table-responsive">
+        <table class="table table-hover align-middle mb-0">
+            {{-- Cambiado bg-light por bg-body-tertiary para que la cabecera sea oscura en dark mode --}}
+            <thead class="bg-body-tertiary text-secondary small text-uppercase">
+                <tr>
+                    <th class="ps-4 py-3">Horario</th>
+                    <th class="py-3">Paciente</th>
+                    <th class="py-3">Documento</th>
+                    <th class="py-3 text-center">Acción / Estado</th>
+                </tr>
+            </thead>
+            <tbody>
+                @forelse($proximasCitas as $cita)
+                <tr>
+                    <td class="ps-4">
+                        <div class="fw-bold">{{ \Carbon\Carbon::parse($cita->fecha)->format('d/m/Y') }}</div>
+                        <div class="text-muted small">
+                            <i class="bi bi-clock-history me-1"></i>{{ \Carbon\Carbon::parse($cita->hora)->format('h:i A') }}
+                        </div>
+                    </td>
+                    <td>
+                        <div class="fw-bold">{{ $cita->paciente->nombre }} {{ $cita->paciente->apellido }}</div>
+                        <a href="{{ route('pacientes.show', $cita->paciente->id) }}" class="text-decoration-none small fw-medium">Ver Historia Clínica</a>
+                    </td>
+                    <td>
+                        {{-- Badge de DNI corregido --}}
+                        <span class="badge bg-body-secondary text-body-secondary border-0 fw-normal">
+                            DNI: {{ $cita->paciente->dni }}
+                        </span>
+                    </td>
+                    <td class="text-center pe-4">
+                        <div class="dropdown">
+                            {{-- Botón de dropdown sin bg-light fijo --}}
+                            <button class="btn btn-sm btn-outline-secondary rounded-pill dropdown-toggle px-3" type="button" data-bs-toggle="dropdown">
+                                @if($cita->estado == 'Pendiente')
+                                    <span class="text-warning fw-bold">⏳ Pendiente</span>
+                                @elseif($cita->estado == 'Concluido')
+                                    <span class="text-success fw-bold">✅ Concluido</span>
+                                @elseif($cita->estado == 'No presentado')
+                                    <span class="text-danger fw-bold">❌ No asistió</span>
+                                @else
+                                    <span class="text-info fw-bold">{{ $cita->estado }}</span>
+                                @endif
+                            </button>
+                            {{-- Dropdown adaptable --}}
+                            <ul class="dropdown-menu shadow border-0 p-2">
+                                <li><h6 class="dropdown-header">Actualizar estado:</h6></li>
+                                <li>
+                                    <form action="{{ route('citas.estado', $cita->id) }}" method="POST">
+                                        @csrf @method('PATCH')
+                                        <input type="hidden" name="estado" value="Concluido">
+                                        <button type="submit" class="dropdown-item rounded py-2">
+                                            <i class="bi bi-check-circle text-success me-2"></i> Marcar Concluido
                                         </button>
-                                    </li>
-                                </ul>
-                            </div>
-                        </td>
-                    </tr>
-                    @empty
-                    <tr>
-                        <td colspan="4" class="text-center py-5">
-                            <div class="text-muted opacity-50">
-                                <i class="bi bi-calendar-x fs-1 d-block mb-3"></i>
-                                <p class="mb-0">No hay compromisos en la agenda para los próximos días.</p>
-                            </div>
-                        </td>
-                    </tr>
-                    @endforelse
-                </tbody>
-            </table>
-        </div>
+                                    </form>
+                                </li>
+                                <li>
+                                    <form action="{{ route('citas.estado', $cita->id) }}" method="POST">
+                                        @csrf @method('PATCH')
+                                        <input type="hidden" name="estado" value="No presentado">
+                                        <button type="submit" class="dropdown-item rounded py-2 text-danger">
+                                            <i class="bi bi-x-circle me-2"></i> No asistió
+                                        </button>
+                                    </form>
+                                </li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li>
+                                    <button type="button" class="dropdown-item rounded py-2" 
+                                            data-bs-toggle="modal" 
+                                            data-bs-target="#modalReprogramar" 
+                                            data-cita-id="{{ $cita->id }}"
+                                            data-paciente="{{ $cita->paciente->nombre }} {{ $cita->paciente->apellido }}">
+                                        <i class="bi bi-calendar-event text-primary me-2"></i> Reprogramar Cita
+                                    </button>
+                                </li>
+                            </ul>
+                        </div>
+                    </td>
+                </tr>
+                @empty
+                <tr>
+                    <td colspan="4" class="text-center py-5">
+                        <div class="text-muted opacity-50">
+                            <i class="bi bi-calendar-x fs-1 d-block mb-3"></i>
+                            <p class="mb-0">No hay compromisos en la agenda para los próximos días.</p>
+                        </div>
+                    </td>
+                </tr>
+                @endforelse
+            </tbody>
+        </table>
     </div>
 </div>
-
+</div>
 <style>
     .ls-1 { letter-spacing: 0.5px; }
     .btn-white { background: white; }
@@ -201,7 +216,6 @@
     .card { transition: transform 0.2s ease; }
     .dropdown-item:active { background-color: #0d6efd; }
 </style>
-
 {{-- SCRIPTS PARA CHART.JS --}}
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
@@ -229,7 +243,6 @@
                 }
             }
         });
-
         // Gráfico 2: Barras - Comparativa Hoy vs Ayer
         const ctxComp = document.getElementById('chartComparativoAtencion').getContext('2d');
         new Chart(ctxComp, {
@@ -291,7 +304,6 @@
         </div>
     </div>
 </div>
-
 <script>
     // Script para pasar el ID de la cita al modal dinámicamente
     document.getElementById('modalReprogramar').addEventListener('show.bs.modal', function (event) {

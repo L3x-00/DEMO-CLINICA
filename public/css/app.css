@@ -1,0 +1,320 @@
+/* ==========================================================================
+   1. VARIABLES Y TEMAS (Personalidades)
+   ========================================================================== */
+
+:root {
+    /* --- MODO CLARO (Pastel & Soft) --- */
+    --bs-body-bg: #f8fafc;
+    --bs-body-color: #334155;
+    --accent-main: #6366f1; /* Indigo Suave */
+    --sidebar-bg: #ffffff;
+    --card-bg: #ffffff;
+    --nav-active-bg: #e0e7ff; 
+    --nav-active-text: #4338ca;
+    
+    /* Dimensiones y Sombras */
+    --header-height: 70px;
+    --sidebar-width: 260px;
+    --radius-lg: 20px;
+    --radius-md: 12px;
+    --main-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05);
+    --table-header-bg: #f1f5f9;
+}
+
+[data-bs-theme="dark"] {
+    /* --- MODO OSCURO (Deep & Tech) --- */
+    --bs-body-bg: #0f172a; /* Azul Noche Profundo */
+    --bs-body-color: #f1f5f9;
+    --accent-main: #38bdf8; /* Cian Brillante */
+    --sidebar-bg: #1e293b;
+    --card-bg: #1e293b;
+    --nav-active-bg: rgba(56, 189, 248, 0.15);
+    --nav-active-text: #7dd3fc;
+    
+    /* Dimensiones y Sombras */
+    --radius-lg: 8px; /* Bordes más rectos en Dark */
+    --radius-md: 6px;
+    --main-shadow: 0 0 20px rgba(0, 0, 0, 0.4);
+    --table-header-bg: #334155;
+    
+    /* Overrides de Bootstrap */
+    --bs-border-color: rgba(255, 255, 255, 0.1);
+}
+
+/* ==========================================================================
+   2. ESTILOS BASE
+   ========================================================================== */
+
+html {
+    background-color: var(--bs-body-bg);
+}
+
+body { 
+    background-color: var(--bs-body-bg);
+    color: var(--bs-body-color);
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    margin: 0;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* ==========================================================================
+   3. ESTRUCTURA (LAYOUT)
+   ========================================================================== */
+
+.top-navbar {
+    background: var(--header-gradient, var(--card-bg));
+    border-bottom: 1px solid var(--bs-border-color);
+    padding: 0 25px;
+    height: var(--header-height);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 1050;
+}
+
+.main-wrapper {
+    display: flex;
+    width: 100%;
+}
+
+.sidebar {
+    width: var(--sidebar-width);
+    min-width: var(--sidebar-width);
+    height: calc(100vh - var(--header-height));
+    background-color: var(--sidebar-bg);
+    border-right: 1px solid var(--bs-border-color);
+    border-radius: 0 var(--radius-lg) var(--radius-lg) 0;
+    position: fixed;
+    display: flex;
+    flex-direction: column;
+    padding: 20px 0;
+    transition: all 0.3s ease;
+    z-index: 1000;
+}
+
+.content-area {
+    flex-grow: 1;
+    margin-left: var(--sidebar-width);
+    padding: 35px;
+    min-height: calc(100vh - var(--header-height));
+    background-color: var(--bs-body-bg);
+    transition: all 0.3s ease;
+}
+
+/* ==========================================================================
+   4. NAVEGACIÓN (NAV-CARDS)
+   ========================================================================== */
+
+.nav-card {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 18px;
+    margin: 5px 15px;
+    border-radius: var(--radius-md);
+    text-decoration: none !important;
+    color: var(--bs-body-color);
+    font-weight: 500;
+    transition: all 0.2s ease;
+    border: 1px solid transparent;
+}
+
+.nav-card i {
+    font-size: 1.2rem;
+    opacity: 0.7;
+}
+
+.nav-card:hover {
+    background-color: rgba(99, 102, 241, 0.05);
+    color: var(--accent-main);
+    transform: translateX(5px);
+}
+
+.nav-card.active {
+    background-color: var(--nav-active-bg) !important;
+    color: var(--nav-active-text) !important;
+    border: none !important;
+}
+
+.nav-card.active i {
+    opacity: 1;
+}
+
+/* Decoración específica para el modo oscuro en el active */
+[data-bs-theme="dark"] .nav-card.active {
+    border-left: 4px solid var(--accent-main) !important;
+}
+
+/* ==========================================================================
+   5. COMPONENTES (CARDS, BUTTONS, TABLES)
+   ========================================================================== */
+
+.card {
+    background-color: var(--card-bg) !important;
+    border: none !important;
+    border-radius: var(--radius-lg) !important;
+    box-shadow: var(--main-shadow) !important;
+    transition: transform 0.3s ease, background-color 0.3s ease;
+}
+
+.btn-primary {
+    border-radius: var(--radius-md);
+    padding: 10px 20px;
+    font-weight: 600;
+    border: none;
+    background-color: var(--accent-main) !important;
+    transition: all 0.2s ease;
+}
+
+[data-bs-theme="light"] .btn-primary {
+    box-shadow: 0 4px 14px 0 rgba(99, 102, 241, 0.39);
+}
+
+.table {
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    background-color: var(--card-bg);
+}
+
+.table thead th {
+    background-color: var(--table-header-bg) !important;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    letter-spacing: 0.05em;
+    border: none;
+    color: var(--bs-body-color);
+}
+
+/* Inputs y Form Controls */
+[data-bs-theme="dark"] .form-control, 
+[data-bs-theme="dark"] .input-group-text {
+    background-color: #2b3035 !important;
+    border-color: #495057 !important;
+    color: #ffffff !important;
+}
+
+/* ==========================================================================
+   6. LOADERS Y ANIMACIONES
+   ========================================================================== */
+
+#preloader, #logout-loader {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    z-index: 99999;
+    display: flex; justify-content: center; align-items: center;
+}
+
+#preloader { background: var(--bs-body-bg); }
+#logout-loader { background: rgba(13, 110, 253, 0.95); backdrop-filter: blur(8px); }
+
+.loader-logo {
+    font-size: 4.5rem;
+    color: var(--accent-main);
+    animation: pulseHeart 1.5s infinite;
+}
+
+.loader-bar {
+    width: 240px; height: 6px;
+    background: rgba(0,0,0,0.1);
+    border-radius: 10px; margin: 20px auto; overflow: hidden;
+}
+
+.loader-progress {
+    width: 0%; height: 100%;
+    background: var(--accent-main);
+    animation: loadProgress 2.5s ease-in-out forwards;
+}
+
+.loader-hidden { opacity: 0; visibility: hidden; transition: 0.6s; }
+
+@keyframes pulseHeart {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+}
+
+@keyframes loadProgress {
+    from { width: 0%; }
+    to { width: 100%; }
+}
+
+/* ==========================================================================
+   7. RESPONSIVIDAD
+   ========================================================================== */
+
+@media (max-width: 991.98px) {
+    .sidebar {
+        left: -100%;
+        height: 100%;
+        top: var(--header-height);
+        border-radius: 0;
+    }
+
+    .sidebar.active {
+        left: 0;
+        box-shadow: 10px 0 30px rgba(0,0,0,0.1);
+    }
+
+    .content-area {
+        margin-left: 0;
+        padding: 20px;
+    }
+}
+/* --- HEADER PERFIL ADAPTABLE --- */
+.custom-profile-header {
+    background: var(--nav-active-bg) !important; /* Usa el color pastel del tema */
+    border-bottom: 1px solid var(--bs-border-color) !important;
+    border-radius: var(--radius-lg) var(--radius-lg) 0 0 !important;
+}
+
+.profile-icon-wrapper {
+    width: 75px;
+    height: 75px;
+    background-color: var(--card-bg);
+    color: var(--accent-main);
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    border: 3px solid var(--accent-main);
+}
+
+.profile-title {
+    color: var(--nav-active-text); /* Azul fuerte en claro, Celeste en oscuro */
+}
+
+.profile-info-badges span {
+    color: var(--bs-body-color);
+    opacity: 0.8;
+    background: rgba(0, 0, 0, 0.03);
+    padding: 4px 12px;
+    border-radius: 20px;
+}
+
+[data-bs-theme="dark"] .profile-info-badges span {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+/* Badges de Género Estilizados */
+.badge-gender {
+    padding: 8px 20px;
+    border-radius: 30px;
+    font-weight: 600;
+    font-size: 0.85rem;
+    box-shadow: var(--main-shadow);
+}
+
+.gender-male {
+    background-color: #dbeafe;
+    color: #1e40af;
+}
+
+.gender-female {
+    background-color: #fce7f3;
+    color: #9d174d;
+}
+
+[data-bs-theme="dark"] .gender-male { background-color: rgba(59, 130, 246, 0.2); color: #93c5fd; }
+[data-bs-theme="dark"] .gender-female { background-color: rgba(236, 72, 153, 0.2); color: #f9a8d4; }

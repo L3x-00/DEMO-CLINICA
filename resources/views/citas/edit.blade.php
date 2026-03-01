@@ -1,5 +1,4 @@
 @extends('layouts.app')
-
 @section('content')
 <div class="container mt-4">
     <div class="row justify-content-center">
@@ -12,12 +11,10 @@
                     <form action="{{ route('citas.update', $cita->id) }}" method="POST">
                         @csrf
                         @method('PUT')
-
                         <div class="mb-3">
                             <label class="form-label fw-bold">Paciente</label>
                             <input type="text" class="form-control bg-light" value="{{ $cita->paciente->nombre }} {{ $cita->paciente->apellido }}" readonly>
                         </div>
-
                         <div class="row g-3 mb-3">
                             <div class="col-md-6">
                                 <label class="form-label fw-bold">Nueva Fecha</label>
@@ -28,7 +25,6 @@
                                 <input type="time" name="hora" class="form-control border-warning" value="{{ $cita->hora }}" required>
                             </div>
                         </div>
-
                         <div class="mb-3">
                             <label class="form-label fw-bold">Estado</label>
                             <select name="estado" class="form-select border-warning">
@@ -37,12 +33,10 @@
                                 <option value="No presentado" {{ $cita->estado == 'No presentado' ? 'selected' : '' }}>No presentado</option>
                             </select>
                         </div>
-
                         <div class="mb-4">
                             <label class="form-label fw-bold">Motivo</label>
                             <textarea name="motivo" class="form-control border-warning" rows="3">{{ $cita->motivo }}</textarea>
                         </div>
-
                         <div class="d-flex justify-content-end gap-2">
                             <a href="{{ route('citas.index') }}" class="btn btn-secondary">Cancelar</a>
                             <button type="submit" class="btn btn-warning px-4 fw-bold">Actualizar Cita</button>

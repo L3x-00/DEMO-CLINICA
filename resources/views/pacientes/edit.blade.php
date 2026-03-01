@@ -104,18 +104,6 @@
                     <label class="form-label fw-bold text-danger">⚠️ Alergias y Advertencias Médicas</label>
                     <textarea name="alergias" class="form-control border-danger" rows="3">{{ $paciente->alergias }}</textarea>
                 </div>
-
-                <div class="row mb-4">
-                    <div class="col-md-6">
-                        <label class="form-label fw-bold">Antecedentes Médicos</label>
-                        <textarea name="antecedentes" class="form-control" rows="3">{{ $paciente->antecedentes }}</textarea>
-                    </div>
-                    <div class="col-md-6">
-                        <label class="form-label fw-bold">Observaciones</label>
-                        <textarea name="observaciones" class="form-control" rows="3">{{ $paciente->observaciones }}</textarea>
-                    </div>
-                </div>
-
                 <div class="row mb-5">
                     <div class="col-12">
                         <label class="form-label fw-bold"><i class="bi bi-camera me-2 text-primary"></i>Actualizar Evidencia (Imagen)</label>

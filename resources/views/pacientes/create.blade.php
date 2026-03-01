@@ -10,10 +10,9 @@
             {{-- SE CORRIGIÓ: Un solo formulario con enctype para permitir imágenes --}}
             <form action="{{ route('pacientes.store') }}" method="POST" enctype="multipart/form-data">
                 @csrf
-
                 <h5 class="text-primary border-bottom pb-2 mb-3">1. Datos de Identificación</h5>
-                <div class="row g-3 mb-4">
-                    <div class="col-md-3">
+                <div class="row g-3 ">
+                    <div class="col-12 col-md-6">
                         <label class="form-label fw-bold">Tipo de Doc.</label>
                         <select name="tipo_documento" class="form-select border-primary" required>
                             <option value="DNI">DNI</option>
@@ -41,7 +40,6 @@
                         </select>
                     </div>
                 </div>
-
                 <div class="row g-3 mb-4">
                     <div class="col-md-6">
                         <label class="form-label fw-bold">Nombres</label>
@@ -52,7 +50,6 @@
                         <input type="text" name="apellido" class="form-control" required>
                     </div>
                 </div>
-
                 <h5 class="text-primary border-bottom pb-2 mb-3">2. Nacimiento y Origen</h5>
                 <div class="row g-3 mb-4">
                     <div class="col-md-4">
@@ -72,7 +69,6 @@
                         <input type="text" name="lugar_nacimiento" class="form-control">
                     </div>
                 </div>
-
                 <h5 class="text-primary border-bottom pb-2 mb-3">3. Ubicación y Contacto</h5>
                 <div class="row g-3 mb-4">
                     <div class="col-md-6">
@@ -88,7 +84,6 @@
                         <input type="text" name="distrito" class="form-control">
                     </div>
                 </div>
-
                 <div class="row g-3 mb-4">
                     <div class="col-md-4">
                         <label class="form-label fw-bold">Teléfono</label>
@@ -99,7 +94,6 @@
                         <input type="email" name="email" class="form-control" placeholder="paciente@ejemplo.com">
                     </div>
                 </div>
-
                 <h5 class="text-primary border-bottom pb-2 mb-3">4. Información Laboral y Salud</h5>
                 <div class="row g-3 mb-4">
                     <div class="col-md-4">
@@ -115,23 +109,10 @@
                         <input type="text" name="lugar_laboral" class="form-control">
                     </div>
                 </div>
-
                 <div class="mb-4">
-                    <label class="form-label fw-bold text-danger">⚠️ Alergias y Advertencias Médicas</label>
-                    <textarea name="alergias" class="form-control border-danger" rows="3" placeholder="Describa alergias..."></textarea>
+                    <label class="form-label fw-bold text-danger">⚠️ Motivo de la consulta</label>
+                    <textarea name="alergias" class="form-control border-danger" rows="3" placeholder="Describa el motivo de la consulta..."></textarea>
                 </div>
-
-                <div class="row mb-4">
-                    <div class="col-md-6">
-                        <label class="form-label fw-bold"><i class="bi bi-clipboard2-pulse me-2"></i>Antecedentes Médicos</label>
-                        <textarea name="antecedentes" class="form-control" rows="3" placeholder="Cirugías, enfermedades..."></textarea>
-                    </div>
-                    <div class="col-md-6">
-                        <label class="form-label fw-bold"><i class="bi bi-chat-left-text me-2"></i>Observaciones</label>
-                        <textarea name="observaciones" class="form-control" rows="3" placeholder="Notas adicionales..."></textarea>
-                    </div>
-                </div>
-
                 {{-- SECCIÓN DE EVIDENCIA --}}
                 <div class="row mb-5">
                     <div class="col-12">
@@ -140,7 +121,6 @@
                         <div class="form-text text-muted small">Formatos permitidos: JPG, PNG, WEBP.</div>
                     </div>
                 </div>
-
                 <div class="d-flex justify-content-end gap-2 border-top pt-4">
                     <a href="{{ route('pacientes.index') }}" class="btn btn-light border px-4">Cancelar</a>
                     <button type="submit" class="btn btn-primary px-5 fw-bold shadow">Guardar Registro Médico</button>
@@ -149,7 +129,6 @@
         </div>
     </div>
 </div>
-
 <script>
     document.getElementById('fecha_nacimiento').addEventListener('change', function() {
         const fechaNacimiento = new Date(this.value);

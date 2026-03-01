@@ -27,8 +27,6 @@ protected $fillable = [
     'ocupacion', 
     'estado_civil', 
     'alergias',
-    'antecedentes',
-    'observaciones',
     'evidencia'
 
 ];

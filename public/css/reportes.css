@@ -1,0 +1,41 @@
+.report-container {
+    display: flex;
+    justify-content: center;
+    padding: 20px;
+    background-color: #525659; /* Fondo gris tipo visor de PDF */
+}
+
+.report-paper {
+    background: white !important;
+    width: 210mm;
+    min-height: 297mm;
+    padding: 20mm;
+    margin: 10px auto;
+    color: #000 !important;
+    box-shadow: 0 0 20px rgba(0,0,0,0.5);
+    font-family: 'Times New Roman', serif;
+}
+
+.report-header {
+    border-bottom: 2px solid #000;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+}
+
+.border-dotted-bottom { 
+    border-bottom: 1px dotted #000; 
+    margin-bottom: 15px;
+}
+
+/* Estilos de impresión */
+@media print {
+    body, html { background: white !important; }
+    .report-container { padding: 0; background: none; }
+    .report-paper { 
+        box-shadow: none !important; 
+        margin: 0 !important; 
+        width: 100% !important;
+        padding: 0 !important; /* El margen lo da la impresora */
+    }
+    .d-print-none, .top-navbar, .sidebar { display: none !important; }
+}
