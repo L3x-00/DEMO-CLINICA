@@ -116,10 +116,12 @@
                     <i class="bi bi-person-badge"></i>
                     <span>Pacientes</span>
                 </a>
+                @if(auth()->user()->role === 'doctor')
                 <a href="{{ route('reportes.index') }}" class="nav-card {{ request()->routeIs('reportes.*') ? 'active' : '' }}">
                     <i class="bi bi-file-earmark-bar-graph"></i>
-                    <span>Reportes</span>
+                    <span>Informes</span>
                 </a>
+                @endif
             </nav>
 
             {{-- FOOTER DE SIDEBAR --}}

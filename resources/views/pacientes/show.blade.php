@@ -12,7 +12,7 @@
         </a>
         {{-- Contenedor de botones adaptado --}}
         <div class="d-flex gap-2 shadow-sm p-1 bg-body-tertiary rounded border">
-            <button onclick="window.location.reload();" class="btn btn-outline-secondary btn-sm border-0">
+            <button onclick="window.print();" class="btn btn-outline-secondary btn-sm border-0">
                 <i class="bi bi-printer me-1"></i> Imprimir
             </button>
             <a href="{{ route('pacientes.edit', $paciente->id) }}" class="btn btn-warning btn-sm text-dark px-3 fw-bold">

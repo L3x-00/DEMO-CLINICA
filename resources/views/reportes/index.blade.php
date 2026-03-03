@@ -19,9 +19,11 @@
             </div>
         </div>
         <div class="col-12 col-sm-5 col-md-4 text-sm-end">
+            @if(auth()->user()->role === 'doctor')
             <a href="{{ route('reportes.create') }}" class="btn btn-success btn-lg shadow-sm fw-bold w-100 w-sm-auto px-4">
                 <i class="bi bi-plus-lg me-2"></i>Nuevo Informe
             </a>
+            @endif
         </div>
     </div>
 
@@ -51,9 +53,9 @@
                 </div>
                 <div class="col-12 col-md-6 col-lg-8 text-md-end">
                     <div class="btn-group shadow-sm">
-                        <button class="btn btn-outline-secondary btn-sm active">Todos</button>
-                        <button class="btn btn-outline-secondary btn-sm">Hoy</button>
-                        <button class="btn btn-outline-secondary btn-sm">Mes</button>
+                        <button class="btn btn-outline-secondary btn-sm active">Hoy</button>
+                        <button class="btn btn-outline-secondary btn-sm">Ayer</button>
+                        <button class="btn btn-outline-secondary btn-sm">Todos</button>
                     </div>
                 </div>
             </div>

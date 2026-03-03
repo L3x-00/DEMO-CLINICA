@@ -318,3 +318,15 @@ body {
 
 [data-bs-theme="dark"] .gender-male { background-color: rgba(59, 130, 246, 0.2); color: #93c5fd; }
 [data-bs-theme="dark"] .gender-female { background-color: rgba(236, 72, 153, 0.2); color: #f9a8d4; }
+/* Asegura que todos los encabezados hereden el color del tema */
+h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
+    color: var(--bs-body-color) !important;
+    transition: color 0.3s ease;
+}
+
+/* Opcional: Si quieres que los títulos tengan un color más vibrante en Modo Oscuro */
+[data-bs-theme="dark"] h1, 
+[data-bs-theme="dark"] h2, 
+[data-bs-theme="dark"] h3 {
+    color: #ffffff !important; /* Blanco puro para máxima legibilidad sobre azul noche */
+}
