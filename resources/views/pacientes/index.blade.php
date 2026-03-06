@@ -69,6 +69,7 @@
         <a href="{{ route('pacientes.create') }}" class="btn btn-primary btn-sm fw-bold shadow-sm px-3">
             <i class="bi bi-person-plus-fill me-1"></i> Nuevo Paciente
         </a>
+        
     </div>
     
     <div class="table-responsive">
@@ -102,9 +103,6 @@
                     <td>
                         <div class="small mb-1">
                             <i class="bi bi-telephone text-success me-1"></i>{{ $paciente->telefono ?? 'S/N' }}
-                        </div>
-                        <div class="small text-muted text-truncate" style="max-width: 180px;">
-                            <i class="bi bi-geo-alt me-1"></i>{{ $paciente->provincia ?? '---' }} - {{ $paciente->distrito ?? '---' }}
                         </div>
                     </td>
                     <td class="pe-4 text-end">

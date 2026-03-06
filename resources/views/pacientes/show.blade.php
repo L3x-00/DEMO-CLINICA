@@ -21,6 +21,7 @@
             <a href="{{ route('citas.create', ['paciente_id' => $paciente->id]) }}" class="btn btn-primary btn-sm px-3 fw-bold">
                 <i class="bi bi-calendar-plus me-1"></i> Agendar Cita
             </a>
+            
         </div>
     </div>
 
@@ -78,37 +79,10 @@
                                     <span class="fw-bold text-body-emphasis">{{ $paciente->fecha_nacimiento ? \Carbon\Carbon::parse($paciente->fecha_nacimiento)->format('d/m/Y') : '---' }}</span>
                                 </li>
                                 <li class="list-group-item d-flex justify-content-between px-0 py-2 bg-transparent">
-                                    <span class="text-body-secondary">Estado Civil:</span>
-                                    <span class="text-body-emphasis">{{ $paciente->estado_civil ?? '---' }}</span>
-                                </li>
-                                <li class="list-group-item d-flex justify-content-between px-0 py-2 bg-transparent">
                                     <span class="text-body-secondary">Nacionalidad:</span>
                                     <span class="text-body-emphasis">{{ $paciente->nacionalidad ?? '---' }}</span>
                                 </li>
-                                <li class="list-group-item d-flex justify-content-between px-0 py-2 bg-transparent">
-                                    <span class="text-body-secondary">Lugar de Origen:</span>
-                                    <span class="text-body-emphasis">{{ $paciente->lugar_nacimiento ?? '---' }}</span>
-                                </li>
                             </ul>
-                        </div>
-
-                        {{-- Bloque: Ubicación --}}
-                        <div class="col-md-6">
-                            <h6 class="text-uppercase text-body-secondary small fw-bold mb-3 ls-1">Residencia Actual</h6>
-                            <div class="p-3 bg-body-tertiary rounded-3 border">
-                                <p class="mb-1 fw-bold text-body-emphasis small"><i class="bi bi-geo-alt me-1 text-primary"></i>Dirección:</p>
-                                <p class="small text-body-secondary mb-2">{{ $paciente->direccion ?? 'No registrada' }}</p>
-                                <div class="row g-2">
-                                    <div class="col-6">
-                                        <label class="small text-body-secondary d-block">Provincia</label>
-                                        <span class="small fw-bold text-body-emphasis text-uppercase">{{ $paciente->provincia ?? '---' }}</span>
-                                    </div>
-                                    <div class="col-6 border-start ps-3">
-                                        <label class="small text-body-secondary d-block">Distrito</label>
-                                        <span class="small fw-bold text-body-emphasis text-uppercase">{{ $paciente->distrito ?? '---' }}</span>
-                                    </div>
-                                </div>
-                            </div>
                         </div>
                     </div>
 
@@ -118,10 +92,6 @@
                             <div class="col-md-6 mb-2 mb-md-0 border-end-md">
                                 <span class="text-body-secondary small d-block">WhatsApp / Teléfono</span>
                                 <span class="fs-5 fw-bold text-success"><i class="bi bi-whatsapp"></i> {{ $paciente->telefono ?? '---' }}</span>
-                            </div>
-                            <div class="col-md-6 ps-md-4">
-                                <span class="text-body-secondary small d-block">Correo Electrónico</span>
-                                <span class="text-body-emphasis fw-medium">{{ $paciente->email ?? 'Sin correo registrado' }}</span>
                             </div>
                         </div>
                     </div>
@@ -150,23 +120,6 @@
                 <div class="col-lg-4">
                     <div class="card bg-body-tertiary border-0 rounded-3 h-100 shadow-sm">
                         <div class="card-body">
-                            <h6 class="text-uppercase text-body-secondary small fw-bold mb-3 ls-1">Perfil Laboral</h6>
-                            
-                            <div class="bg-card-custom p-3 rounded-3 shadow-sm mb-3 border">
-                                <label class="text-body-secondary small d-block mb-1">Profesión</label>
-                                <span class="fw-bold text-primary d-block">{{ $paciente->profesion ?? '---' }}</span>
-                            </div>
-
-                            <div class="bg-card-custom p-3 rounded-3 shadow-sm mb-3 border">
-                                <label class="text-body-secondary small d-block mb-1">Ocupación Actual</label>
-                                <span class="fw-bold text-body-emphasis d-block">{{ $paciente->ocupacion ?? '---' }}</span>
-                            </div>
-
-                            <div class="bg-card-custom p-3 rounded-3 shadow-sm mb-3 border">
-                                <label class="text-body-secondary small d-block mb-1">Centro Laboral</label>
-                                <span class="fw-bold text-body-secondary d-block">{{ $paciente->lugar_laboral ?? '---' }}</span>
-                            </div>
-
                             <div class="mt-4">
                                 <div class="alert alert-info bg-info-subtle border-0 small mb-0 shadow-sm text-info-emphasis">
                                     <i class="bi bi-shield-lock-fill me-1"></i> Esta ficha contiene información sensible y está protegida por normativa.

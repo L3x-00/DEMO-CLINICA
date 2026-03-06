@@ -51,6 +51,8 @@ class PacienteController extends Controller
             'dni' => 'required|min:8|max:20|unique:pacientes,dni', 
             'sexo' => 'required',
             'fecha_nacimiento' => 'nullable|date',
+            'alergias' => 'required',
+            'telefono' => 'required',
             'evidencia' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:4096', 
         ]);
         // 2. Capturamos todos los datos en una variable

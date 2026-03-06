@@ -32,15 +32,6 @@
                             <option value="Femenino" {{ $paciente->sexo == 'Femenino' ? 'selected' : '' }}>Femenino</option>
                         </select>
                     </div>
-                    <div class="col-md-3">
-                        <label class="form-label fw-bold">Estado Civil</label>
-                        <select name="estado_civil" class="form-select border-primary" required>
-                            <option value="Soltero/a" {{ $paciente->estado_civil == 'Soltero/a' ? 'selected' : '' }}>Soltero/a</option>
-                            <option value="Casado/a" {{ $paciente->estado_civil == 'Casado/a' ? 'selected' : '' }}>Casado/a</option>
-                            <option value="Divorciado/a" {{ $paciente->estado_civil == 'Divorciado/a' ? 'selected' : '' }}>Divorciado/a</option>
-                            <option value="Viudo/a" {{ $paciente->estado_civil == 'Viudo/a' ? 'selected' : '' }}>Viudo/a</option>
-                        </select>
-                    </div>
                 </div>
 
                 <div class="row g-3 mb-4">
@@ -54,7 +45,7 @@
                     </div>
                 </div>
 
-                <h5 class="text-primary border-bottom pb-2 mb-3">2. Nacimiento y Origen</h5>
+                <h5 class="text-primary border-bottom pb-2 mb-3">2. Nacimiento </h5>
                 <div class="row g-3 mb-4">
                     <div class="col-md-4">
                         <label class="form-label fw-bold">Fecha de Nacimiento</label>
@@ -68,35 +59,13 @@
                         <label class="form-label fw-bold">Nacionalidad</label>
                         <input type="text" name="nacionalidad" class="form-control" value="{{ $paciente->nacionalidad }}">
                     </div>
-                    <div class="col-md-3">
-                        <label class="form-label fw-bold">Lugar de Nac.</label>
-                        <input type="text" name="lugar_nacimiento" class="form-control" value="{{ $paciente->lugar_nacimiento }}">
-                    </div>
                 </div>
 
-                <h5 class="text-primary border-bottom pb-2 mb-3">3. Ubicación y Contacto</h5>
-                <div class="row g-3 mb-4">
-                    <div class="col-md-6">
-                        <label class="form-label fw-bold">Dirección</label>
-                        <input type="text" name="direccion" class="form-control" value="{{ $paciente->direccion }}">
-                    </div>
-                    <div class="col-md-3">
-                        <label class="form-label fw-bold">Provincia</label>
-                        <input type="text" name="provincia" class="form-control" value="{{ $paciente->provincia }}">
-                    </div>
-                    <div class="col-md-3">
-                        <label class="form-label fw-bold">Distrito</label>
-                        <input type="text" name="distrito" class="form-control" value="{{ $paciente->distrito }}">
-                    </div>
-                </div>
+                <h5 class="text-primary border-bottom pb-2 mb-3">3.Contacto</h5>
                 <div class="row g-3 mb-4">
                     <div class="col-md-4">
                         <label class="form-label fw-bold">Teléfono</label>
                         <input type="text" name="telefono" class="form-control" value="{{ $paciente->telefono }}">
-                    </div>
-                    <div class="col-md-8">
-                        <label class="form-label fw-bold">Correo Electrónico</label>
-                        <input type="email" name="email" class="form-control" value="{{ $paciente->email }}">
                     </div>
                 </div>
 
