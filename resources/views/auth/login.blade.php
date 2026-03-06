@@ -55,12 +55,6 @@
                                 Ingresar al Sistema <i class="bi bi-door-open-fill ms-1"></i>
                             </button>
                         </form>
-                        <div class="text-center mt-5">
-                            <p class="mb-0 text-muted small">
-                                ¿No tiene cuenta aún? <br>
-                                <a href="{{ route('register') }}" class="fw-bold text-primary text-decoration-none">Solicite acceso aquí</a>
-                            </p>
-                        </div>
                     </div>
                 </div>
 

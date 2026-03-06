@@ -28,31 +28,6 @@ class AuthController extends Controller
             ->with('success', 'Bienvenido al sistema')
             ->with('mostrar_bienvenida', true);
     }
-    
-
-    // Mostrar formulario de Registro
-    public function showRegister()
-    {
-        return view('auth.register');
-    }
-
-    // Lógica de Registro
-    public function register(Request $request)
-    {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:6|confirmed',
-        ]);
-
-        User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-        ]);
-
-        return redirect()->route('login')->with('success', 'Usuario registrado, ya puedes iniciar sesión');
-    }
 
     // Cerrar Sesión
     public function logout()

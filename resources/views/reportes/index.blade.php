@@ -19,7 +19,7 @@
             </div>
         </div>
         <div class="col-12 col-sm-5 col-md-4 text-sm-end">
-            @if(auth()->user()->role === 'doctor')
+            @if(auth()->user()->role === 'asistente')
             <a href="{{ route('reportes.create') }}" class="btn btn-success btn-lg shadow-sm fw-bold w-100 w-sm-auto px-4">
                 <i class="bi bi-plus-lg me-2"></i>Nuevo Informe
             </a>

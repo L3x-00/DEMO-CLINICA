@@ -29,20 +29,7 @@
 
 </head>
 <body>
-    @if(session('mostrar_bienvenida'))
-    <div id="preloader">
-        <div class="loader-content">
-            <div class="loader-logo">
-                <i class="bi bi-activity"></i>
-            </div>
-            <h2 class="loader-title">¡Bienvenido, Dr. {{ auth()->user()->name }}!</h2>
-            <p class="loader-phrase">Sincronizando su agenda médica...</p>
-            <div class="loader-bar">
-                <div class="loader-progress"></div>
-            </div>
-        </div>
-    </div>
-    @endif
+   
 
     <div id="logout-loader" class="d-none">
         <div class="loader-content text-white">
@@ -104,24 +91,50 @@
             
             {{-- NAVEGACIÓN --}}
             <nav class="nav flex-column gap-1 px-2">
+                {{-- Dashboard --}}
                 <a href="{{ route('home') }}" class="nav-card {{ request()->routeIs('home') ? 'active' : '' }}">
                     <i class="bi bi-grid-1x2"></i>
                     <span>Dashboard</span>
                 </a>
+
+                {{-- Agenda Médica --}}
                 <a href="{{ route('citas.index') }}" class="nav-card {{ request()->routeIs('citas.*') ? 'active' : '' }}">
                     <i class="bi bi-calendar3"></i>
                     <span>Agenda Médica</span>
                 </a>
+
+                {{-- Pacientes --}}
                 <a href="{{ route('pacientes.index') }}" class="nav-card {{ request()->routeIs('pacientes.*') ? 'active' : '' }}">
                     <i class="bi bi-person-badge"></i>
                     <span>Pacientes</span>
                 </a>
-                @if(auth()->user()->role === 'doctor')
+                {{-- Acceso según Rol / Gestión --}}
+                <div class="sidebar-divider my-2 opacity-25 border-top border-secondary mx-3"></div>
+
+                @if(auth()->user()->role === 'asistente') {{-- Asumimos que informes es para el doctor --}}
                 <a href="{{ route('reportes.index') }}" class="nav-card {{ request()->routeIs('reportes.*') ? 'active' : '' }}">
                     <i class="bi bi-file-earmark-bar-graph"></i>
                     <span>Informes</span>
                 </a>
+                
+                <a href="{{ route('usuarios.index') }}" class="nav-card {{ request()->routeIs('usuarios.*') ? 'active' : '' }}">
+                    <i class="bi bi-person-gear"></i>
+                    <span>Usuarios</span>
+                </a>
                 @endif
+                <div class="sidebar-divider my-2 opacity-25 border-top border-secondary mx-3"></div>
+
+                {{-- Ventana de Diagnóstico (Registro Clínico) --}}
+                <a href="{{ route('diagnostico.index') }}" class="nav-card {{ request()->routeIs('diagnostico.*') ? 'active' : '' }}">
+                    <i class="bi bi-clipboard2-pulse"></i> {{-- Icono clínico --}}
+                    <span>Diagnóstico</span>
+                </a>
+
+                {{-- Ventana de Caja (Dashboard Financiero) --}}
+                <a href="{{ route('caja.index') }}" class="nav-card {{ request()->routeIs('caja.*') ? 'active' : '' }}">
+                    <i class="bi bi-cash-stack"></i> {{-- Icono financiero --}}
+                    <span>Caja y Reportes</span>
+                </a>
             </nav>
 
             {{-- FOOTER DE SIDEBAR --}}

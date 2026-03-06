@@ -611,9 +611,6 @@
                         <a href="{{ route('login') }}" class="btn btn-welcome btn-outline-primary fw-bold px-4">
                             <i class="bi bi-box-arrow-in-right me-2"></i> Iniciar Sesión
                         </a>
-                        <a href="{{ route('register') }}" class="btn btn-welcome btn-primary shadow-sm">
-                            <i class="bi bi-person-plus me-2"></i> Registrarse
-                        </a>
                     @endauth
                 @endif
             </div>
@@ -664,9 +661,6 @@
                             <a href="#modules" class="btn btn-welcome btn-light btn-lg text-primary shadow-lg">
                                 <i class="bi bi-layers me-2"></i> Explorar Módulos
                                 <i class="bi bi-arrow-down ms-2"></i>
-                            </a>
-                            <a href="{{ route('register') }}" class="btn btn-welcome btn-outline-light btn-lg">
-                                <i class="bi bi-rocket-takeoff me-2"></i> Comenzar Gratis
                             </a>
                         </div>
                     @endauth

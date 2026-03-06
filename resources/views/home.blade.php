@@ -4,13 +4,18 @@
 <div class="container-fluid mt-4 mb-5 px-md-5">
     {{-- CABECERA DEL DASHBOARD --}}
     <div class="row mb-4 align-items-center">
-        <div class="col-md-6">
-            <h2 class="fw-bold text-dark mb-0">
-                <span class="text-primary">Hola,</span> Doctor(a) 👋
+        <h2 class="fw-bold text-dark mb-0">
+            <span class="text-primary">Hola,</span> 
+            {{-- 🏷️ Verificamos el rol para el saludo --}}
+            @if(auth()->user()->role === 'doctor')
+                Dr. {{ auth()->user()->name }} 🩺
+            @else
+                {{ auth()->user()->name }} (Asistente) 📋
+            @endif
+            👋
             </h2>
-            <p class="text-muted small">Este es el resumen operativo de su consultorio para hoy.</p>
-        </div>
-        <div class="col-md-6 text-md-end">
+        
+        <div class="col-md-12 text-md-end">
             <div class="btn-group shadow-sm rounded-3 overflow-hidden">
                 {{-- Botón adaptable: cambia de gris claro a gris carbón --}}
                 <a href="{{ route('pacientes.index') }}" 
