@@ -68,7 +68,9 @@
                             {{ $paciente->alergias ?? 'No reporta alergias conocidas.' }}
                         </p>
                     </div>
-
+<button class="btn btn-primary rounded-pill px-4 shadow-sm" data-bs-toggle="modal" data-bs-target="#modalDiagnostico">
+            <i class="bi bi-plus-circle me-2"></i> Nuevo Registro
+        </button>
                     <div class="row g-4">
                         {{-- Bloque: Información Personal --}}
                         <div class="col-md-6">
@@ -148,4 +150,45 @@
         </div>
     </div>
 </div>
+<script>
+    // BUSCADOR EN TIEMPO REAL
+    document.getElementById('buscarPaciente').addEventListener('input', function() {
+        let query = this.value;
+        const resultados = document.getElementById('resultadosBusqueda');
+        if (query.length >= 2) {
+            fetch(`/buscar-pacientes-json?q=${query}`)
+                .then(res => res.json())
+                .then(data => {
+                    resultados.innerHTML = '';
+                    if (data.length > 0) {
+                        resultados.classList.remove('d-none');
+                        data.forEach(p => {
+                            const item = document.createElement('a');
+                            item.className = "list-group-item list-group-item-action py-2";
+                            item.style.cursor = "pointer";
+                            item.innerHTML = `
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <strong>${p.nombre}</strong>
+                                    <span class="badge bg-secondary rounded-pill small">${p.dni}</span>
+                                </div>
+                            `;
+                            item.onclick = () => {
+                                document.getElementById('buscarPaciente').value = p.nombre;
+                                document.getElementById('paciente_id_hidden').value = p.id;
+                                resultados.classList.add('d-none');
+                            };
+                            resultados.appendChild(item);
+                        });
+                    }
+                });
+        } else { resultados.classList.add('d-none'); }
+    });
+
+    // Cerrar resultados al hacer clic fuera
+    document.addEventListener('click', function(e) {
+        if (!document.getElementById('buscarPaciente').contains(e.target)) {
+            document.getElementById('resultadosBusqueda').classList.add('d-none');
+        }
+    });
+</script>
 @endsection

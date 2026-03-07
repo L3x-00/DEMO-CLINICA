@@ -111,7 +111,7 @@
                 {{-- Acceso según Rol / Gestión --}}
                 <div class="sidebar-divider my-2 opacity-25 border-top border-secondary mx-3"></div>
 
-                @if(auth()->user()->role === 'asistente') {{-- Asumimos que informes es para el doctor --}}
+                @if(auth()->user()->role === 'doctor') {{-- Asumimos que informes es para el doctor --}}
                 <a href="{{ route('reportes.index') }}" class="nav-card {{ request()->routeIs('reportes.*') ? 'active' : '' }}">
                     <i class="bi bi-file-earmark-bar-graph"></i>
                     <span>Informes</span>
@@ -166,12 +166,12 @@
                 const preloader = document.getElementById('preloader');
                 const progressBar = document.querySelector('.loader-progress');
                 if(progressBar) {
-                    progressBar.style.animation = 'loadProgress 2.8s ease-in-out forwards';
+                    progressBar.style.animation = 'loadProgress 3s ease-in-out forwards';
                 }
                 setTimeout(() => {
                     if(preloader) {
                         preloader.classList.add('loader-hidden');
-                        setTimeout(() => preloader.remove(), 600);
+                        setTimeout(() => preloader.remove(), 3000);
                     }
                 }, 3000);
             };

@@ -11,7 +11,7 @@ class UsuarioController extends Controller
     // Muestra la lista de todos los usuarios 📋
     public function index()
     {
-        $usuarios = User::all(); // Traemos a todos para la tabla
+        $usuarios = User::all();
         return view('usuarios.index', compact('usuarios'));
     }
 
@@ -21,7 +21,7 @@ class UsuarioController extends Controller
         return view('usuarios.create');
     }
 
-    // Guarda el nuevo usuario (tu código original) 💾
+    // Guarda el nuevo usuario 💾
     public function store(Request $request)
     {
         $request->validate([
@@ -41,24 +41,42 @@ class UsuarioController extends Controller
         return redirect()->route('usuarios.index')->with('success', '¡Usuario creado con éxito!');
     }
 
-    // Muestra los detalles de un usuario específico 🔍
+    // Muestra los detalles 🔍
     public function show(User $usuario)
     {
         return view('usuarios.show', compact('usuario'));
     }
 
-    // Muestra el formulario para editar ✏️
+    // CORREGIDO: Ahora muestra la vista de edición ✏️
     public function edit(User $usuario)
     {
         return view('usuarios.edit', compact('usuario'));
     }
 
-    // Actualiza los datos en la base de datos 🔄
+    // CORREGIDO: Lógica de actualización 🔄
     public function update(Request $request, User $usuario)
     {
-        // Aquí irá la lógica de actualización que haremos luego
+        $request->validate([
+            'name'  => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users,email,' . $usuario->id,
+            'password' => 'nullable|string|min:8|confirmed', // nullable permite que sea opcional
+        ]);
+
+        // Actualización de datos básicos
+        $usuario->name = $request->name;
+        $usuario->email = $request->email;
+
+        // Solo actualizamos la clave si el usuario escribió algo
+        if ($request->filled('password')) {
+            $usuario->password = Hash::make($request->password);
+        }
+
+        $usuario->save();
+
+        return redirect()->route('usuarios.index')->with('success', '¡Usuario actualizado correctamente!');
     }
-    // Opcional: Para eliminar un asistente si el Doctor lo decide 🗑️
+
+    // Eliminar usuario 🗑️
     public function destroy(User $usuario)
     {
         $usuario->delete();
