@@ -37,7 +37,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/buscar-pacientes-json', [CajaController::class, 'buscarPacientes'])->name('pacientes.buscar.json');
     // --------------------------------------------------
     // 2. Acceso Exclusivo (Solo Doctor) 🩺
-    Route::middleware(['role:doctor'])->group(function () {
+    Route::middleware(['role:asistente'])->group(function () {
         Route::resource('reportes', ReporteMedicoController::class);
         Route::resource('usuarios', UsuarioController::class);
     });

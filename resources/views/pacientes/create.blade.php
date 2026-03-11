@@ -25,32 +25,32 @@
                                 <div class="row g-3 mb-4">
                                     <div class="col-md-6">
                                         <label class="form-label small fw-bold opacity-75">TIPO DE DOC.</label>
-                                        <select name="tipo_documento" class="form-select border-0 shadow-sm" style="background-color: var(--bs-body-bg); color: var(--bs-body-color);" required>
+                                        <select name="tipo_documento" class="form-select border-0 shadow-sm custom-input" style="background-color: var(--bs-body-bg); color: var(--bs-body-color);" required>
                                             <option value="DNI">DNI (Nacional)</option>
                                             <option value="CUI">CUI (Extranjero)</option>
                                         </select>
                                     </div>
                                     <div class="col-md-6">
                                         <label class="form-label small fw-bold opacity-75">N° DOCUMENTO</label>
-                                        <input type="text" name="dni" class="form-control border-0 shadow-sm" style="background-color: var(--bs-body-bg); color: var(--bs-body-color);" placeholder="Ej: 74385642" required>
+                                        <input type="text" name="dni" class="form-control border-0 shadow-sm custom-input" style="background-color: var(--bs-body-bg); color: var(--bs-body-color);" placeholder="Ej: 74385642" required>
                                     </div>
                                 </div>
 
                                 <div class="row g-3 mb-4">
                                     <div class="col-md-6">
                                         <label class="form-label small fw-bold opacity-75">NOMBRES</label>
-                                        <input type="text" name="nombre" class="form-control border-0 shadow-sm" style="background-color: var(--bs-body-bg); color: var(--bs-body-color);" placeholder="Nombres del paciente" required>
+                                        <input type="text" name="nombre" class="form-control border-0 shadow-sm custom-input" style="background-color: var(--bs-body-bg); color: var(--bs-body-color);" placeholder="Nombres del paciente" required>
                                     </div>
                                     <div class="col-md-6">
                                         <label class="form-label small fw-bold opacity-75">APELLIDOS</label>
-                                        <input type="text" name="apellido" class="form-control border-0 shadow-sm" style="background-color: var(--bs-body-bg); color: var(--bs-body-color);" placeholder="Apellidos completos" required>
+                                        <input type="text" name="apellido" class="form-control border-0 shadow-sm custom-input" style="background-color: var(--bs-body-bg); color: var(--bs-body-color);" placeholder="Apellidos completos" required>
                                     </div>
                                 </div>
 
                                 <div class="row g-3 mb-4">
                                     <div class="col-md-6">
                                         <label class="form-label small fw-bold opacity-75">FECHA DE NACIMIENTO</label>
-                                        <input type="date" name="fecha_nacimiento" id="fecha_nacimiento" class="form-control border-0 shadow-sm" style="background-color: var(--bs-body-bg); color: var(--bs-body-color);" required>
+                                        <input type="date" name="fecha_nacimiento" id="fecha_nacimiento" class="form-control border-0 shadow-sm custom-input" style="background-color: var(--bs-body-bg); color: var(--bs-body-color);" required>
                                     </div>
                                     <div class="col-md-3">
                                         <label class="form-label small fw-bold opacity-75">EDAD</label>
@@ -58,7 +58,7 @@
                                     </div>
                                     <div class="col-md-3">
                                         <label class="form-label small fw-bold opacity-75">SEXO</label>
-                                        <select name="sexo" class="form-select border-0 shadow-sm" style="background-color: var(--bs-body-bg); color: var(--bs-body-color);" required>
+                                        <select name="sexo" class="form-select border-0 shadow-sm custom-input" style="background-color: var(--bs-body-bg); color: var(--bs-body-color);" required>
                                             <option value="Masculino">M</option>
                                             <option value="Femenino">F</option>
                                         </select>
@@ -75,25 +75,25 @@
                                     <label class="form-label small fw-bold opacity-75">TELÉFONO / CELULAR</label>
                                     <div class="input-group">
                                         <span class="input-group-text border-0 bg-primary text-white"><i class="bi bi-whatsapp"></i></span>
-                                        <input type="text" name="telefono" class="form-control border-0 shadow-sm" style="background-color: var(--bs-body-bg); color: var(--bs-body-color);" placeholder="987 654 321">
+                                        <input type="text" name="telefono" class="form-control border-0 shadow-sm custom-input" style="background-color: var(--bs-body-bg); color: var(--bs-body-color);" placeholder="987 654 321">
                                     </div>
                                 </div>
 
                                 <div class="mb-4">
                                     <label class="form-label small fw-bold opacity-75">NACIONALIDAD</label>
-                                    <input type="text" name="nacionalidad" class="form-control border-0 shadow-sm" style="background-color: var(--bs-body-bg); color: var(--bs-body-color);" value="Peruana">
+                                    <input type="text" name="nacionalidad" class="form-control border-0 shadow-sm custom-input" style="background-color: var(--bs-body-bg); color: var(--bs-body-color);" value="Peruana">
                                 </div>
 
                                 <div class="mb-4">
                                     <label class="form-label small fw-bold text-danger"><i class="bi bi-exclamation-triangle-fill me-1"></i> MOTIVO DE CONSULTA</label>
-                                    <textarea name="alergias" class="form-control border-0 shadow-sm" rows="4" style="background-color: var(--bs-body-bg); color: var(--bs-body-color);" placeholder="¿Por qué acude el paciente?"></textarea>
+                                    <textarea name="alergias" class="form-control border-0 shadow-sm custom-input" rows="4" style="background-color: var(--bs-body-bg); color: var(--bs-body-color);" placeholder="¿Por qué acude el paciente?"></textarea>
                                 </div>
                             </div>
                         </div>
 
                         <div class="row mt-4">
                             <div class="col-12">
-                                <div class="p-3 rounded-4 border border-dashed text-center" style="border: 2px dashed #dee2e6 !important;">
+                                <div class="p-3 rounded-4 border-dashed text-center">
                                     <label class="form-label fw-bold mb-2"><i class="bi bi-image me-2 text-primary"></i>Fotografía o Documento Auxiliar</label>
                                     <input type="file" name="evidencia" class="form-control border-0 shadow-none mx-auto" style="max-width: 400px;" accept="image/*">
                                     <div class="form-text small opacity-50">Formatos: JPG, PNG, WEBP (Máx. 2MB)</div>
@@ -115,28 +115,4 @@
         </div>
     </div>
 </div>
-
-<script>
-    document.getElementById('fecha_nacimiento').addEventListener('change', function() {
-        const fechaNacimiento = new Date(this.value);
-        const hoy = new Date();
-        let edad = hoy.getFullYear() - fechaNacimiento.getFullYear();
-        const mes = hoy.getMonth() - fechaNacimiento.getMonth();
-        if (mes < 0 || (mes === 0 && hoy.getDate() < fechaNacimiento.getDate())) {
-            edad--;
-        }
-        document.getElementById('edad').value = isNaN(edad) ? 0 : edad;
-    });
-</script>
-
-<style>
-    .border-dashed {
-        border-style: dashed !important;
-        background-color: rgba(var(--bs-primary-rgb), 0.02);
-    }
-    .form-control:focus, .form-select:focus {
-        box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.15) !important;
-        border: 1px solid var(--bs-primary) !important;
-    }
-</style>
 @endsection

@@ -1,4 +1,5 @@
 @extends('layouts.app')
+
 @section('content')
 <div class="container mt-4">
     <div class="row justify-content-center">
@@ -24,12 +25,20 @@
                                 </div>
                                 <input type="hidden" name="paciente_id" value="{{ $pacientePreseleccionado->id }}">
                                 <small class="text-muted">Se agendará la cita para el paciente arriba indicado.</small>
-                            @else
-                                {{-- Buscador TomSelect para citas generales --}}
-                                <select name="paciente_id" id="paciente_id" class="form-control" placeholder="Escriba nombre o DNI del paciente..." required></select>
-                                <div id="paciente-error" class="text-danger small mt-1"></div>
-                            @endif
+                            {{-- En citas/create.blade.php --}}
+                                @else
+                                    {{-- Agregamos data-url explícitamente --}}
+                                    <select name="paciente_id" 
+                                            id="paciente_id" 
+                                            class="form-control" 
+                                            data-url="{{ url('buscar-pacientes') }}" 
+                                            placeholder="Escriba nombre o DNI del paciente..." 
+                                            required>
+                                    </select>
+                                    <div id="paciente-error" class="text-danger small mt-1"></div>
+                                @endif
                         </div>
+                        
                         <div class="row">
                             <div class="col-md-6 mb-3">
                                 <label class="form-label fw-bold">Fecha 📅</label>
@@ -58,48 +67,13 @@
         </div>
     </div>
 </div>
-<link href="https://cdn.jsdelivr.net/npm/tom-select@2.2.2/dist/css/tom-select.bootstrap5.min.css" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/tom-select@2.2.2/dist/js/tom-select.complete.min.js"></script>
-<script>
-document.addEventListener("DOMContentLoaded", function() {
-    const selectElement = document.querySelector('#paciente_id');
-    // Solo inicializamos TomSelect si el elemento existe (no está preseleccionado)
-    if (selectElement && selectElement.tagName === 'SELECT') {
-        new TomSelect("#paciente_id", {
-            valueField: 'id',
-            labelField: 'nombre_completo',
-            searchField: ['nombre', 'apellido', 'dni'],
-            maxItems: 1,
-            load: function(query, callback) {
-                if (!query.length) return callback();
-                const url = "{{ url('buscar-pacientes') }}?q=" + encodeURIComponent(query);
-                fetch(url)
-                    .then(response => response.json())
-                    .then(json => {
-                        const results = json.map(p => ({
-                            id: p.id,
-                            nombre: p.nombre,
-                            apellido: p.apellido,
-                            dni: p.dni,
-                            nombre_completo: `${p.nombre} ${p.apellido} (DNI: ${p.dni})`
-                        }));
-                        callback(results);
-                    })
-                    .catch(() => callback());
-            },
-            render: {
-                option: function(item, escape) {
-                    return `<div class="py-2 px-3">
-                                <div class="fw-bold"><i class="bi bi-person me-2"></i>${escape(item.nombre)} ${escape(item.apellido)}</div>
-                                <div class="small text-muted">Documento: ${escape(item.dni)}</div>
-                            </div>`;
-                },
-                item: function(item, escape) {
-                    return `<div>${escape(item.nombre)} ${escape(item.apellido)}</div>`;
-                }
-            }
-        });
-    }
-});
-</script>
+
+{{-- En citas/create.blade.php al final --}}
+@push('scripts')
+    <link href="https://cdn.jsdelivr.net/npm/tom-select@2.2.2/dist/css/tom-select.bootstrap5.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/tom-select@2.2.2/dist/js/tom-select.complete.min.js"></script>
+    
+    {{-- Cargamos el archivo compilado por Vite --}}
+    @vite(['resources/js/pages/citas.js'])
+@endpush
 @endsection

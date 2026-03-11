@@ -41,26 +41,43 @@
         </div>
     @endif
 
-    {{-- BARRA DE FILTROS RÁPIDOS --}}
+   {{-- ... (cabecera y alertas igual) ... --}}
+
+    {{-- BARRA DE FILTROS RÁPIDOS ACTUALIZADA --}}
     <div class="card shadow-sm border-0 mb-4">
         <div class="card-body py-3">
             <div class="row align-items-center g-3">
                 <div class="col-12 col-md-6 col-lg-4">
                     <div class="input-group">
                         <span class="input-group-text bg-white border-end-0"><i class="bi bi-search text-muted"></i></span>
-                        <input type="text" class="form-control border-start-0 ps-0" id="filterInput" placeholder="Buscar por paciente o diagnóstico...">
+                        <input type="text" class="form-control border-start-0 ps-0" id="filterInput" placeholder="Buscar por paciente, DNI o diagnóstico...">
                     </div>
                 </div>
                 <div class="col-12 col-md-6 col-lg-8 text-md-end">
-                    <div class="btn-group shadow-sm">
-                        <button class="btn btn-outline-secondary btn-sm active">Hoy</button>
-                        <button class="btn btn-outline-secondary btn-sm">Ayer</button>
-                        <button class="btn btn-outline-secondary btn-sm">Todos</button>
+                    <div class="btn-group shadow-sm" id="timeFilters">
+                        <button type="button" class="btn btn-outline-secondary btn-sm" data-filter="hoy">Hoy</button>
+                        <button type="button" class="btn btn-outline-secondary btn-sm" data-filter="ayer">Ayer</button>
+                        <button type="button" class="btn btn-outline-secondary btn-sm active" data-filter="todos">Todos</button>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+
+    {{-- ... (tabla igual, asegúrate de que el contenedor de la tabla tenga el ID 'reportsTable') ... --}}
+    <div class="card shadow-sm border-0 rounded-4 overflow-hidden">
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0" id="reportsTable" style="min-width: 950px;">
+                    {{-- ... contenido de la tabla ... --}}
+                </table>
+            </div>
+        </div>
+    </div>
+
+    @push('scripts')
+        @vite(['resources/js/pages/reportes.js'])
+    @endpush
 
     {{-- TABLA DE REPORTES REORGANIZADA --}}
     <div class="card shadow-sm border-0 rounded-4 overflow-hidden">

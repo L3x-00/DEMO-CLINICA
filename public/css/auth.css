@@ -124,3 +124,43 @@
         padding: 15px;
     }
 }
+/* --- DISEÑO DE LA PANTALLA DE CARGA (Añadido) --- */
+#loader-sesion {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.85); /* Fondo claro con transparencia */
+    backdrop-filter: blur(15px); /* Desenfoque similar a tu login-card */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 10000;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+}
+
+/* Barra de progreso con estilo moderno */
+.progress-loader {
+    width: 260px;
+    height: 8px;
+    background: rgba(13, 110, 253, 0.1);
+    border-radius: 20px;
+    overflow: hidden;
+    margin-top: 25px;
+    border: 1px solid rgba(13, 110, 253, 0.05);
+}
+
+.progress-bar-fill {
+    width: 0%;
+    height: 100%;
+    background: linear-gradient(90deg, #0d6efd 0%, #6610f2 100%); /* Degradado igual a tu franja decorativa */
+    transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 0 15px rgba(13, 110, 253, 0.3);
+}
+
+.fade-text {
+    transition: opacity 0.3s ease;
+    color: #1e293b; /* Color de tu fuente principal */
+}
