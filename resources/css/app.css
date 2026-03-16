@@ -1,3 +1,4 @@
+/* 1. CONFIGURACIÓN Y TAILWIND */
 @import 'tailwindcss';
 
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
@@ -9,16 +10,8 @@
     --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
         'Segoe UI Symbol', 'Noto Color Emoji';
 }
-.border-dashed {
-    border: 2px dashed #dee2e6 !important;
-    background-color: rgba(var(--bs-primary-rgb), 0.02);
-}
 
-.custom-input:focus {
-    box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.15) !important;
-    border: 1px solid var(--bs-primary) !important;
-}
-/* resources/css/app.css */
+/* 2. VARIABLES Y ESTILOS BASE */
 :root {
     --sidebar-width: 280px;
     --top-navbar-height: 70px;
@@ -27,19 +20,36 @@
 body {
     background-color: #f0f4f8;
     overflow-x: hidden;
+    color: var(--bs-body-color);
 }
 
-[data-bs-theme="dark"] body {
-    background-color: #121416;
-}
+/* Tipografía y Etiquetas Globales */
+h1, h2, h3, h4, h5, h6 { color: var(--bs-heading-color) !important; }
+label { color: var(--bs-body-color) !important; }
 
-/* Estructura Principal */
+/* 3. ESTRUCTURA DEL LAYOUT (CONTENEDORES) */
 .main-wrapper {
     display: flex;
     min-height: calc(100vh - var(--top-navbar-height));
     margin-top: var(--top-navbar-height);
 }
 
+.content-area {
+    flex: 1;
+    margin-left: var(--sidebar-width);
+    min-height: 100vh;
+    padding: 2rem;
+    transition: all 0.3s ease;
+    background-color: transparent;
+}
+
+/* Evita que contenedores de Bootstrap rompan el layout interno */
+.content-area .container {
+    max-width: 100% !important;
+    margin: 0 !important;
+}
+
+/* 4. NAVBAR SUPERIOR */
 .top-navbar {
     height: var(--top-navbar-height);
     position: fixed;
@@ -53,106 +63,222 @@ body {
     justify-content: space-between;
 }
 
-/* Sidebar (El panel izquierdo) */
-.sidebar {
-    width: var(--sidebar-width);
-    height: calc(100vh - var(--top-navbar-height));
-    position: fixed;
-    left: 0;
-    transition: all 0.3s ease;
-    z-index: 1025;
+/* Layout Base */
+.app-layout {
+    display: flex;
+    height: 100vh;
+    overflow: hidden; /* Evita scroll en el body principal */
 }
 
-.content-area {
-    flex-grow: 1;
-    margin-left: var(--sidebar-width);
-    padding: 2rem;
-    transition: all 0.3s ease;
+/* SIDEBAR ESTÁTICA */
+.sidebar-static {
+    width: 260px;
+    height: 100vh;
+    background: var(--bs-body-bg);
+    border-right: 1px solid var(--bs-border-color);
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 0; /* No se encoge */
 }
 
-/* Las "Tarjetas" de navegación */
-.nav-card {
+.brand-box {
+    padding: 2rem 1.5rem;
     display: flex;
     align-items: center;
-    padding: 0.8rem 1.2rem;
-    margin: 0.2rem 1rem;
-    border-radius: 12px;
+    gap: 12px;
+}
+
+.brand-name {
+    font-size: 1.1rem;
+    letter-spacing: 1px;
+    color: var(--bs-body-color);
+}
+
+.sidebar-nav {
+    flex-grow: 1;
+    padding: 0 1rem;
+    overflow-y: auto;
+}
+
+.nav-group {
+    font-size: 0.65rem;
+    font-weight: 800;
+    color: var(--bs-secondary);
+    margin: 1.5rem 0 0.5rem 1rem;
+    letter-spacing: 1.5px;
+}
+
+.nav-link-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 16px;
+    border-radius: 8px;
     text-decoration: none;
     color: var(--bs-secondary-color);
-    transition: all 0.2s;
     font-weight: 500;
+    transition: all 0.2s ease;
+    margin-bottom: 4px;
 }
 
-.nav-card i {
-    font-size: 1.2rem;
-    margin-right: 1rem;
-}
+.nav-link-item i { font-size: 1.1rem; }
 
-.nav-card:hover {
-    background: rgba(13, 110, 253, 0.08);
+.nav-link-item:hover {
+    background: var(--bs-tertiary-bg);
     color: var(--bs-primary);
 }
 
-.nav-card.active {
+.nav-link-item.active {
     background: var(--bs-primary);
-    color: white !important;
-    box-shadow: 0 4px 12px rgba(13, 110, 253, 0.25);
+    color: #fff !important;
 }
 
-/* Ajustes para Móviles */
+.sidebar-footer {
+    padding: 1.5rem;
+    font-size: 0.7rem;
+    color: var(--bs-secondary);
+    border-top: 1px solid var(--bs-border-color);
+}
+
+/* CONTENEDOR DERECHO */
+.main-container {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    background: var(--bs-tertiary-bg);
+}
+
+.top-header {
+    height: 70px;
+    background: var(--bs-body-bg);
+    border-bottom: 1px solid var(--bs-border-color);
+    padding: 0 2rem;
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+}
+
+/* ÁREA CON SCROLL */
+.content-scroll {
+    flex-grow: 1;
+    overflow-y: auto; /* Aquí es donde ocurre el movimiento */
+    background: var(--bs-tertiary-bg);
+}
+
+/* Elementos de Usuario */
+.user-avatar {
+    width: 35px;
+    height: 35px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+}
+
+.status-indicator {
+    font-size: 0.65rem;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    justify-content: flex-end;
+}
+
+.status-indicator.active::before {
+    content: "";
+    width: 8px;
+    height: 8px;
+    background: #28a745;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+.status-indicator.active { color: #28a745; font-weight: bold; }
+/* Navbar Minimalista */
+.navbar-minimal {
+    height: 60px;
+    background: transparent;
+}
+
+.btn-theme, .btn-logout {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--bs-body-bg);
+    border: 1px solid var(--bs-border-color);
+    color: var(--bs-body-color);
+}
+
+.btn-logout:hover { color: var(--bs-danger); border-color: var(--bs-danger); }
+
+/* Ajuste de Contenido */
+.content-wrapper {
+    margin-left: 260px;
+    transition: margin 0.35s ease;
+}
+
+@media (max-width: 991px) {
+    .sidebar { left: -260px; }
+    .sidebar.active { left: 0; }
+    .content-wrapper { margin-left: 0; }
+}
+
+/* 6. COMPONENTES REUTILIZABLES */
+.card {
+    background-color: var(--bs-card-bg) !important;
+    color: var(--bs-body-color) !important;
+}
+
+.border-dashed {
+    border: 2px dashed #dee2e6 !important;
+    background-color: rgba(var(--bs-primary-rgb), 0.02);
+}
+
+.custom-input:focus {
+    box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.15) !important;
+    border: 1px solid var(--bs-primary) !important;
+}
+
+.list-group-item {
+    background-color: var(--bs-tertiary-bg) !important;
+    color: var(--bs-body-color) !important;
+    border-color: var(--bs-border-color) !important;
+}
+
+.text-gradient {
+    background: linear-gradient(45deg, var(--bs-primary), #00d2ff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* 7. MODO OSCURO */
+[data-bs-theme="dark"] body {
+    background-color: #121416;
+}
+
+/* 8. RESPONSIVE Y MÓVILES */
 @media (max-width: 991.98px) {
     .sidebar {
-        left: calc(-1 * var(--sidebar-width));
+        transform: translateX(-100%);
     }
-    .sidebar.active {
-        left: 0;
+    .sidebar.show, .sidebar.active {
+        transform: translateX(0);
     }
     .content-area {
-        margin-left: 0;
+        margin-left: 0 !important;
     }
 }
-/* Asegura que el área de contenido nunca se encime sobre la sidebar */
-.content-area {
-    flex: 1;
-    margin-left: var(--sidebar-width); /* Esto es lo que mantiene la sidebar en su sitio */
-    min-height: 100vh;
-    padding: 2rem;
-    background-color: transparent;
-}
 
-/* Evita que el container de Bootstrap rompa el layout en pantallas grandes */
-.content-area .container {
-    max-width: 100% !important;
-    margin: 0 !important;
-}
+/* 9. IMPRESIÓN */
 @media print {
-    .sidebar, .top-navbar, .btn, .form-select {
+    .sidebar, .top-navbar, .btn, .form-select, .nav-item {
         display: none !important;
     }
     .content-area {
         margin-left: 0 !important;
         padding: 0 !important;
     }
-}
-/* Colores inteligentes para Títulos */
-h1, h2, h3, h4, h5, h6 {
-    color: var(--bs-heading-color) !important;
-}
-
-/* Forzar que las etiquetas de los formularios se adapten */
-label {
-    color: var(--bs-body-color) !important;
-}
-
-/* Si usas tarjetas (cards), asegúrate que el fondo sea dinámico */
-.card {
-    background-color: var(--bs-card-bg) !important;
-    color: var(--bs-body-color) !important;
-}
-
-/* Estilo para los resultados de búsqueda en cualquier modal */
-.list-group-item {
-    background-color: var(--bs-tertiary-bg) !important;
-    color: var(--bs-body-color) !important;
-    border-color: var(--bs-border-color) !important;
 }

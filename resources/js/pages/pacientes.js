@@ -1,15 +1,28 @@
 document.addEventListener("DOMContentLoaded", function() {
-    // --- LÓGICA DE EDAD (Ya la tenías) ---
+    // --- LÓGICA DE EDAD ---
     const inputFecha = document.getElementById('fecha_nacimiento');
     const inputEdad = document.getElementById('edad');
+
     if (inputFecha && inputEdad) {
-        inputFecha.addEventListener('change', function() {
+        inputFecha.addEventListener('input', function() { // Cambiado 'change' por 'input' para mayor respuesta
+            if (!this.value) {
+                inputEdad.value = 0;
+                return;
+            }
+
             const fechaNacimiento = new Date(this.value);
             const hoy = new Date();
+            
             let edad = hoy.getFullYear() - fechaNacimiento.getFullYear();
             const mes = hoy.getMonth() - fechaNacimiento.getMonth();
-            if (mes < 0 || (mes === 0 && hoy.getDate() < fechaNacimiento.getDate())) { edad--; }
-            inputEdad.value = isNaN(edad) ? 0 : (edad < 0 ? 0 : edad);
+
+            // Ajuste preciso
+            if (mes < 0 || (mes === 0 && hoy.getDate() < fechaNacimiento.getDate())) { 
+                edad--; 
+            }
+
+            // Asignar valor (evitar negativos y NaN)
+            inputEdad.value = (isNaN(edad) || edad < 0) ? 0 : edad;
         });
     }
 

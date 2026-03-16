@@ -12,7 +12,6 @@ export default defineConfig({
                 'resources/js/pages/caja.js',
                 'resources/js/pages/citas.js',
                 'resources/js/pages/dashboard.js',
-                'resources/js/pages/diagnostico.js',
                 'resources/js/pages/pacientes.js',
                 'resources/js/pages/reportes.js',
                 // Si tienes lógica global en componentes, también:

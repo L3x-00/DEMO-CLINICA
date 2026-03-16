@@ -4,18 +4,30 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Acceso al Sistema - Gestión Clínica 🦴</title>
+    
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="{{ asset('css/auth.css') }}">
 </head>
 <body class="auth-body">
 
-    <div id="loader-sesion" class="d-none">
-        <div class="text-center">
-            <div class="spinner-border text-primary mb-3" style="width: 3rem; height: 3rem;" role="status"></div>
-            <h4 id="texto-carga" class="fw-bold fade-text text-dark">Iniciando sesión...</h4>
-            <div class="progress-loader mx-auto">
-                <div id="bar-fill" class="progress-bar-fill"></div>
+    <div id="loader-sesion">
+        <div class="loader-card">
+            <div class="medical-icon-container">
+                <i class="bi bi-heart-pulse-fill pulse-animation"></i>
+                <div class="pulse-ring"></div>
+            </div>
+            
+            <h4 id="texto-carga" class="loader-title">Sistema de Gestión Clínica</h4>
+            <p class="loader-subtitle">Iniciando protocolo de acceso...</p>
+            
+            <div class="progress-container">
+                <div id="bar-fill" class="progress-fill"></div>
+            </div>
+            
+            <div class="loader-footer">
+                <i class="bi bi-shield-lock-fill me-2 text-primary"></i> 
+                Conexión segura y encriptada
             </div>
         </div>
     </div>
@@ -34,8 +46,8 @@
                                     <i class="bi bi-activity text-primary fs-1"></i>
                                 </span>
                             </div>
-                            <h3 class="fw-bold text-dark">¡Bienvenido!</h3>
-                            <p class="text-muted small">Acceda a su panel de gestión médica</p>
+                            <h3 class="fw-bold text-dark">Portal Médico</h3>
+                            <p class="text-muted small">Ingrese sus credenciales de acceso</p>
                         </div>
 
                         <form id="loginForm" action="{{ route('login') }}" method="POST">
@@ -46,7 +58,7 @@
                                 <div class="input-group">
                                     <span class="input-group-text bg-white border-end-0"><i class="bi bi-envelope text-muted"></i></span>
                                     <input type="email" name="email" class="form-control border-start-0" 
-                                           placeholder="nombre@ejemplo.com" required autofocus>
+                                           placeholder="usuario@clinica.com" required autofocus>
                                 </div>
                             </div>
 
@@ -65,7 +77,7 @@
                             </div>
 
                             <button type="submit" class="btn btn-primary btn-auth w-100 text-white shadow-sm">
-                                Ingresar al Sistema <i class="bi bi-door-open-fill ms-1"></i>
+                                Autenticar <i class="bi bi-shield-check ms-1"></i>
                             </button>
                         </form>
                     </div>
@@ -80,6 +92,6 @@
         </div>
     </div>
 
-    <script src="{{ asset('js/login-loader.js') }}"></script>
+    <script src="{{ asset('js/login-animation.js') }}"></script>
 </body>
 </html>

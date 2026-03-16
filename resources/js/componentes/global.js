@@ -2,8 +2,19 @@ document.addEventListener('DOMContentLoaded', function() {
     // 1. Sidebar Toggle para móviles
     const btnSidebar = document.getElementById('sidebar-toggle');
     const sidebar = document.querySelector('.sidebar');
+    
     if(btnSidebar && sidebar) {
-        btnSidebar.addEventListener('click', () => sidebar.classList.toggle('active'));
+        btnSidebar.addEventListener('click', (e) => {
+            e.stopPropagation();
+            sidebar.classList.toggle('active');
+        });
+
+        // Cerrar sidebar al hacer clic fuera (en móviles)
+        document.addEventListener('click', (e) => {
+            if (sidebar.classList.contains('active') && !sidebar.contains(e.target) && e.target !== btnSidebar) {
+                sidebar.classList.remove('active');
+            }
+        });
     }
 
     // 2. Lógica de Tema (Dark/Light)
@@ -22,20 +33,29 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     };
 
-    // Aplicar iconos al cargar
+    // Aplicar estado inicial de iconos
     updateIcons(htmlElement.getAttribute('data-bs-theme'));
 
     themeToggle?.addEventListener('click', () => {
-        const newTheme = htmlElement.getAttribute('data-bs-theme') === 'dark' ? 'light' : 'dark';
+        const currentTheme = htmlElement.getAttribute('data-bs-theme');
+        const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+        
+        // Cambiar atributo de Bootstrap 5.3
         htmlElement.setAttribute('data-bs-theme', newTheme);
-        htmlElement.style.backgroundColor = newTheme === 'dark' ? '#121416' : '#f0f4f8';
+        
+        // Guardar preferencia
         localStorage.setItem('theme', newTheme);
+        
+        // Actualizar UI
         updateIcons(newTheme);
     });
 });
 
-// Función global para el loader
+// Función global para el loader de sesión
 window.showLogoutLoader = function() {
     const loader = document.getElementById('logout-loader');
-    if (loader) loader.classList.remove('d-none');
+    if (loader) {
+        loader.classList.remove('d-none');
+        loader.classList.add('d-flex'); // Asegura que se centre el spinner
+    }
 };

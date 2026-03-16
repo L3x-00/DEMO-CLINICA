@@ -1,166 +1,131 @@
-/* Importar fuente moderna si no está en el HTML */
-@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
+/* ... (Mantén tus estilos de .auth-body, .login-card, etc., sin cambios) ... */
 
-.auth-body {
-    background: radial-gradient(circle at top right, #e3f2fd, transparent),
-                radial-gradient(circle at bottom left, #f3e5f5, transparent),
-                linear-gradient(135deg, #f0f4f8 0%, #e2e8f0 100%);
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-family: 'Plus Jakarta Sans', sans-serif;
-    padding: 20px;
-}
+/* =================================================BA
+   LOADER MÉDICO PROFESIONAL (Única versión funcional)
+   ================================================= */
 
-.login-card, .register-card {
-    border: 1px solid rgba(255, 255, 255, 0.8) !important;
-    border-radius: 28px;
-    overflow: hidden;
-    background: rgba(255, 255, 255, 0.95);
-    /* Efecto de profundidad suave */
-    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.1),
-                0 0 15px rgba(0, 0, 0, 0.02);
-    backdrop-filter: blur(10px);
-    transition: transform 0.3s ease;
-}
-
-/* Franja decorativa con degradado */
-.auth-header-accent {
-    height: 8px;
-    background: linear-gradient(90deg, #0d6efd 0%, #6610f2 100%);
-    opacity: 0.9;
-}
-
-/* Estilo de los inputs mejorado */
-.input-group-text {
-    background-color: #f9fafb !important;
-    border: 1px solid #e0e6ed !important;
-    border-right: none !important;
-    border-radius: 12px 0 0 12px !important;
-    color: #94a3b8;
-}
-
-.form-control {
-    border-radius: 12px;
-    padding: 12px 16px;
-    border: 1px solid #e0e6ed !important;
-    background-color: #f9fafb;
-    color: #1e293b;
-    font-size: 0.95rem;
-    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.form-control::placeholder {
-    color: #94a3b8;
-    opacity: 0.7;
-}
-
-.form-control:focus {
-    background-color: #fff;
-    border-color: #0d6efd !important;
-    box-shadow: 0 0 0 4px rgba(13, 110, 253, 0.15) !important;
-    outline: none;
-}
-
-/* Botón principal con micro-interacciones */
-.btn-auth {
-    border: none;
-    border-radius: 12px;
-    padding: 14px;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    font-size: 0.85rem;
-    background: linear-gradient(135deg, #0d6efd 0%, #0a58ca 100%);
-    color: white;
-    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-}
-
-.btn-auth:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 12px 24px rgba(13, 110, 253, 0.3);
-    filter: brightness(1.1);
-    color: white;
-}
-
-.btn-auth:active {
-    transform: translateY(-1px);
-}
-
-/* Estilos de enlaces y textos pequeños */
-.text-primary {
-    color: #0d6efd !important;
-    transition: color 0.2s;
-}
-
-.text-primary:hover {
-    color: #0a58ca !important;
-    text-decoration: underline !important;
-}
-
-/* Animación de entrada para la tarjeta */
-.login-card, .register-card {
-    animation: slideUp 0.6s ease-out;
-}
-
-@keyframes slideUp {
-    from {
-        opacity: 0;
-        transform: translateY(20px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-/* Adaptación para dispositivos pequeños */
-@media (max-width: 576px) {
-    .login-card, .register-card {
-        border-radius: 20px;
-    }
-    .auth-body {
-        padding: 15px;
-    }
-}
-/* --- DISEÑO DE LA PANTALLA DE CARGA (Añadido) --- */
+/* Overlay con desenfoque de fondo clínico */
 #loader-sesion {
     position: fixed;
     top: 0;
     left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(240, 244, 248, 0.85); /* Azul muy pálido */
+    backdrop-filter: blur(8px); /* Efecto cristal */
+    display: none; /* Se activa con JS (display: flex) */
+    align-items: center;
+    justify-content: center;
+    z-index: 99999; /* Máxima prioridad sobre la card de login */
+}
+
+/* Tarjeta central del loader */
+.loader-card {
+    background: white;
+    padding: 3rem;
+    border-radius: 24px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    max-width: 400px;
+    width: 90%;
+    animation: slideUp 0.5s ease-out;
+}
+
+/* Contenedor del ícono y animaciones de pulso cardíaco */
+.medical-icon-container {
+    position: relative;
+    width: 80px;
+    height: 80px;
+    background: #0d6efd;
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.5rem;
+    margin: 0 auto 1.5rem;
+}
+
+.pulse-animation {
+    animation: heartBeat 1.2s infinite ease-in-out;
+}
+
+.pulse-ring {
+    position: absolute;
     width: 100%;
     height: 100%;
-    background: rgba(255, 255, 255, 0.85); /* Fondo claro con transparencia */
-    backdrop-filter: blur(15px); /* Desenfoque similar a tu login-card */
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    z-index: 10000;
-    font-family: 'Plus Jakarta Sans', sans-serif;
+    border: 4px solid #0d6efd;
+    border-radius: 50%;
+    animation: ripple 1.5s infinite;
 }
 
-/* Barra de progreso con estilo moderno */
-.progress-loader {
-    width: 260px;
+/* Textos del Loader */
+.loader-title {
+    color: #1a202c;
+    font-weight: 800;
+    margin-bottom: 0.5rem;
+}
+
+.loader-subtitle {
+    font-size: 0.9rem;
+    color: #64748b;
+    margin-bottom: 2rem;
+    min-height: 1.2rem; /* Evita saltos cuando cambia el texto */
+}
+
+/* Barra de progreso quirúrgica */
+.progress-container {
+    width: 100%;
     height: 8px;
-    background: rgba(13, 110, 253, 0.1);
-    border-radius: 20px;
+    background: #e2e8f0;
+    border-radius: 10px;
     overflow: hidden;
-    margin-top: 25px;
-    border: 1px solid rgba(13, 110, 253, 0.05);
+    margin-bottom: 1.5rem;
 }
 
-.progress-bar-fill {
+/* El ID bar-fill es el que controla el JS */
+#bar-fill {
     width: 0%;
     height: 100%;
-    background: linear-gradient(90deg, #0d6efd 0%, #6610f2 100%); /* Degradado igual a tu franja decorativa */
-    transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-    box-shadow: 0 0 15px rgba(13, 110, 253, 0.3);
+    background: linear-gradient(90deg, #0d6efd, #00d2ff);
+    box-shadow: 0 0 10px rgba(13, 110, 253, 0.4);
+    border-radius: 10px;
+    transition: width 0.3s ease;
 }
 
-.fade-text {
-    transition: opacity 0.3s ease;
-    color: #1e293b; /* Color de tu fuente principal */
+.loader-footer {
+    font-size: 0.75rem;
+    color: #a0aec0;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* KEYFRAMES CLÍNICOS */
+@keyframes heartBeat {
+    0% { transform: scale(1); }
+    15% { transform: scale(1.1); }
+    30% { transform: scale(1); }
+    45% { transform: scale(1.1); }
+    100% { transform: scale(1); }
+}
+
+@keyframes ripple {
+    0% { transform: scale(1); opacity: 0.8; }
+    100% { transform: scale(1.6); opacity: 0; }
+}
+.auth-body {
+    background: radial-gradient(circle at top right, #e3f2fd, transparent),
+                radial-gradient(circle at bottom left, #f3e5f5, transparent),
+                linear-gradient(135deg, #f0f4f8 0%, #e2e8f0 100%);
+    
+    /* ESTO ES LO QUE CENTRA TODO */
+    min-height: 100vh;
+    display: flex;
+    align-items: center;      /* Centrado vertical */
+    justify-content: center;   /* Centrado horizontal */
+    
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    padding: 20px;
+    margin: 0;                /* Evita márgenes extraños del body */
+    overflow-x: hidden;       /* Evita scroll horizontal innecesario */
 }
