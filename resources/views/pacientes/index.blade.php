@@ -111,18 +111,36 @@
                             </div>
                         </td>
                         <td class="pe-4 text-end">
-                            {{-- BOTÓN INTEGRAL --}}
-                            <button type="button" 
-                                class="btn btn-sm btn-primary rounded-pill px-3 shadow-sm"
-                                onclick="event.stopPropagation(); abrirModalDiagnostico('{{ $paciente->id }}', '{{ $paciente->apellido }} {{ $paciente->nombre }}', '{{ $paciente->dni }}')"
-                                title="Nuevo Registro Integral">
-                                <i class="bi bi-stethoscope me-1"></i> Diagnosticar
-                            </button>
+                            <div class="d-flex flex-column flex-md-row justify-content-end gap-2">
+                                {{-- BOTÓN HISTORIAL (NUEVO) --}}
+                                <a href="{{ route('consulta.historial', $paciente->id) }}" 
+                                class="btn btn-sm btn-outline-secondary rounded-pill px-3 shadow-sm"
+                                onclick="event.stopPropagation();"
+                                title="Ver historial de consultas">
+                                    <i class="bi bi-clock-history me-1"></i> Historial
+                                </a>
+                                {{-- NUEVO BOTÓN: CONSULTA MÉDICA --}}
+                                <a href="{{ route('consulta.create', $paciente->id) }}" 
+                                class="btn btn-sm btn-outline-primary rounded-pill px-3 shadow-sm"
+                                onclick="event.stopPropagation();"
+                                title="Nueva Consulta Médica">
+                                    <i class="bi bi-clipboard2-pulse-fill me-1"></i> Consulta
+                                </a>
+
+                                {{-- TU BOTÓN EXISTENTE: DIAGNÓSTICO --}}
+                                <button type="button" 
+                                    class="btn btn-sm btn-primary rounded-pill px-3 shadow-sm"
+                                    onclick="event.stopPropagation(); abrirModalDiagnostico('{{ $paciente->id }}', '{{ $paciente->apellido }} {{ $paciente->nombre }}', '{{ $paciente->dni }}')"
+                                    title="Nuevo Registro Integral">
+                                    <i class="bi bi-stethoscope me-1"></i> Diagnosticar
+                                </button>
+                            </div>
                         </td>
                     </tr>
                 @empty
                 <tr>
-                    <td colspan="4" class="text-center py-5">
+                    {{-- Corregido el colspan a 5 porque tienes 5 columnas <th> --}}
+                    <td colspan="5" class="text-center py-5">
                         <div class="text-muted opacity-50">
                             <i class="bi bi-clipboard2-x fs-1 d-block mb-2"></i>
                             <p class="mb-0">No se encontraron pacientes registrados.</p>

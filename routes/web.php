@@ -8,6 +8,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ReporteMedicoController;
 use App\Http\Controllers\UsuarioController;
 use App\Http\Controllers\CajaController; // ✅ Importación correcta
+use App\Http\Controllers\ConsultaController;
 // 🏠 Ruta de Bienvenida (Pública)
 Route::get('/', function () {
     return view('welcome');
@@ -40,6 +41,14 @@ Route::middleware(['auth'])->group(function () {
     Route::middleware(['role:asistente'])->group(function () {
         Route::resource('reportes', ReporteMedicoController::class);
         Route::resource('usuarios', UsuarioController::class);
+    });
+    Route::middleware(['auth'])->group(function () {
+        Route::get('/consulta/nueva/{paciente_id}', [ConsultaController::class, 'create'])->name('consulta.create');
+        Route::post('/consulta/guardar', [ConsultaController::class, 'store'])->name('consulta.store');
+        Route::get('/consulta/ver/{id}', [ConsultaController::class, 'show'])->name('consulta.show');
+        Route::put('/consulta/actualizar/{id}', [ConsultaController::class, 'update'])->name('consulta.update');
+        Route::get('/consulta/editar/{id}', [ConsultaController::class, 'edit'])->name('consulta.edit');
+        Route::get('/paciente/{paciente_id}/historial', [ConsultaController::class, 'historial'])->name('consulta.historial');
     });
 
 });
