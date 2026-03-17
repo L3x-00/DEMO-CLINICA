@@ -30,30 +30,31 @@
         </div>
     </div>
 
-    {{-- TARJETAS DE ESTADÍSTICAS --}}
+    {{-- TARJETAS DE ESTADÍSTICAS ACTUALIZADAS --}}
     <div class="row mb-4 g-3">
         <div class="col-md-4">
-            <div class="card border-0 shadow-sm rounded-4">
+            <div class="card border-0 shadow-sm rounded-4 bg-primary text-white">
                 <div class="card-body p-4">
                     <div class="d-flex justify-content-between">
                         <div>
-                            <h6 class="text-muted small text-uppercase fw-bold ls-1">Citas para Hoy</h6>
-                            <h2 class="fw-bold mb-0 mt-2">{{ $citasHoyCount }}</h2>
+                            <h6 class="text-white text-opacity-75 small text-uppercase fw-bold ls-1">Ingresos del Mes</h6>
+                            <h2 class="fw-bold mb-0 mt-2">S/ {{ number_format($ingresosMes, 2) }}</h2>
                         </div>
-                        <div class="bg-primary bg-opacity-10 text-primary p-3 rounded-4 h-100">
-                            <i class="bi bi-calendar2-event fs-3"></i>
+                        <div class="bg-white bg-opacity-20 text-white p-3 rounded-4 h-100">
+                            <i class="bi bi-cash-coin fs-3"></i>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+
         <div class="col-md-4">
             <div class="card border-0 shadow-sm rounded-4">
                 <div class="card-body p-4">
                     <div class="d-flex justify-content-between">
                         <div>
                             <h6 class="text-muted small text-uppercase fw-bold ls-1">Atendidos Hoy</h6>
-                            <h2 class="fw-bold mb-0 mt-2 text-success">{{ $atendidosHoy }}</h2>
+                            <h2 class="fw-bold mb-0 mt-2 text-success">{{ $pacientesAtendidosHoy }}</h2>
                         </div>
                         <div class="bg-success bg-opacity-10 text-success p-3 rounded-4 h-100">
                             <i class="bi bi-person-check fs-3"></i>
@@ -62,16 +63,17 @@
                 </div>
             </div>
         </div>
+
         <div class="col-md-4">
             <div class="card border-0 shadow-sm rounded-4">
                 <div class="card-body p-4">
                     <div class="d-flex justify-content-between">
                         <div>
-                            <h6 class="text-muted small text-uppercase fw-bold ls-1">Rendimiento vs Ayer</h6>
-                            <h2 class="fw-bold mb-0 mt-2">{{ $atendidosAyer }} <small class="fs-6 fw-normal text-muted">atenciones</small></h2>
+                            <h6 class="text-muted small text-uppercase fw-bold ls-1">En Agenda (7 días)</h6>
+                            <h2 class="fw-bold mb-0 mt-2 text-primary">{{ $proximasCitas->count() }}</h2>
                         </div>
-                        <div class="bg-dark bg-opacity-10 text-dark p-3 rounded-4 h-100">
-                            <i class="bi bi-activity fs-3"></i>
+                        <div class="bg-primary bg-opacity-10 text-primary p-3 rounded-4 h-100">
+                            <i class="bi bi-calendar-check fs-3"></i>
                         </div>
                     </div>
                 </div>
@@ -79,47 +81,73 @@
         </div>
     </div>
 
-    {{-- SECCIÓN DE GRÁFICOS --}}
+    {{-- SECCIÓN DE GRÁFICO DE PRODUCTIVIDAD --}}
     <div class="row mb-4">
-        <div class="col-lg-5 mb-3">
+        <div class="col-12">
             <div class="card border-0 shadow-sm rounded-4 h-100">
-                <div class="card-body">
-                    <h6 class="fw-bold mb-4"><i class="bi bi-pie-chart me-2 text-primary"></i>Estado de Atención</h6>
-                    <div style="height: 280px; position: relative;">
-                        {{-- Pasamos datos vía data-attributes --}}
-                        <canvas id="chartAtencionHoy" 
-                                data-atendidos="{{ $atendidosHoy }}" 
-                                data-pendientes="{{ max(0, $citasHoyCount - $atendidosHoy) }}">
-                        </canvas>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-lg-7 mb-3">
-            <div class="card border-0 shadow-sm rounded-4 h-100">
-                <div class="card-body">
-                    <h6 class="fw-bold mb-4"><i class="bi bi-bar-chart me-2 text-primary"></i>Comparativa (Hoy vs Ayer)</h6>
-                    <div style="height: 280px;">
-                        <canvas id="chartComparativoAtencion"
-                                data-ayer="{{ $atendidosAyer }}"
-                                data-hoy="{{ $atendidosHoy }}">
+                <div class="card-body p-4">
+                    <h6 class="fw-bold mb-4"><i class="bi bi-bar-chart-line me-2 text-primary"></i>Productividad Semanal (Ingresos Diarios)</h6>
+                    <div style="height: 320px;">
+                        <canvas id="chartProductividadSemanal"
+                                data-labels='{!! json_encode($reporteSemanal->pluck("fecha")) !!}'
+                                data-valores='{!! json_encode($reporteSemanal->pluck("total")) !!}'>
                         </canvas>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-
-    {{-- SECCIÓN DE AGENDA --}}
+    {{-- TABLA DE PACIENTES DERIVADOS AL DOCTOR --}}
+    <div class="card border-0 shadow-sm rounded-4 overflow-hidden mb-4">
+        <div class="card-header py-3 px-4 bg-white border-bottom d-flex justify-content-between align-items-center">
+            <h5 class="mb-0 fw-bold text-primary">
+                <i class="bi bi-person-lines-fill me-2"></i>Pacientes en Espera (Derivados)
+            </h5>
+            <span class="badge rounded-pill bg-primary px-3">{{ $pacientesEnEspera->count() }} esperando</span>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+                <thead class="bg-light small text-uppercase">
+                    <tr>
+                        <th class="ps-4">Paciente</th>
+                        <th>Hora de Derivación</th>
+                        <th>Monto Pagado</th>
+                        <th class="text-center">Acción</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @forelse($pacientesEnEspera as $atencion)
+                    <tr>
+                        <td class="ps-4">
+                            <div class="fw-bold">{{ $atencion->paciente->nombre }} {{ $atencion->paciente->apellido }}</div>
+                            <span class="text-muted small">DNI: {{ $atencion->paciente->dni }}</span>
+                        </td>
+                        <td>{{ $atencion->created_at->format('h:i A') }}</td>
+                        <td><span class="badge bg-success bg-opacity-10 text-success">S/ {{ number_format($atencion->total_pagado, 2) }}</span></td>
+                        <td class="text-center">
+                            <form action="{{ route('atenciones.completar', $atencion->id) }}" method="POST">
+                                @csrf @method('PATCH')
+                                <button type="submit" class="btn btn-sm btn-primary rounded-pill px-3">
+                                    <i class="bi bi-check2-circle me-1"></i> Finalizar Consulta
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                    @empty
+                    <tr>
+                        <td colspan="4" class="text-center py-4 text-muted">No hay pacientes derivados en este momento.</td>
+                    </tr>
+                    @endforelse
+                </tbody>
+            </table>
+        </div>
+    </div>
+    {{-- SECCIÓN DE AGENDA (MANTENIDA IGUAL) --}}
     <div class="card border-0 shadow-sm rounded-4 overflow-hidden">
         <div class="card-header py-3 px-4 d-flex justify-content-between align-items-center border-bottom">
             <h5 class="mb-0 fw-bold">
-                <i class="bi bi-calendar-range me-2 text-primary"></i>Próximas Atenciones (7 días)
+                <i class="bi bi-calendar-range me-2 text-primary"></i>Próximas Atenciones (Agenda Pendiente)
             </h5>
-            <span class="badge rounded-pill bg-body-secondary text-body-emphasis border px-3">
-                En agenda: {{ $proximasCitas->count() }}
-            </span>
         </div>
         
         <div class="table-responsive">
@@ -213,7 +241,7 @@
     </div>
 </div>
 
-{{-- MODAL REPROGRAMAR --}}
+{{-- MODAL REPROGRAMAR (MANTENIDO IGUAL) --}}
 <div class="modal fade" id="modalReprogramar" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content border-0 shadow-lg rounded-4">
@@ -257,7 +285,41 @@
 </style>
 
 @push('scripts')
-    @vite(['resources/js/pages/dashboard.js'])
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const canvas = document.getElementById('chartProductividadSemanal');
+        const labels = JSON.parse(canvas.getAttribute('data-labels'));
+        const valores = JSON.parse(canvas.getAttribute('data-valores'));
+
+        new Chart(canvas, {
+            type: 'bar',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Ingresos Diarios (S/)',
+                    data: valores,
+                    backgroundColor: '#0d6efd',
+                    borderRadius: 8,
+                    barThickness: 30
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { legend: { display: false } },
+                scales: {
+                    y: { 
+                        beginAtZero: true,
+                        grid: { borderDash: [5, 5] },
+                        ticks: { callback: value => 'S/ ' + value }
+                    },
+                    x: { grid: { display: false } }
+                }
+            }
+        });
+    });
+</script>
 @endpush
 
 @endsection

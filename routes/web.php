@@ -1,5 +1,5 @@
 <?php
-
+use App\Http\Controllers\AtencionController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CitaController;
 use App\Http\Controllers\AuthController;
@@ -50,5 +50,6 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/consulta/editar/{id}', [ConsultaController::class, 'edit'])->name('consulta.edit');
         Route::get('/paciente/{paciente_id}/historial', [ConsultaController::class, 'historial'])->name('consulta.historial');
     });
-
+    Route::post('/atenciones/derivar', [AtencionController::class, 'derivar'])->name('atenciones.derivar');
+    Route::patch('/atenciones/{id}/completar', [App\Http\Controllers\AtencionController::class, 'completar'])->name('atenciones.completar');
 });

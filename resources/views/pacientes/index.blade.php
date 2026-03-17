@@ -112,6 +112,11 @@
                         </td>
                         <td class="pe-4 text-end">
                             <div class="d-flex flex-column flex-md-row justify-content-end gap-2">
+                                {{-- Agendar nueva cita --}}
+
+                                <a href="{{ route('citas.create', ['paciente_id' => $paciente->id]) }}" class="btn btn-sm btn-outline-secondary rounded-pill px-3 shadow-sm">
+                                    <i class="bi bi-calendar-plus me-1"></i> Agendar Cita
+                                </a>
                                 {{-- BOTÓN HISTORIAL (NUEVO) --}}
                                 <a href="{{ route('consulta.historial', $paciente->id) }}" 
                                 class="btn btn-sm btn-outline-secondary rounded-pill px-3 shadow-sm"
@@ -126,10 +131,15 @@
                                 title="Nueva Consulta Médica">
                                     <i class="bi bi-clipboard2-pulse-fill me-1"></i> Consulta
                                 </a>
-
+                                {{-- BOTÓN DERIVAR (NUEVO) --}}
+                                <button type="button" 
+                                    class="btn btn-sm btn-outline-dark rounded-pill px-3 shadow-sm"
+                                    onclick="event.stopPropagation(); abrirModalDerivacion('{{ $paciente->id }}', '{{ $paciente->nombre }} {{ $paciente->apellido }}')">
+                                    <i class="bi bi-send-plus-fill me-1"></i> Derivar
+                                </button>
                                 {{-- TU BOTÓN EXISTENTE: DIAGNÓSTICO --}}
                                 <button type="button" 
-                                    class="btn btn-sm btn-primary rounded-pill px-3 shadow-sm"
+                                    class="btn btn-sm btn-outline-secondary rounded-pill px-3 shadow-sm"
                                     onclick="event.stopPropagation(); abrirModalDiagnostico('{{ $paciente->id }}', '{{ $paciente->apellido }} {{ $paciente->nombre }}', '{{ $paciente->dni }}')"
                                     title="Nuevo Registro Integral">
                                     <i class="bi bi-stethoscope me-1"></i> Diagnosticar
@@ -265,5 +275,81 @@
         modal.show();
     }
 </script>
+<div class="modal fade" id="modalDerivacion" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 shadow-lg rounded-4">
+            <div class="modal-header bg-dark text-white border-0 py-3">
+                <h5 class="modal-title fw-bold"><i class="bi bi-person-badge me-2"></i>Derivar Paciente</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form action="{{ route('atenciones.derivar') }}" method="POST" id="formDerivacion">
+                
+                @csrf
+                <input type="hidden" name="paciente_id" id="derivar_paciente_id">
+                <div class="modal-body p-4">
+                    <p class="text-muted small">Derivando a: <strong id="nombrePacienteDerivar" class="text-dark"></strong></p>
+                    
+                    <div class="mb-3">
+                        <label class="form-label small fw-bold">Servicio</label>
+                        <select name="servicio" class="form-select" id="selectServicio" onchange="cambiarMontoSugerido()" required>
+                            <option value="Consulta Médica" data-monto="100">Consulta Médica (Dr. Yuri)</option>
+                            <option value="Tomografía" data-monto="250">Tomografía</option>
+                            <option value="Rayos X" data-monto="80">Rayos X</option>
+                            <option value="Otros" data-monto="0">Otro Servicio</option>
+                        </select>
+                    </div>
 
+                    <div class="mb-3">
+                        <label class="form-label small fw-bold">Monto a Cobrar (S/)</label>
+                        <input type="number" name="total_pagado" id="monto_atencion" class="form-control" value="100" step="0.01" required>
+                        <small class="text-muted">Puedes ajustar el monto si hay descuentos.</small>
+                    </div>
+                </div>
+                <div class="modal-footer border-0 pt-0">
+                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-dark px-4 fw-bold shadow-sm" style="border-left: 4px solid #d4af37;">
+                        Confirmar Derivación
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    function abrirModalDerivacion(id, nombre) {
+        document.getElementById('derivar_paciente_id').value = id;
+        document.getElementById('nombrePacienteDerivar').innerText = nombre;
+        var myModal = new bootstrap.Modal(document.getElementById('modalDerivacion'));
+        myModal.show();
+    }
+
+    function cambiarMontoSugerido() {
+        const select = document.getElementById('selectServicio');
+        const monto = select.options[select.selectedIndex].getAttribute('data-monto');
+        document.getElementById('monto_atencion').value = monto;
+    }
+</script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script>
+    @if(session('success'))
+        Swal.fire({
+            title: '¡Derivación Exitosa!',
+            text: "{{ session('success') }}",
+            icon: 'success',
+            background: '#ffffff',
+            confirmButtonColor: '#1a1a1a', // Negro
+            iconColor: '#d4af37', // Dorado para el check
+            customClass: {
+                title: 'fw-bold',
+                popup: 'rounded-4'
+            },
+            buttonsStyling: true,
+            showConfirmButton: false,
+            timer: 2500,
+            timerProgressBar: true
+        });
+    @endif
+</script>
 @endsection

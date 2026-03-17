@@ -3,40 +3,67 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Cita; 
-use Carbon\Carbon;   
+use App\Models\Atencion; 
+use Carbon\Carbon;
+use App\Models\Cita;
+use Illuminate\Support\Facades\DB;
 
 class HomeController extends Controller
 {
-    // Borramos el constructor para evitar el error del middleware
+    public function index()
+    {
+        $hoy = Carbon::today();
+        $mesActual = Carbon::now()->month;
+        $servicioDoctor = 'Consulta Médica';
 
-public function index()
-{
-    $hoy = date('Y-m-d');
-    $ayer = date('Y-m-d', strtotime("-1 days"));
+        // 1. Ingresos totales del mes actual
+        $ingresosMes = Atencion::whereMonth('created_at', $mesActual)
+            ->where('servicio', $servicioDoctor)
+            ->where('estado', 'Atendido')
+            ->sum('total_pagado');
 
-    // 1. Estadísticas para los gráficos
-    $citasHoyCount = \App\Models\Cita::whereDate('fecha', $hoy)->count();
-    $citasAyerCount = \App\Models\Cita::whereDate('fecha', $ayer)->count();
-    
-    // Citas atendidas (Concluidas) de hoy vs ayer
-    $atendidosHoy = \App\Models\Cita::whereDate('fecha', $hoy)->where('estado', 'Concluido')->count();
-    $atendidosAyer = \App\Models\Cita::whereDate('fecha', $ayer)->where('estado', 'Concluido')->count();
+        // 2. Cantidad de pacientes atendidos hoy
+        $pacientesAtendidosHoy = Atencion::whereDate('created_at', $hoy)
+            ->where('servicio', $servicioDoctor)
+            ->where('estado', 'Atendido')
+            ->count();
 
-    // 2. Agenda de los próximos 7 días (tu lógica anterior)
-    $proximasCitas = \App\Models\Cita::with('paciente')
-        ->where('fecha', '>=', $hoy)
-        ->orderBy('fecha', 'asc')
-        ->orderBy('hora', 'asc')
-        ->take(10)
-        ->get();
+        // 3. Datos para el Gráfico
+        $reporteSemanal = Atencion::select(
+                DB::raw('DATE(created_at) as fecha'),
+                DB::raw('SUM(total_pagado) as total')
+            )
+            ->where('servicio', $servicioDoctor)
+            ->where('estado', 'Atendido')
+            ->where('created_at', '>=', Carbon::now()->subDays(7))
+            ->groupBy('fecha')
+            ->orderBy('fecha', 'ASC')
+            ->get();
 
-    return view('home', compact(
-        'citasHoyCount', 
-        'atendidosHoy', 
-        'atendidosAyer', 
-        'citasAyerCount',
-        'proximasCitas'
-    ));
-}
+        // --- ESTA ES LA PARTE QUE FALTABA ---
+        // 4. Pacientes en espera para el Dashboard del Doctor
+        $pacientesEnEspera = Atencion::with('paciente')
+            ->where('servicio', $servicioDoctor)
+            ->where('estado', 'En Espera') // Solo los que la asistente envió pero no han sido atendidos
+            ->orderBy('created_at', 'asc')
+            ->get();
+        // -------------------------------------
+
+        // 5. Mantenemos la agenda de próximas citas
+        $proximasCitas = Cita::with('paciente')
+            ->where('fecha', '>=', $hoy->format('Y-m-d'))
+            ->where('estado', 'Pendiente')
+            ->orderBy('fecha', 'asc')
+            ->orderBy('hora', 'asc')
+            ->take(5)
+            ->get();
+
+        return view('home', compact(
+            'ingresosMes', 
+            'pacientesAtendidosHoy', 
+            'reporteSemanal',
+            'pacientesEnEspera', // Ahora sí existe
+            'proximasCitas'
+        ));
+    }
 }

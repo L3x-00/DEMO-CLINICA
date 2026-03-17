@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Paciente;
+use App\Models\Atencion; // IMPORTANTE: Añadimos el modelo Atencion
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Storage;
@@ -32,6 +33,7 @@ class PacienteController extends Controller
         $pacientes = $query->orderBy('created_at', 'desc')->get();
         return view('pacientes.index', compact('pacientes', 'fechaBusqueda')); 
     }
+
     /**
      * Muestra el formulario para registrar un nuevo paciente.
      */
@@ -39,12 +41,13 @@ class PacienteController extends Controller
     {
         return view('pacientes.create');
     }
+
     /**
-     * Almacena un nuevo paciente en la base de datos.
+     * Almacena un nuevo paciente y crea su atención inicial.
      */
     public function store(Request $request)
     {
-        // 1. Validación
+        // 1. Validación: Solo campos del PACIENTE
         $request->validate([
             'nombre' => 'required|string|max:255',
             'apellido' => 'required|string|max:255',
@@ -53,22 +56,25 @@ class PacienteController extends Controller
             'fecha_nacimiento' => 'nullable|date',
             'alergias' => 'required',
             'telefono' => 'required',
-            'evidencia' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:4096', 
+            'evidencia' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:4096',
         ]);
-        // 2. Capturamos todos los datos en una variable
+
         $data = $request->all();
 
-        // 3. Procesamos la imagen si existe
+        // 2. Procesamos la imagen si existe
         if ($request->hasFile('evidencia')) {
             $path = $request->file('evidencia')->store('evidencias', 'public');
-            $data['evidencia'] = $path; // Actualizamos el valor en nuestro array $data
-        
-            } 
-        // 4. ERROR CORREGIDO: Usamos $data en lugar de $request->all()
+            $data['evidencia'] = $path;
+        } 
+
+        // 3. Creamos SOLO el Paciente
         Paciente::create($data);
+
+        // 4. Redireccionamos a la tabla donde aparecerá el botón de "Derivar"
         return redirect()->route('pacientes.index')
-            ->with('success', 'Paciente registrado correctamente.');
+            ->with('success', 'Paciente registrado correctamente. Ahora puede derivarlo al doctor desde la lista.');
     }
+
     /**
      * Muestra la ficha completa.
      */
@@ -103,9 +109,7 @@ class PacienteController extends Controller
         $paciente = Paciente::findOrFail($id);
         $data = $request->all();
 
-        // Lógica para actualizar imagen
         if ($request->hasFile('evidencia')) {
-            // Eliminar imagen vieja si existe para ahorrar espacio
             if ($paciente->evidencia) {
                 Storage::disk('public')->delete($paciente->evidencia);
             }
@@ -113,7 +117,6 @@ class PacienteController extends Controller
             $data['evidencia'] = $path;
         }
 
-        // Usamos $data para incluir la nueva ruta de la imagen
         $paciente->update($data);
 
         return redirect()->route('pacientes.index')
@@ -125,7 +128,6 @@ class PacienteController extends Controller
      */
     public function destroy(Paciente $paciente)
     {
-        // Opcional: Eliminar la imagen del disco al borrar al paciente
         if ($paciente->evidencia) {
             Storage::disk('public')->delete($paciente->evidencia);
         }
