@@ -49,7 +49,7 @@
             <div class="row align-items-center g-3">
                 <div class="col-12 col-md-6 col-lg-4">
                     <div class="input-group">
-                        <span class="input-group-text bg-white border-end-0"><i class="bi bi-search text-muted"></i></span>
+                        <span class="input-group-text border-end-0"><i class="bi bi-search text-muted"></i></span>
                         <input type="text" class="form-control border-start-0 ps-0" id="filterInput" placeholder="Buscar por paciente, DNI o diagnóstico...">
                     </div>
                 </div>

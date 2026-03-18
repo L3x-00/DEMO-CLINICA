@@ -47,10 +47,10 @@
                             </span>
                         </td>
                         <td class="text-end pe-4">
-                            <a href="{{ route('usuarios.show', $u->id) }}" class="btn btn-sm btn-light border" title="Ver detalles">
+                            <a href="{{ route('usuarios.show', $u->id) }}" class="btn btn-sm  border" title="Ver detalles">
                                 <i class="bi bi-eye text-primary"></i>
                             </a>
-                            <a href="{{ route('usuarios.edit', $u->id) }}" class="btn btn-sm btn-light border mx-1" title="Editar">
+                            <a href="{{ route('usuarios.edit', $u->id) }}" class="btn btn-sm  border mx-1" title="Editar">
                                 <i class="bi bi-pencil-square text-success"></i>
                             </a>
                         </td>

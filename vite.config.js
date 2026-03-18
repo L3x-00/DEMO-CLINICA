@@ -16,6 +16,7 @@ export default defineConfig({
                 'resources/js/pages/reportes.js',
                 // Si tienes lógica global en componentes, también:
                 'resources/js/componentes/global.js',
+                'resources/js/pages/pacientes.js',
             ],
             refresh: true,
         }),

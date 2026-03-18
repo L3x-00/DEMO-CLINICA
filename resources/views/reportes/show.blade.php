@@ -11,10 +11,8 @@
             <i class="bi bi-printer-fill me-2"></i> Imprimir Informe
         </button>
     </div>
-
     {{-- HOJA CLÍNICA PROFESIONAL --}}
     <div class="report-paper mx-auto shadow-lg">
-        
         {{-- Encabezado con el Logo/Especialidad --}}
         <div class="header-section">
             <div class="text-end">
@@ -24,7 +22,6 @@
                 <h4 class="report-main-title">INFORME MEDICO</h4>
             </div>
         </div>
-
         {{-- Datos del Paciente --}}
         <div class="patient-data-section mt-5">
             <div class="row mb-3">
@@ -44,7 +41,6 @@
                 </div>
             </div>
         </div>
-
         {{-- Cuerpo del Informe con líneas punteadas para simular el formato físico --}}
         {{-- Resumen de Historia Clínica --}}
         <div class="info-block mt-3">
@@ -61,21 +57,18 @@
                     {{ $reporte->examen_fisico_preferencial ?: 'S.D.N.' }}
                 </div>
             </div>
-
             <div class="info-block">
                 <h6 class="field-title">Exámenes Auxiliares</h6>
                 <div class="content-text border-dotted-full">
                     {{ $reporte->examen_auxiliar ?: 'Ninguno registrado.' }}
                 </div>
             </div>
-
             <div class="info-block">
                 <h6 class="field-title">Tratamiento</h6>
                 <div class="content-text border-dotted-full">
                     {{ $reporte->tratamiento ?: 'No especificado.' }}
                 </div>
             </div>
-
             <div class="row info-block align-items-end">
                 <div class="col-9">
                     <h6 class="field-title">Diagnóstico</h6>
@@ -90,7 +83,12 @@
                     </div>
                 </div>
             </div>
-
+            <div class="info-block">
+                <h6 class="field-title">Tratamiento</h6>
+                <div class="content-text border-dotted-full">
+                    {{ $reporte->tratamiento ?: 'No especificado.' }}
+                </div>
+            </div>
             <div class="info-block">
                 <h6 class="field-title">Evolución</h6>
                 <div class="content-text border-dotted-full">
@@ -105,7 +103,6 @@
                 </div>
             </div>
         </div>
-
         {{-- Pie de página: Fecha y Firma --}}
         <div class="footer-section mt-5 pt-5">
             <div class="row align-items-end">

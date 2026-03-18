@@ -69,12 +69,13 @@
                                        style="background-color: var(--bs-body-bg); color: var(--bs-body-color); border-color: var(--bs-border-color);">
                             </div>
                         </div>
-
-                        <div class="mt-5 text-end">
+                        <div class="mt-5 d-flex justify-content-end">
+                            <a href="{{ route('usuarios.index') }}" class="btn btn-outline-secondary rounded-pill px-4 me-2">Volver</a>
                             <button type="submit" class="btn btn-primary px-5 py-2 fw-bold shadow-sm rounded-pill">
-                                <i class="bi bi-shield-lock me-2"></i> Crear Credenciales
+                                    <i class="bi bi-shield-lock me-2"></i> Crear Credenciales
                             </button>
                         </div>
+                        
                     </form>
                 </div>
             </div>

@@ -1,25 +1,46 @@
-/* Tablas Profesionales */
+/* =========================================
+   1. VARIABLES Y CONFIGURACIÓN
+   ========================================= */
+:root {
+    --primary-color: #0d6efd;
+    --primary-soft: rgba(13, 110, 253, 0.1);
+    --border-color: #f0f2f5;
+    --nav-hover: #f8f9fa;
+    --text-main: #334155;
+    --text-muted: #64748b;
+    --transition-smooth: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* =========================================
+   2. TABLAS PROFESIONALES
+   ========================================= */
 .table-custom {
     --bs-table-bg: transparent;
     color: var(--text-main);
-}
-
-.table-custom thead {
-    background-color: var(--nav-hover);
 }
 
 .table-custom thead th {
     color: var(--accent-soft);
     font-weight: 700;
     text-transform: uppercase;
-    font-size: 0.8rem;
-    letter-spacing: 1px;
+    font-size: 0.75rem;
+    letter-spacing: 0.5px;
+    padding: 1rem;
     border-bottom: 2px solid var(--border-color);
-    padding: 15px;
+    
+    /* Usamos la variable de fondo de Bootstrap que cambia según el tema */
+    background-color: var(--bs-tertiary-bg) !important; 
+}
+
+/* Ajuste específico para cuando el tema oscuro está activo */
+[data-bs-theme="dark"] .table-custom thead th {
+    background-color: #21263180 !important; /* Gris azulado profundo */
+    color: #94a3b8; /* Texto más claro para contraste */
+    border-bottom-color: #334155;
 }
 
 .table-custom tbody td {
-    padding: 15px;
+    padding: 1rem;
     vertical-align: middle;
     border-bottom: 1px solid var(--border-color);
 }
@@ -27,18 +48,115 @@
 /* Filas clickeables */
 .table-clickable tbody tr {
     cursor: pointer;
-    transition: all 0.2s ease;
+    transition: var(--transition-smooth);
+    position: relative;
 }
 
 .table-clickable tbody tr:hover {
-    background-color: var(--nav-hover) !important;
-    transform: scale(1.005);
+    background-color: #54acca60 !important;
+    transform: scale(1.002);
+    box-shadow: inset 4px 0 0 var(--primary-color);
+    z-index: 1050;
 }
 
-/* Badges de estado */
+/* =========================================
+   3. DROPDOWNS (Menú Desplegable)
+   ========================================= */
+.dropdown-menu {
+    display: block;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(10px);
+    transition: var(--transition-smooth);
+    
+    /* Adaptabilidad a temas (Quitamos !important para permitir modo oscuro) */
+    background-color: var(--bs-dropdown-bg);
+    border: 1px solid var(--bs-dropdown-border-color);
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1) !important;
+    z-index: 1060;
+}
+
+.dropdown-menu.show {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.dropdown-item {
+    transition: var(--transition-smooth);
+    color: var(--text-main);
+    padding: 0.6rem 1.25rem;
+}
+
+.dropdown-item:hover {
+    background-color: var(--primary-soft);
+    color: var(--primary-color);
+    padding-left: 1.75rem; /* Efecto de empuje */
+}
+
+/* =========================================
+   4. MODALES Y FORMULARIOS
+   ========================================= */
+.modal-content {
+    border-radius: 20px;
+    border: none;
+}
+
+.modal-content .form-control, 
+.modal-content .form-select {
+    border-radius: 10px;
+    padding: 0.6rem 0.8rem;
+    font-size: 0.9rem;
+    background-color: var(--nav-hover);
+    border: 1px solid var(--border-color);
+    transition: var(--transition-smooth);
+}
+
+.modal-content .form-control:focus, 
+.modal-content .form-select:focus {
+    background-color: var(--bs-body-bg);
+    box-shadow: 0 0 0 4px var(--primary-soft);
+    border-color: var(--primary-color);
+    outline: 0;
+}
+
+/* Estilos adaptativos para fondos claros/oscuros en modales */
+.modal-content .bg-light {
+    background-color: var(--nav-hover) !important;
+    border: 1px solid var(--border-color);
+}
+
+[data-bs-theme="dark"] .modal-content .bg-light {
+    background-color: rgba(255, 255, 255, 0.05) !important;
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+/* =========================================
+   5. COMPONENTES Y UTILIDADES
+   ========================================= */
+.table-responsive {
+    overflow: visible !important;
+    padding-bottom: 80px; 
+}
+
 .status-badge {
     padding: 6px 12px;
     border-radius: 20px;
     font-size: 0.75rem;
     font-weight: 600;
+}
+
+/* Estilo para el divider del dropdown */
+.dropdown-divider {
+    opacity: 0.1;
+}
+/* Esto fuerza a que el menú se posicione respecto a la pantalla y no al contenedor cortado */
+.dropdown-menu {
+    position: fixed !important; 
+    margin: 0 !important;
+    z-index: 1050 !important;
+}
+body.modal-open {
+    overflow: hidden;
+    padding-right: 0 !important;
 }

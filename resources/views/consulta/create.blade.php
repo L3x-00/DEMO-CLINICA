@@ -12,108 +12,163 @@
         <input type="hidden" name="paciente_id" value="{{ $paciente->id }}">
         <input type="hidden" name="numero_consulta" value="{{ $nuevoNumero }}">
 
-        <div class="col-12">
-            <div class="card border-0 shadow-sm rounded-4 mb-3">
-                <div class="card-header bg-light fw-bold">1. Información del Paciente (Automático)</div>
-                <div class="card-body row">
+        <div class="col-md-12">
+            <div class="card border-0 shadow-sm rounded-4 h-100 border-start border-primary border-4">
+                <div class="card-header fw-bold text-primary">1. Información del Paciente (Automático)</div>
+                <div class="card-body row ">
                     <div class="col-md-3">
-                        <label class="small text-muted">Paciente</label>
-                        <input type="text" class="form-control bg-light" value="{{ $paciente->nombre }} {{ $paciente->apellido }}" readonly>
-                    </div>
-                    <div class="col-md-3">
-                        <label class="small text-muted">Fecha</label>
-                        <input type="date" name="fecha_registro" class="form-control bg-light" value="{{ date('Y-m-d') }}" readonly>
+                        <label class="form-label">Paciente</label>
+                        <input type="text" class="form-control" value="{{ $paciente->nombre }} {{ $paciente->apellido }}" readonly>
                     </div>
                     <div class="col-md-2">
-                        <label class="small text-muted">Hora</label>
-                        <input type="time" name="hora_registro" class="form-control bg-light" value="{{ date('H:i') }}" readonly>
+                        <label class="form-label">Doc. de Identidad</label>
+                        <input type="text" name="DNI" class="form-control" value="{{ $paciente->dni}}" readonly>
                     </div>
                     <div class="col-md-2">
-                        <label class="small text-muted">Edad</label>
-                        <input type="text" name="edad_momento" class="form-control bg-light" value="{{ $paciente->edad }}" readonly>
+                        <label class="form-label">Fecha</label>
+                        <input type="date" name="fecha_registro" class="form-control" value="{{ date('Y-m-d') }}" readonly>
+                    </div>
+                    <div class="col-md-2">
+                        <label class="form-label">Hora</label>
+                        <input type="time" name="hora_registro" class="form-control" value="{{ date('H:i') }}" readonly>
+                    </div>
+                    <div class="col-md-2">
+                        <label class="form-label">Edad</label>
+                        <input type="text" name="edad_momento" class="form-control" value="{{ $paciente->edad }} años" readonly>
                     </div>
                 </div>
             </div>
         </div>
 
         <div class="col-md-8">
-            <div class="card border-0 shadow-sm rounded-4 h-100">
-                <div class="card-header bg-white fw-bold text-secondary">2. Anamnesis y Funciones Biológicas</div>
+            <div class="card border-0 shadow-sm rounded-4 h-100 border-start border-primary border-4">
+                <div class="card-header fw-bold text-primary">2. Anamnesis y Funciones Biológicas</div>
                 <div class="card-body row g-3">
-                    <div class="col-12">
+                    <div class="col-8">
                         <label class="form-label">Motivo de consulta</label>
-                        <textarea name="motivo_consulta" class="form-control" rows="2" placeholder="Describa el motivo..."></textarea>
+                        <textarea type="text" name="motivo_consulta" class="form-control" rows="1" placeholder="Describa el motivo..."></textarea>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-3">
                         <label class="form-label">Tiempo de enfermedad</label>
-                        <input type="text" name="tiempo_enfermedad" class="form-control">
+                        <input type="string" name="tiempo_enfermedad" class="form-control">
                     </div>
                     <div class="col-md-3">
                         <label class="form-label">Apetito</label>
-                        <select name="apetito" class="form-select">
-                            <option value="Normal">Normal</option>
-                            <option value="Aumentado">Aumentado</option>
-                            <option value="Disminuido">Disminuido</option>
-                        </select>
+                        <input type="string" name="apetito" class="form-control">
                     </div>
                     <div class="col-md-3">
                         <label class="form-label">Sed</label>
-                        <select name="sed" class="form-select"><option>Normal</option><option>Aumentado</option><option>Disminuido</option></select>
+                        <input type="string" name="sed" class="form-control">
                     </div>
+                    <div class="col-md-3">
+                        <label class="form-label">Sueño</label>
+                        <input type="string" name="sueno" class="form-control">
                     </div>
-            </div>
-        </div>
-
-        <div class="col-md-4">
-            <div class="card border-0 shadow-sm rounded-4 h-100 border-start border-primary border-4">
-                <div class="card-header bg-white fw-bold text-primary">3. Examen Físico / Funciones Vitales</div>
-                <div class="card-body row g-2">
-                    <div class="col-6">
-                        <label class="small fw-bold">Temperatura (°C)</label>
-                        <input type="text" name="temperatura" class="form-control form-control-sm">
-                    </div>
-                    <div class="col-6">
-                        <label class="small fw-bold">P. Arterial</label>
-                        <input type="text" name="presion_arterial" class="form-control form-control-sm">
-                    </div>
-                    <div class="col-6">
-                        <label class="small fw-bold">F. Cardiaca</label>
-                        <input type="text" name="frecuencia_cardiaca" class="form-control form-control-sm">
-                    </div>
-                    <div class="col-6">
-                        <label class="small fw-bold">Peso (kg)</label>
-                        <input type="text" name="peso" class="form-control form-control-sm">
-                    </div>
-                    <div class="col-12">
-                        <label class="small fw-bold">Examen Físico General</label>
-                        <textarea name="examen_fisico" class="form-control form-control-sm" rows="3"></textarea>
+                    <div class="col-md-3">
+                        <label class="form-label">Estado de ánimo</label>
+                        <input type="string" name="estado_animo" class="form-control">
                     </div>
                 </div>
             </div>
         </div>
 
+        <div class="col-md-4">
+            <div class="card border-0 shadow-sm rounded-4 h-100 border-start border-primary border-4">
+                <div class="card-header  fw-bold text-primary">3. Deposiciones</div>
+                <div class="card-body row g-2">
+                    <div class="col-6">
+                        <label class="form-label">Temperatura (°C)</label>
+                        <input type="string" name="temperatura" class="form-control form-control-sm">
+                    </div>
+                    <div class="col-6">
+                        <label class="form-label">P. Arterial</label>
+                        <input type="string" name="presion_arterial" class="form-control form-control-sm">
+                    </div>
+                    <div class="col-6">
+                        <label class="form-label">F. Respiratoria</label>
+                        <input type="string" name="frecuencia_respiratoria" class="form-control form-control-sm">
+                    </div>
+                    <div class="col-6">
+                        <label class="form-label">F. Cardiaca</label>
+                        <input type="string" name="frecuencia_cardiaca" class="form-control form-control-sm">
+                    </div>
+                    <div class="col-6">
+                        <label class="form-label">Peso (kg)</label>
+                        <input type="string" name="peso" class="form-control form-control-sm">
+                    </div>
+                    <div class="col-6">
+                        <label class="form-label">Talla(cm)</label>
+                        <input type="string" name="talla" class="form-control form-control-sm">
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Orina</label>
+                        <input type="string" name="orina" class="form-control form-control-sm">
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Deposiciones</label>
+                        <input type="string" name="deposiciones" class="form-control form-control-sm">
+                    </div>
+                    <div class="col-12">
+                        <label class="form-label">Examen Físico General</label>
+                        <textarea type="text" name="examen_fisico" class="form-control form-control-sm" rows="3"></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-7">
+            <div class="card border-0 shadow-sm rounded-4 h-100 border-start border-primary border-4">
+                <div class="card-header fw-bold text-primary">4. Diagnóstico y Tratamiento</div>
+                <div class="card-body row g-3">
+                    <div class="col-7">
+                        <label class="form-label">Diagnóstico</label>
+                        <textarea type="text" name="diagnostico" class="form-control" rows="2" placeholder="Describa el diagnóstico..."></textarea>
+                    </div>
+                    <div class="col-5">
+                        <label class="form-label">Tratamiento</label>
+                        <textarea type="text" name="tratamiento" class="form-control" rows="2" placeholder="Describa el tratamiento..."></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-5">
+            <div class="card border-0 shadow-sm rounded-4 h-100 border-start border-primary border-4">
+                <div class="card-header  fw-bold text-primary">5. Examenes Auxiliares</div>
+                <div class="card-body row g-2">
+                    <div class="col-6">
+                        <label class="form-label">Ex. Auxiliares</label>
+                        <input type="text" name="examenes_auxiliares" class="form-control form-control-sm">
+                    </div>
+                    <div class="col-6">
+                        <label class="form-label">Referencia (lugar y motivo)</label>
+                        <input type="text" name="referencia_lugar_motivo" class="form-control form-control-sm">
+                    </div>
+                    <div class="col-6">
+                        <label class="form-label">Próxima cita</label>
+                        <input type="date" name="proxima_cita" class="form-control form-control-sm">
+                    </div>
+                </div>
+            </div>
+        </div>
         <div class="col-12">
-            <div class="card border-0 shadow-sm rounded-4 bg-primary bg-opacity-10">
+            <div class="card border-0 shadow-sm rounded-4 bg-primary bg-opacity-10 border-start border-primary border-4">
                 <div class="card-body row">
                     <div class="col-md-4">
                         <label class="small text-muted">Atendido por:</label>
                         <input type="text" name="atendido_por" class="form-control-plaintext fw-bold" value="{{ $user->name }}" readonly>
                     </div>
                     <div class="col-md-4">
-                        <label class="small text-muted">Nombres del Doctor:</label>
-                        <input type="text" name="doctor_nombres" class="form-control-plaintext fw-bold" value="{{ $user->first_name }}" readonly>
+                        <label class="small text-muted">Firma y sello</label>
                     </div>
-                    <div class="col-md-4">
-                        <label class="small text-muted">Apellidos del Doctor:</label>
-                        <input type="text" name="doctor_apellidos" class="form-control-plaintext fw-bold" value="{{ $user->last_name }}" readonly>
                     </div>
+                    
                 </div>
             </div>
         </div>
+        
 
         <div class="col-12 text-end mb-5">
             <hr>
-            <button type="reset" class="btn btn-light px-4 me-2">Limpiar</button>
+            <button type="reset" class="btn btn-outline-danger border-2 px-4 me-2">Limpiar</button>
             <button type="submit" class="btn btn-primary px-5 shadow">Guardar Consulta Médica</button>
         </div>
     </form>

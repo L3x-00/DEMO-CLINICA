@@ -54,7 +54,7 @@
                                     </div>
                                     <div class="col-md-3">
                                         <label class="form-label small fw-bold opacity-75">EDAD</label>
-                                        <input type="text" name="edad" id="edad" class="form-control border-0 bg-light text-center fw-bold" readonly placeholder="0">
+                                        <input type="text" name="edad" id="edad" class="form-control border-0  text-center fw-bold" readonly placeholder="0">
                                     </div>
                                     <div class="col-md-3">
                                         <label class="form-label small fw-bold opacity-75">SEXO</label>
@@ -102,7 +102,7 @@
                         </div>
 
                         <div class="d-flex justify-content-between align-items-center mt-5 pt-4 border-top">
-                            <a href="{{ route('pacientes.index') }}" class="btn btn-light rounded-pill px-4 fw-bold">
+                            <a href="{{ route('pacientes.index') }}" class="btn btn-danger rounded-pill px-4 fw-bold">
                                 <i class="bi bi-x-circle me-2"></i>Cancelar
                             </a>
                             <button type="submit" class="btn btn-primary rounded-pill px-5 py-2 fw-bold shadow-lg">

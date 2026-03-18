@@ -37,10 +37,10 @@
                 <div class="card-body p-4">
                     <div class="d-flex justify-content-between">
                         <div>
-                            <h6 class="text-white text-opacity-75 small text-uppercase fw-bold ls-1">Ingresos del Mes</h6>
+                            <h6 class="text-muted text-opacity-75 small text-uppercase fw-bold ls-1">Ingresos del Mes</h6>
                             <h2 class="fw-bold mb-0 mt-2">S/ {{ number_format($ingresosMes, 2) }}</h2>
                         </div>
-                        <div class="bg-white bg-opacity-20 text-white p-3 rounded-4 h-100">
+                        <div class="bg-success bg-opacity-10 p-3 rounded-4 h-100">
                             <i class="bi bi-cash-coin fs-3"></i>
                         </div>
                     </div>
@@ -99,7 +99,7 @@
     </div>
     {{-- TABLA DE PACIENTES DERIVADOS AL DOCTOR --}}
     <div class="card border-0 shadow-sm rounded-4 overflow-hidden mb-4">
-        <div class="card-header py-3 px-4 bg-white border-bottom d-flex justify-content-between align-items-center">
+        <div class="card-header py-3 px-4  border-bottom d-flex justify-content-between align-items-center">
             <h5 class="mb-0 fw-bold text-primary">
                 <i class="bi bi-person-lines-fill me-2"></i>Pacientes en Espera (Derivados)
             </h5>

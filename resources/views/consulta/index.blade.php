@@ -37,10 +37,10 @@
                         <td><span class="badge bg-info bg-opacity-10 text-info border border-info border-opacity-25">{{ Str::limit($con->diagnostico, 30) }}</span></td>
                         <td class="small">{{ $con->atendido_por }}</td>
                         <td class="text-end pe-4">
-                            <a href="{{ route('consulta.show', $con->id) }}" class="btn btn-sm btn-light border" title="Ver Detalle">
+                            <a href="{{ route('consulta.show', $con->id) }}" class="btn btn-sm  border" title="Ver Detalle">
                                 <i class="bi bi-eye-fill"></i>
                             </a>
-                            <a href="{{ route('consulta.edit', $con->id) }}" class="btn btn-sm btn-light border text-warning" title="Editar">
+                            <a href="{{ route('consulta.edit', $con->id) }}" class="btn btn-sm  border text-warning" title="Editar">
                                 <i class="bi bi-pencil-fill"></i>
                             </a>
                         </td>

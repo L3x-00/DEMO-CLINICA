@@ -24,7 +24,7 @@
 
             <div class="col-md-8">
                 <div class="card border-0 shadow-sm rounded-4 mb-4">
-                    <div class="card-header bg-white fw-bold">Actualizar Anamnesis</div>
+                    <div class="card-header  fw-bold">Actualizar Anamnesis</div>
                     <div class="card-body">
                         <div class="mb-3">
                             <label class="form-label">Motivo de consulta</label>
@@ -50,7 +50,7 @@
 
             <div class="col-md-4">
                 <div class="card border-0 shadow-sm rounded-4 h-100">
-                    <div class="card-header bg-white fw-bold">Actualizar Signos Vitales</div>
+                    <div class="card-header  fw-bold">Actualizar Signos Vitales</div>
                     <div class="card-body">
                         @php $vitales = ['temperatura', 'presion_arterial', 'frecuencia_cardiaca', 'frecuencia_respiratoria', 'peso', 'talla']; @endphp
                         @foreach($vitales as $v)

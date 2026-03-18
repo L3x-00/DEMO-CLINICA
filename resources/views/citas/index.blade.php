@@ -39,13 +39,13 @@
             <form action="{{ route('citas.index') }}" method="GET" class="row g-3">
                 <div class="col-12 col-md-4">
                     <label class="form-label small fw-bold text-secondary text-uppercase" style="font-size: 0.7rem;">Filtrar por Fecha 📅</label>
-                    <input type="date" name="fecha" class="form-control form-control-lg bg-light border-0 shadow-none" style="font-size: 0.9rem;" value="{{ $fechaBusqueda ?? '' }}">
+                    <input type="date" name="fecha" class="form-control form-control-lg  border-0 shadow-none" style="font-size: 0.9rem;" value="{{ $fechaBusqueda ?? '' }}">
                 </div>
                 <div class="col-12 col-md-6">
                     <label class="form-label small fw-bold text-secondary text-uppercase" style="font-size: 0.7rem;">Buscar Paciente o DNI 🔍</label>
                     <div class="input-group">
-                        <span class="input-group-text bg-light border-0"><i class="bi bi-search text-muted"></i></span>
-                        <input type="text" name="buscar" class="form-control form-control-lg bg-light border-0 shadow-none" style="font-size: 0.9rem;" placeholder="Nombre, apellido o DNI..." value="{{ request('buscar') }}">
+                        <span class="input-group-text  border-0"><i class="bi bi-search text-muted"></i></span>
+                        <input type="text" name="buscar" class="form-control form-control-lg  border-0 shadow-none" style="font-size: 0.9rem;" placeholder="Nombre, apellido o DNI..." value="{{ request('buscar') }}">
                         <button class="btn btn-primary px-4" type="submit">Buscar</button>
                     </div>
                 </div>
