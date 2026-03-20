@@ -7,6 +7,7 @@
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tom-select@2.2.2/dist/css/tom-select.bootstrap5.min.css">
     
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @stack('styles')
@@ -112,9 +113,18 @@
             </main>
         </div>
     </div>
-
+    {{-- 1. Primero los scripts base --}}
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    
+    {{-- 2. Luego los scripts específicos de cada página --}}
     @stack('scripts')
+    
+    {{-- 3. Scripts globales --}}
     @vite(['resources/js/componentes/global.js'])
+
+    {{-- 4. LOS MODALES (Fuera de stacks y antes de cerrar el body) --}}
+    @include('citas.partials.modales')
 </body>
+
 </html>

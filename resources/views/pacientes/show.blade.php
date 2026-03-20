@@ -19,9 +19,10 @@
                 <a href="{{ route('pacientes.edit', $paciente->id) }}" class="btn btn-warning btn-sm text-dark px-3 fw-bold">
                     <i class="bi bi-pencil-square me-1"></i> Editar
                 </a>
-                <a href="{{ route('citas.create', ['paciente_id' => $paciente->id]) }}" class="btn btn-primary btn-sm px-3 fw-bold">
+                <button type="button" class="btn btn-primary btn-sm px-3 fw-bold"
+                    onclick="agendarCitaDesdePaciente({{ $paciente->id }}, '{{ $paciente->nombre }}', '{{ $paciente->apellido }}', '{{ $paciente->dni }}')">
                     <i class="bi bi-calendar-plus me-1"></i> Agendar Cita
-                </a>
+                </button>
             </div>
         </div>
     </div>
@@ -144,4 +145,18 @@
         </div>
     </div>
 </div>
+@push('scripts')
+    {{-- 1. Librerías externas (CDN) --}}
+    <link href="https://cdn.jsdelivr.net/npm/tom-select@2.2.2/dist/css/tom-select.bootstrap5.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/tom-select@2.2.2/dist/js/tom-select.complete.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    {{-- 2. Tus scripts compilados con Vite --}}
+    @vite(['resources/js/pages/citas.js'])
+    
+    {{-- Solo en index.blade.php agregarías el de pacientes.js si tiene lógica extra --}}
+    @if(Route::is('pacientes.index'))
+        @vite(['resources/js/pages/pacientes.js'])
+    @endif
+@endpush
 @endsection

@@ -15,10 +15,10 @@
                 </div>
             </div>
         </div>
-        <div class="col-12 col-sm-5 col-md-4 text-sm-end">
-            <a href="{{ route('citas.create') }}" class="btn btn-primary btn-lg shadow-sm fw-bold w-100 w-sm-auto px-4">
-                <i class="bi bi-calendar-plus me-2"></i>Nueva Cita
-            </a>
+        <div class="col-12 col-sm-5 col-md-4 text-sm-end" data-bs-toggle="modal" data-bs-target="#modalCrearCita">
+            <button type="button" class="btn btn-primary shadow-sm" data-bs-toggle="modal" data-bs-target="#modalCrearCita">
+                <i class="bi bi-plus-lg me-1"></i> Nueva Cita
+            </button>
         </div>
     </div>
 
@@ -126,12 +126,14 @@
                             </td>
                             <td class="text-center pe-4">
                                 <div class="btn-group shadow-sm border rounded-3" role="group">
-                                    <a href="{{ route('citas.show', $cita->id) }}" class="btn btn-white btn-sm px-3 border-end" title="Detalles">
-                                        <i class="bi bi-eye text-info"></i>
-                                    </a>
-                                    <a href="{{ route('citas.edit', $cita->id) }}" class="btn btn-white btn-sm px-3 border-end" title="Editar">
-                                        <i class="bi bi-pencil text-warning"></i>
-                                    </a>
+                                    <button type="button" class="btn btn-sm btn-outline-info" 
+                                        onclick="event.stopPropagation(); abrirModalVerCita({{ $cita->toJson() }})">
+                                        <i class="bi bi-eye"></i>
+                                    </button>
+                                    <button type="button" class="btn btn-sm btn-outline-warning" 
+                                        onclick="event.stopPropagation(); abrirModalEditarCita({{ $cita->toJson() }})">
+                                        <i class="bi bi-pencil"></i>
+                                    </button>
                                     <form action="{{ route('citas.destroy', $cita->id) }}" method="POST" class="d-inline" onsubmit="return confirm('¿Está seguro de eliminar esta cita?')">
                                         @csrf
                                         @method('DELETE')
@@ -162,3 +164,12 @@
 </div>
 
 @endsection
+@push('scripts')
+    {{-- CSS de TomSelect --}}
+    <link href="https://cdn.jsdelivr.net/npm/tom-select@2.2.2/dist/css/tom-select.bootstrap5.min.css" rel="stylesheet">
+    {{-- JS de TomSelect --}}
+    <script src="https://cdn.jsdelivr.net/npm/tom-select@2.2.2/dist/js/tom-select.complete.min.js"></script>
+    
+    {{-- Tu lógica de citas --}}
+    @vite(['resources/js/pages/citas.js'])
+@endpush

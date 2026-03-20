@@ -1,38 +1,96 @@
-// 1. UTILIDADES INTERNAS
+/**
+ * Lógica para la gestión de Pacientes
+ */
 
-// Esta función cierra cualquier menú desplegable abierto antes de lanzar un modal
+// 1. UTILIDADES INTERNAS
 function cerrarDropdowns() {
-    const dropdowns = document.querySelectorAll('.dropdown-toggle.show');
-    dropdowns.forEach(toggle => {
-        menu.classList.remove('show');
-        menu.style.visibility = 'hidden';
-        menu.style.display = 'none';
-    });
+    const dropdowns = document.querySelectorAll('.dropdown-menu.show');
+    dropdowns.forEach(menu => menu.classList.remove('show'));
 }
-//2. FUNCIONES GLOBALES (ACCESIBLES DESDE EL HTML)
+
+// --- Función de Validación de Campos ---
+const validarCampoPaciente = (input) => {
+    const form = input.closest('form');
+    if (!form) return;
+    
+    // --- LÓGICA DINÁMICA DNI (8) / CUI (15) ---
+    // --- LÓGICA DINÁMICA DNI (8) / CUI (15) ---
+    if (input.name === 'dni') {
+        const selectTipo = form.querySelector('select[name="tipo_documento"]');
+        const tipoDoc = selectTipo ? selectTipo.value : 'DNI';
+        const errorMsg = document.getElementById('dni-error-msg'); // El div del HTML
+
+        if (tipoDoc === 'DNI') {
+            input.maxLength = 8;
+            if (input.value.length !== 8) {
+                input.setCustomValidity("Inválido");
+                if (errorMsg) errorMsg.innerText = "El DNI debe tener exactamente 8 dígitos.";
+            } else {
+                input.setCustomValidity("");
+            }
+        } else if (tipoDoc === 'CUI') {
+            input.maxLength = 15;
+            if (input.value.length < 5) {
+                input.setCustomValidity("Inválido");
+                if (errorMsg) errorMsg.innerText = "El CUI debe tener entre 5 y 15 dígitos.";
+            } else {
+                input.setCustomValidity("");
+            }
+        }
+    }
+
+    // --- LÓGICA TELÉFONO (9) ---
+    if (input.name === 'telefono') {
+        input.maxLength = 9; // Bloquea físicamente en 9
+        if (input.value.length > 0 && input.value.length < 9) {
+            input.setCustomValidity("El teléfono debe tener 9 dígitos.");
+        } else {
+            input.setCustomValidity("");
+        }
+    }
+
+    // Validación de Fecha
+    if (input.name === 'fecha_nacimiento') {
+        const hoy = new Date().toISOString().split('T')[0];
+        if (input.value && input.value > hoy) {
+            input.setCustomValidity("Fecha futura");
+        } else {
+            input.setCustomValidity("");
+        }
+    }
+
+    // Aplicar clases de Bootstrap
+    if (input.checkValidity()) {
+        input.classList.remove('is-invalid');
+        input.classList.add('is-valid');
+    } else {
+        input.classList.remove('is-valid');
+        input.classList.add('is-invalid');
+    }
+};
+
+// 2. FUNCIONES GLOBALES (ACCESIBLES DESDE EL HTML)
 window.abrirModalDiagnostico = function(id, nombre, dni) {
-    cerrarDropdowns(); // Cerramos el menú de "Acciones"
+    cerrarDropdowns();
     const inputId = document.getElementById('paciente_id_hidden');
     const displayName = document.getElementById('nombrePacienteDisplay');
     const displayDni = document.getElementById('dniPacienteDisplay');
     const form = document.getElementById('formDiagnostico');
-    if (inputId) inputId.value = id;
-    if (displayName) displayName.innerText = nombre;
-    if (displayDni) displayDni.innerText = 'DNI: ' + dni;
+
     if (form) {
         form.reset();
-        // El ID debe re-asignarse porque reset() limpia todo el form
-        document.getElementById('paciente_id_hidden').value = id;
+        form.classList.remove('was-validated');
     }
+    if (inputId) inputId.value = id;
+    if (displayName) displayName.innerText = nombre;
+    if (displayDni) displayDni.innerText = 'DNI: ' + (dni || 'No registrado');
 
     const modalEl = document.getElementById('modalDiagnostico');
-    if (modalEl) {
-        const modal = new bootstrap.Modal(modalEl);
-        modal.show();
-    }
-}
+    if (modalEl) bootstrap.Modal.getOrCreateInstance(modalEl).show();
+};
+
 window.abrirModalDerivacion = function(id, nombre) {
-    cerrarDropdowns(); // Cerramos el menú de "Acciones"
+    cerrarDropdowns();
     const inputId = document.getElementById('derivar_paciente_id');
     const displayName = document.getElementById('nombrePacienteDerivar');
     
@@ -44,7 +102,8 @@ window.abrirModalDerivacion = function(id, nombre) {
         const modal = new bootstrap.Modal(modalEl);
         modal.show();
     }
-}
+};
+
 window.cambiarMontoSugerido = function() {
     const select = document.getElementById('selectServicio');
     const inputMonto = document.getElementById('monto_atencion');
@@ -52,21 +111,45 @@ window.cambiarMontoSugerido = function() {
         const monto = select.options[select.selectedIndex].getAttribute('data-monto');
         inputMonto.value = monto || '';
     }
-}
-//3. LÓGICA PRINCIPAL DEL DOM
+};
+
+// 3. LÓGICA PRINCIPAL DEL DOM
 document.addEventListener("DOMContentLoaded", function() {
+    
+    
     console.log("Sistema de Pacientes: Listo.");
 
-    // --- Auto-cierre de Dropdowns al sacar el puntero ---
-    document.querySelectorAll('.dropdown').forEach(dropdown => {
-        dropdown.addEventListener('mouseleave', function() {
-            const toggle = this.querySelector('.dropdown-toggle');
-            const instance = bootstrap.Dropdown.getInstance(toggle);
-            if (instance) instance.hide();
+    // --- VALIDACIÓN DE FORMULARIOS (Crear y Editar) ---
+    const formsPaciente = document.querySelectorAll('form[action*="pacientes"]');
+    formsPaciente.forEach(form => {
+        form.querySelectorAll('input, select, textarea').forEach(input => {
+            input.addEventListener('input', () => validarCampoPaciente(input));
+            input.addEventListener('change', () => validarCampoPaciente(input));
+        });
+
+        form.addEventListener('submit', function(e) {
+            let formValido = true;
+            form.querySelectorAll('input, select, textarea').forEach(input => {
+                validarCampoPaciente(input);
+                if (!input.checkValidity()) formValido = false;
+            });
+
+            if (!formValido || !form.checkValidity()) {
+                e.preventDefault();
+                e.stopPropagation();
+                if(typeof Swal !== 'undefined') {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Datos Incompletos',
+                        text: 'Por favor, revisa los campos marcados en rojo.',
+                        confirmButtonColor: '#3085d6'
+                    });
+                }
+            }
+            form.classList.add('was-validated');
         });
     });
-    // --- Inicializar Tooltips ---
-    document.querySelectorAll('[title]').forEach(el => new bootstrap.Tooltip(el));
+    
     // --- Cálculo de edad ---
     const inputFecha = document.getElementById('fecha_nacimiento');
     const inputEdad = document.getElementById('edad');
@@ -81,6 +164,21 @@ document.addEventListener("DOMContentLoaded", function() {
             inputEdad.value = (isNaN(edad) || edad < 0) ? 0 : edad;
         });
     }
+
+    // --- Auto-cierre de Dropdowns al sacar el puntero ---
+    document.querySelectorAll('.dropdown').forEach(dropdown => {
+        dropdown.addEventListener('mouseleave', function() {
+            const toggle = this.querySelector('.dropdown-toggle');
+            if (toggle) {
+                const instance = bootstrap.Dropdown.getInstance(toggle);
+                if (instance) instance.hide();
+            }
+        });
+    });
+
+    // --- Inicializar Tooltips ---
+    document.querySelectorAll('[title]').forEach(el => new bootstrap.Tooltip(el));
+
     // --- Buscador en tiempo real ---
     const buscarPaciente = document.getElementById('buscarPaciente');
     const resultados = document.getElementById('resultadosBusqueda');
@@ -101,7 +199,8 @@ document.addEventListener("DOMContentLoaded", function() {
                                 item.onclick = (e) => {
                                     e.preventDefault();
                                     buscarPaciente.value = p.nombre;
-                                    document.getElementById('paciente_id_hidden').value = p.id;
+                                    const hiddenId = document.getElementById('paciente_id_hidden');
+                                    if(hiddenId) hiddenId.value = p.id;
                                     resultados.classList.add('d-none');
                                 };
                                 resultados.appendChild(item);
@@ -114,21 +213,32 @@ document.addEventListener("DOMContentLoaded", function() {
             if (!buscarPaciente.contains(e.target) && !resultados.contains(e.target)) {
                 resultados.classList.add('d-none');
             }
-            
         });
     }
+
     // --- Alerta de éxito (SweetAlert2) ---
     if (window.sessionSuccess) {
         Swal.fire({
             title: '¡Operación Exitosa!',
             text: window.sessionSuccess,
             icon: 'success',
-            timer: 2500, // Un poco más rápido para no estorbar
+            timer: 2500,
             showConfirmButton: false,
             timerProgressBar: true,
-            customClass: { 
-                popup: 'rounded-4 shadow-lg border-0' 
-            }
+            customClass: { popup: 'rounded-4 shadow-lg border-0' }
+        });
+    }
+    const selectDoc = document.querySelector('select[name="tipo_documento"]');
+    const inputDoc = document.getElementById('dni');
+
+    if (selectDoc && inputDoc) {
+        selectDoc.addEventListener('change', function() {
+            // 1. Limpiamos el valor para evitar que queden 8 números si pasa a CUI o viceversa
+            inputDoc.value = ""; 
+            // 2. Quitamos las clases de validación anteriores
+            inputDoc.classList.remove('is-valid', 'is-invalid');
+            // 3. Ejecutamos la validación para que actualice el maxLength inmediatamente
+            validarCampoPaciente(inputDoc); 
         });
     }
 });

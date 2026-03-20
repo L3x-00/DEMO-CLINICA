@@ -105,17 +105,26 @@
 
                             <div class="col-md-8">
                                 <label class="form-label fw-bold small opacity-75" style="color: var(--accent-main);">DIAGNÓSTICO PRINCIPAL</label>
-                                <input type="text" name="diagnostico" class="form-control custom-input fw-bold text-primary shadow-sm" required placeholder="Escriba el diagnóstico">
+                                <input type="text" name="diagnostico" id="diagnostico" 
+                                    class="form-control custom-input fw-bold text-primary shadow-sm" 
+                                    required placeholder="Escriba el diagnóstico">
+                                <div class="invalid-feedback">El diagnóstico es obligatorio.</div>
                             </div>
                             
                             <div class="col-md-4">
                                 <label class="form-label fw-bold small opacity-75">CIE-10</label>
-                                <input type="text" name="cie_10" class="form-control custom-input" placeholder="Ej: M54.5">
+                                <input type="text" name="cie_10" id="cie_10" 
+                                    class="form-control custom-input" 
+                                    placeholder="Ej: M54.5"
+                                    maxlength="10">
+                                <div class="invalid-feedback">Formato CIE-10 no válido (Ej: A00.0).</div>
                             </div>
 
                             <div class="col-md-12">
                                 <label class="form-label fw-bold small opacity-75">TRATAMIENTO Y PRESCRIPCIÓN</label>
-                                <textarea name="tratamiento" class="form-control custom-input" rows="4" placeholder="Indicar medicamentos, dosis y frecuencia..."></textarea>
+                                <textarea name="tratamiento" class="form-control custom-input" rows="4" 
+                                        placeholder="Indicar medicamentos, dosis y frecuencia..." required></textarea>
+                                <div class="invalid-feedback">Debe indicar el tratamiento para el paciente.</div>
                             </div>
 
                             <div class="col-md-6">

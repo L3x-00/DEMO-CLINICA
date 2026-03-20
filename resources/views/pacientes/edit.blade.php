@@ -14,16 +14,32 @@
 
                 <h5 class="text-primary border-bottom pb-2 mb-3">1. Datos de Identificación</h5>
                 <div class="row g-3 mb-4">
-                    <div class="col-md-3">
-                        <label class="form-label fw-bold">Tipo de Doc.</label>
-                        <select name="tipo_documento" class="form-select border-primary">
-                            <option value="DNI" {{ $paciente->tipo_documento == 'DNI' ? 'selected' : '' }}>DNI (Perú)</option>
-                            <option value="CUI" {{ $paciente->tipo_documento == 'CUI' ? 'selected' : '' }}>CUI (Extranjero)</option>
+                    <div class="col-md-6">
+                        <label class="form-label small fw-bold opacity-75">TIPO DE DOC.</label>
+                        <select name="tipo_documento" 
+                                id="tipo_documento" 
+                                class="form-select border-0 shadow-sm custom-input" 
+                                style="background-color: var(--bs-body-bg); color: var(--bs-body-color);" 
+                                required>
+                            <option value="DNI" {{ (isset($paciente) && $paciente->tipo_documento == 'DNI') ? 'selected' : '' }}>DNI (Nacional)</option>
+                            <option value="CUI" {{ (isset($paciente) && $paciente->tipo_documento == 'CUI') ? 'selected' : '' }}>CUI (Extranjero)</option>
                         </select>
                     </div>
-                    <div class="col-md-3">
-                        <label class="form-label fw-bold">N° Documento</label>
-                        <input type="text" name="dni" class="form-control border-primary" value="{{ $paciente->dni }}" required>
+
+                    <div class="col-md-6">
+                        <label class="form-label small fw-bold opacity-75">N° DOCUMENTO</label>
+                        <input type="text" 
+                            name="dni" 
+                            id="dni" 
+                            class="form-control border-0 shadow-sm custom-input" 
+                            oninput="this.value = this.value.replace(/[^0-9]/g, '');"
+                            style="background-color: var(--bs-body-bg); color: var(--bs-body-color);" 
+                            placeholder="Ingrese el número" 
+                            required 
+                            value="{{ $paciente->dni ?? '' }}">
+                        <div class="invalid-feedback" id="dni-error-msg">
+                            Número de documento no válido.
+                        </div>
                     </div>
                     <div class="col-md-3">
                         <label class="form-label fw-bold">Sexo</label>
@@ -48,8 +64,17 @@
                 <h5 class="text-primary border-bottom pb-2 mb-3">2. Nacimiento </h5>
                 <div class="row g-3 mb-4">
                     <div class="col-md-4">
-                        <label class="form-label fw-bold">Fecha de Nacimiento</label>
-                        <input type="date" name="fecha_nacimiento" id="fecha_nacimiento" class="form-control" value="{{ $paciente->fecha_nacimiento }}">
+                        <label class="form-label small fw-bold opacity-75">FECHA DE NACIMIENTO</label>
+                            <input type="date" 
+                                name="fecha_nacimiento" 
+                                id="fecha_nacimiento" 
+                                class="form-control border-0 shadow-sm custom-input" 
+                                style="background-color: var(--bs-body-bg); color: var(--bs-body-color);" 
+                                required 
+                                value="{{ $paciente->fecha_nacimiento ?? '' }}">
+                            <div class="invalid-feedback">
+                                La fecha no puede ser futura ni estar vacía.
+                            </div>
                     </div>
                     <div class="col-md-2">
                         <label class="form-label fw-bold">Edad</label>
@@ -65,7 +90,7 @@
                 <div class="row g-3 mb-4">
                     <div class="col-md-4">
                         <label class="form-label fw-bold">Teléfono</label>
-                        <input type="text" name="telefono" class="form-control" value="{{ $paciente->telefono }}">
+                        <input type="text" name="telefono" class="form-control" maxlength="9" oninput="this.value = this.value.replace(/[^0-9]/g, '');" value="{{ $paciente->telefono }}">
                     </div>
                 </div>
 

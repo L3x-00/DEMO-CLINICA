@@ -22,17 +22,31 @@
                                     <i class="bi bi-card-text me-2"></i> Información de Identidad
                                 </h5>
 
-                                <div class="row g-3 mb-4">
-                                    <div class="col-md-6">
-                                        <label class="form-label small fw-bold opacity-75">TIPO DE DOC.</label>
-                                        <select name="tipo_documento" class="form-select border-0 shadow-sm custom-input" style="background-color: var(--bs-body-bg); color: var(--bs-body-color);" required>
-                                            <option value="DNI">DNI (Nacional)</option>
-                                            <option value="CUI">CUI (Extranjero)</option>
-                                        </select>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label class="form-label small fw-bold opacity-75">N° DOCUMENTO</label>
-                                        <input type="text" name="dni" class="form-control border-0 shadow-sm custom-input" style="background-color: var(--bs-body-bg); color: var(--bs-body-color);" placeholder="Ej: 74385642" required>
+                                <div class="col-md-6">
+                                    <label class="form-label small fw-bold opacity-75">TIPO DE DOC.</label>
+                                    <select name="tipo_documento" 
+                                            id="tipo_documento" 
+                                            class="form-select border-0 shadow-sm custom-input" 
+                                            style="background-color: var(--bs-body-bg); color: var(--bs-body-color);" 
+                                            required>
+                                        <option value="DNI" {{ (isset($paciente) && $paciente->tipo_documento == 'DNI') ? 'selected' : '' }}>DNI (Nacional)</option>
+                                        <option value="CUI" {{ (isset($paciente) && $paciente->tipo_documento == 'CUI') ? 'selected' : '' }}>CUI (Extranjero)</option>
+                                    </select>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label class="form-label small fw-bold opacity-75">N° DOCUMENTO</label>
+                                    <input type="text" 
+                                        name="dni" 
+                                        id="dni" 
+                                        class="form-control border-0 shadow-sm custom-input" 
+                                        oninput="this.value = this.value.replace(/[^0-9]/g, '');"
+                                        style="background-color: var(--bs-body-bg); color: var(--bs-body-color);" 
+                                        placeholder="Ingrese el número" 
+                                        required 
+                                        value="{{ $paciente->dni ?? '' }}">
+                                    <div class="invalid-feedback" id="dni-error-msg">
+                                        Número de documento no válido.
                                     </div>
                                 </div>
 
@@ -49,9 +63,18 @@
 
                                 <div class="row g-3 mb-4">
                                     <div class="col-md-6">
-                                        <label class="form-label small fw-bold opacity-75">FECHA DE NACIMIENTO</label>
-                                        <input type="date" name="fecha_nacimiento" id="fecha_nacimiento" class="form-control border-0 shadow-sm custom-input" style="background-color: var(--bs-body-bg); color: var(--bs-body-color);" required>
+                                    <label class="form-label small fw-bold opacity-75">FECHA DE NACIMIENTO</label>
+                                    <input type="date" 
+                                        name="fecha_nacimiento" 
+                                        id="fecha_nacimiento" 
+                                        class="form-control border-0 shadow-sm custom-input" 
+                                        style="background-color: var(--bs-body-bg); color: var(--bs-body-color);" 
+                                        required 
+                                        value="{{ $paciente->fecha_nacimiento ?? '' }}">
+                                    <div class="invalid-feedback">
+                                        La fecha no puede ser futura ni estar vacía.
                                     </div>
+                                </div>
                                     <div class="col-md-3">
                                         <label class="form-label small fw-bold opacity-75">EDAD</label>
                                         <input type="text" name="edad" id="edad" class="form-control border-0  text-center fw-bold" readonly placeholder="0">
@@ -75,7 +98,7 @@
                                     <label class="form-label small fw-bold opacity-75">TELÉFONO / CELULAR</label>
                                     <div class="input-group">
                                         <span class="input-group-text border-0 bg-primary text-white"><i class="bi bi-whatsapp"></i></span>
-                                        <input type="text" name="telefono" class="form-control border-0 shadow-sm custom-input" style="background-color: var(--bs-body-bg); color: var(--bs-body-color);" placeholder="987 654 321">
+                                        <input type="text" name="telefono" class="form-control border-0 shadow-sm custom-input"maxlength="9" oninput="this.value = this.value.replace(/[^0-9]/g, '');" style="background-color: var(--bs-body-bg); color: var(--bs-body-color);" placeholder="987 654 321">
                                     </div>
                                 </div>
 

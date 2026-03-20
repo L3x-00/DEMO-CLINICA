@@ -104,20 +104,26 @@
                                             </button>
                                             <ul class="dropdown-menu dropdown-menu-end border-0 shadow-lg">
                                                 <li><a class="dropdown-item py-2" href="{{ route('consulta.create', $paciente->id) }}" onclick="event.stopPropagation();"><i class="bi bi-plus-circle me-2 text-primary"></i>Nueva Consulta</a></li>
-                                                <li><a class="dropdown-item py-2" href="{{ route('citas.create', ['paciente_id' => $paciente->id]) }}" onclick="event.stopPropagation();"><i class="bi bi-calendar-plus me-2 text-primary"></i>Agendar Cita</a></li>
+                                                <li>
+                                                    <button class="dropdown-item py-2" type="button" 
+                                                        onclick="event.stopPropagation(); agendarCitaDesdePaciente({{ $paciente->id }}, '{{ $paciente->nombre }}', '{{ $paciente->apellido }}', '{{ $paciente->dni }}')">
+                                                        <i class="bi bi-calendar-plus me-2 text-primary"></i>Agendar Cita
+                                                    </button>
+                                                </li>
                                                 <li><a class="dropdown-item py-2" href="{{ route('consulta.historial', $paciente->id) }}" onclick="event.stopPropagation();"><i class="bi bi-file-earmark-medical me-2 text-primary"></i>Historial</a></li>
                                                 <li><hr class="dropdown-divider opacity-50"></li>
+                                                
                                                 <li>
-                                                    <a class="dropdown-item py-2" href="javascript:void(0)" 
-                                                       onclick="event.stopPropagation(); abrirModalDerivacion('{{ $paciente->id }}', '{{ $paciente->nombre }} {{ $paciente->apellido }}')">
+                                                    <button type="button" class="dropdown-item py-2" 
+                                                        onclick="event.stopPropagation(); abrirModalDerivacion('{{ $paciente->id }}', '{{ $paciente->nombre }} {{ $paciente->apellido }}')">
                                                         <i class="bi bi-arrow-right-circle me-2 text-info"></i>Derivar
-                                                    </a>
+                                                    </button>
                                                 </li>
                                                 <li>
-                                                    <a class="dropdown-item py-2" href="javascript:void(0)" 
-                                                       onclick="event.stopPropagation(); abrirModalDiagnostico('{{ $paciente->id }}', '{{ $paciente->apellido }} {{ $paciente->nombre }}', '{{ $paciente->dni }}')">
+                                                    <button type="button" class="dropdown-item py-2" 
+                                                        onclick="event.stopPropagation(); abrirModalDiagnostico('{{ $paciente->id }}', '{{ $paciente->apellido }} {{ $paciente->nombre }}', '{{ $paciente->dni }}')">
                                                         <i class="bi bi-clipboard-check me-2 text-success"></i>Diagnosticar
-                                                    </a>
+                                                    </button>
                                                 </li>
                                             </ul>
                                         </div>
@@ -142,12 +148,17 @@
 @include('pacientes.partials.modales')
 
 @push('scripts')
+    {{-- 1. Librerías externas (CDN) --}}
+    <link href="https://cdn.jsdelivr.net/npm/tom-select@2.2.2/dist/css/tom-select.bootstrap5.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/tom-select@2.2.2/dist/js/tom-select.complete.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    @vite(['resources/js/pages/pacientes.js'])
 
-    {{-- Pasamos el mensaje de sesión a una variable JS segura --}}
-    <script>
-        window.sessionSuccess = "{{ session('success') }}";
-    </script>
+    {{-- 2. Tus scripts compilados con Vite --}}
+    @vite(['resources/js/pages/citas.js'])
+    
+    {{-- Solo en index.blade.php agregarías el de pacientes.js si tiene lógica extra --}}
+    @if(Route::is('pacientes.index'))
+        @vite(['resources/js/pages/pacientes.js'])
+    @endif
 @endpush
 @endsection

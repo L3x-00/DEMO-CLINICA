@@ -1,9 +1,28 @@
 import TomSelect from "tom-select";
 
 document.addEventListener("DOMContentLoaded", function() {
+    // --- 0. FUNCIÓN DE VALIDACIÓN (NUEVA) ---
+    const validarCampoReporte = (input) => {
+        if (input.hasAttribute('required') && input.value.trim() === '') {
+            input.setCustomValidity("Requerido");
+        } else {
+            input.setCustomValidity("");
+        }
+
+        // Aplicar clases visuales de Bootstrap
+        if (input.checkValidity()) {
+            input.classList.remove('is-invalid');
+            input.classList.add('is-valid');
+        } else {
+            input.classList.remove('is-valid');
+            input.classList.add('is-invalid');
+        }
+    };
+
     // --- 1. LÓGICA PARA CREACIÓN (TomSelect y Alergias) ---
     const selectPaciente = document.getElementById('select-paciente');
     const campoResumen = document.querySelector('textarea[name="resumen_historia"]');
+    const formReporte = document.getElementById('formReporte');
 
     if (selectPaciente) {
         const ts = new TomSelect(selectPaciente, {
@@ -20,21 +39,50 @@ document.addEventListener("DOMContentLoaded", function() {
                 campoResumen.classList.add('is-valid');
                 setTimeout(() => campoResumen.classList.remove('is-valid'), 1500);
             }
+            // Validar el select al cambiar
+            validarCampoReporte(selectPaciente);
+        });
+    }
+
+    // Validación en tiempo real para el formulario de creación
+    if (formReporte) {
+        formReporte.querySelectorAll('input, textarea, select').forEach(input => {
+            input.addEventListener('input', () => validarCampoReporte(input));
+        });
+
+        formReporte.addEventListener('submit', function(e) {
+            let esValido = true;
+            formReporte.querySelectorAll('input, textarea, select').forEach(input => {
+                validarCampoReporte(input);
+                if (!input.checkValidity()) esValido = false;
+            });
+
+            if (!esValido) {
+                e.preventDefault();
+                e.stopPropagation();
+                if (typeof Swal !== 'undefined') {
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'Informe Incompleto',
+                        text: 'Por favor, llene los campos obligatorios (Diagnóstico y Tratamiento).',
+                        confirmButtonColor: '#3085d6'
+                    });
+                }
+            }
+            formReporte.classList.add('was-validated');
         });
     }
 
     // --- 2. LÓGICA PARA INDEX (Buscador y Filtros de Tiempo) ---
     const filterInput = document.getElementById('filterInput');
-    const tableRows = document.querySelectorAll('table tbody tr'); // Selecciona las filas de la tabla
+    const tableRows = document.querySelectorAll('table tbody tr'); 
     const filterButtons = document.querySelectorAll('#timeFilters button');
 
-    // Filtro por texto (Paciente, DNI, Diagnóstico)
     if (filterInput) {
         filterInput.addEventListener('keyup', function() {
             const searchTerm = this.value.toLowerCase();
             tableRows.forEach(row => {
                 const text = row.innerText.toLowerCase();
-                // Si la fila tiene el texto "Sin informes registrados", no la filtramos
                 if (!row.classList.contains('no-result')) {
                     row.style.display = text.includes(searchTerm) ? '' : 'none';
                 }
@@ -42,7 +90,6 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     }
 
-    // Filtro por botones (Hoy, Ayer, Todos)
     if (filterButtons.length > 0) {
         filterButtons.forEach(btn => {
             btn.addEventListener('click', function() {
@@ -58,7 +105,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
                 tableRows.forEach(row => {
                     const dateSpan = row.querySelector('td:first-child span');
-                    if (!dateSpan) return; // Saltar si es la fila de "no hay resultados"
+                    if (!dateSpan) return; 
 
                     const dateCell = dateSpan.innerText.trim();
                     
