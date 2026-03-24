@@ -10,8 +10,11 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tom-select@2.2.2/dist/css/tom-select.bootstrap5.min.css">
     
     @vite(['resources/css/app.css', 'resources/js/app.js'])
-    @stack('styles')
 
+    <link rel="stylesheet" href="{{ asset('css/clinica.css') }}">
+
+    @stack('styles')
+    
     <script>
         (function () {
             const savedTheme = localStorage.getItem('theme') || 'light';
@@ -33,8 +36,8 @@
         <aside class="sidebar-static">
             <div class="brand-box">
                 <i class="bi bi-activity fs-3 text-primary"></i>
-                <span class="brand-name">Policlínico<strong> SAN PEDRO</strong></span>
                 <span class="brand-name">Policlínico</span>
+                <span><strong> SAN PEDRO</strong></span>
                 
             </div>
 
@@ -49,21 +52,21 @@
                 <a href="{{ route('pacientes.index') }}" class="nav-link-item {{ request()->routeIs('pacientes.*') ? 'active' : '' }}">
                     <i class="bi bi-person-badge"></i> <span>Pacientes</span>
                 </a>
-
                 @if(auth()->user()->role === 'asistente')
-                    <div class="nav-group">SISTEMA</div>
-                    <a href="{{ route('reportes.index') }}" class="nav-link-item {{ request()->routeIs('reportes.*') ? 'active' : '' }}">
-                        <i class="bi bi-bar-chart-steps"></i> <span>Informes</span>
-                    </a>
-                    <a href="{{ route('usuarios.index') }}" class="nav-link-item {{ request()->routeIs('usuarios.*') ? 'active' : '' }}">
-                        <i class="bi bi-person-gear"></i> <span>Usuarios</span>
-                    </a>
+                <a href="{{ route('reportes.index') }}" class="nav-link-item {{ request()->routeIs('reportes.*') ? 'active' : '' }}">
+                    <i class="bi bi-bar-chart-steps"></i> <span>Informes</span>
+                </a>        
                 @endif
 
                 <div class="nav-group">OPERACIONES</div>
                 <a href="{{ route('caja.index') }}" class="nav-link-item {{ request()->routeIs('caja.*') ? 'active' : '' }}">
                     <i class="bi bi-cash-stack"></i> <span>Caja y Reportes</span>
                 </a>
+                @if(auth()->user()->role === 'asistente')
+                <a href="{{ route('usuarios.index') }}" class="nav-link-item {{ request()->routeIs('usuarios.*') ? 'active' : '' }}">
+                        <i class="bi bi-person-gear"></i> <span>Usuarios</span>
+                </a>
+                @endif
             </nav>
             
             <div class="sidebar-footer">

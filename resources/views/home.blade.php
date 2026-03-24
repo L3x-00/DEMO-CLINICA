@@ -88,10 +88,10 @@
                 <div class="card-body p-4">
                     <h6 class="fw-bold mb-4"><i class="bi bi-bar-chart-line me-2 text-primary"></i>Productividad Semanal (Ingresos Diarios)</h6>
                     <div style="height: 320px;">
-                        <canvas id="chartProductividadSemanal"
-                                data-labels='{!! json_encode($reporteSemanal->pluck("fecha")) !!}'
-                                data-valores='{!! json_encode($reporteSemanal->pluck("total")) !!}'>
-                        </canvas>
+                    <canvas id="ventasChart" 
+                            data-valores='@json($reporteSemanal->pluck("total"))' 
+                            data-etiquetas='@json($reporteSemanal->pluck("fecha"))'>
+                    </canvas>
                     </div>
                 </div>
             </div>
@@ -180,17 +180,11 @@
                         </td>
                         <td class="text-center pe-4">
                             <div class="dropdown">
-                                <button class="btn btn-sm btn-outline-secondary rounded-pill dropdown-toggle px-3" type="button" data-bs-toggle="dropdown">
-                                    @if($cita->estado == 'Pendiente')
-                                        <span class="text-warning fw-bold">⏳ Pendiente</span>
-                                    @elseif($cita->estado == 'Concluido')
-                                        <span class="text-success fw-bold">✅ Concluido</span>
-                                    @elseif($cita->estado == 'No presentado')
-                                        <span class="text-danger fw-bold">❌ No asistió</span>
-                                    @else
-                                        <span class="text-info fw-bold">{{ $cita->estado }}</span>
-                                    @endif
-                                </button>
+                            <button class="btn btn-sm btn-outline-secondary rounded-pill dropdown-toggle px-3" type="button" data-bs-toggle="dropdown">
+                                <span class="{{ $cita->estado_color }} fw-bold">
+                                    {{ $cita->estado_texto }}
+                                </span>
+                            </button>
                                 <ul class="dropdown-menu shadow border-0 p-2">
                                     <li><h6 class="dropdown-header">Actualizar estado:</h6></li>
                                     <li>
@@ -285,41 +279,7 @@
 </style>
 
 @push('scripts')
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const canvas = document.getElementById('chartProductividadSemanal');
-        const labels = JSON.parse(canvas.getAttribute('data-labels'));
-        const valores = JSON.parse(canvas.getAttribute('data-valores'));
-
-        new Chart(canvas, {
-            type: 'bar',
-            data: {
-                labels: labels,
-                datasets: [{
-                    label: 'Ingresos Diarios (S/)',
-                    data: valores,
-                    backgroundColor: '#0d6efd',
-                    borderRadius: 8,
-                    barThickness: 30
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: { legend: { display: false } },
-                scales: {
-                    y: { 
-                        beginAtZero: true,
-                        grid: { borderDash: [5, 5] },
-                        ticks: { callback: value => 'S/ ' + value }
-                    },
-                    x: { grid: { display: false } }
-                }
-            }
-        });
-    });
-</script>
+    @vite(['resources/js/pages/dashboard.js'])
 @endpush
 
 @endsection

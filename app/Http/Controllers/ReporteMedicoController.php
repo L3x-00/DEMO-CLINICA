@@ -15,8 +15,11 @@ class ReporteMedicoController extends Controller
      */
     public function index()
     {
-        // Cargamos la relación paciente para mostrar nombres en la tabla
-        $reportes = ReporteMedico::with('paciente')->orderBy('fecha', 'desc')->get();
+        // Usar simplePaginate o paginate es mejor para el rendimiento local
+        $reportes = ReporteMedico::with('paciente:id,nombre,apellido,dni')
+            ->orderBy('fecha', 'desc')
+            ->paginate(15); // Muestra de 15 en 15
+
         return view('reportes.index', compact('reportes'));
     }
 

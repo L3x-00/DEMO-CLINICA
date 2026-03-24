@@ -42,19 +42,17 @@ class HomeController extends Controller
 
         // --- ESTA ES LA PARTE QUE FALTABA ---
         // 4. Pacientes en espera para el Dashboard del Doctor
-        $pacientesEnEspera = Atencion::with('paciente')
+        // En index()
+            $pacientesEnEspera = Atencion::with('paciente:id,nombre,apellido') // Solo traer nombres
             ->where('servicio', $servicioDoctor)
-            ->where('estado', 'En Espera') // Solo los que la asistente envió pero no han sido atendidos
+            ->where('estado', 'En Espera')
             ->orderBy('created_at', 'asc')
             ->get();
-        // -------------------------------------
 
-        // 5. Mantenemos la agenda de próximas citas
-        $proximasCitas = Cita::with('paciente')
+            $proximasCitas = Cita::with('paciente:id,nombre,apellido') // Solo traer nombres
             ->where('fecha', '>=', $hoy->format('Y-m-d'))
             ->where('estado', 'Pendiente')
             ->orderBy('fecha', 'asc')
-            ->orderBy('hora', 'asc')
             ->take(5)
             ->get();
 

@@ -8,15 +8,15 @@ export default defineConfig({
             input: [
                 'resources/css/app.css', 
                 'resources/js/app.js',
-                // Agregamos todos los archivos de la carpeta pages
+                // Archivos de lógica por página
                 'resources/js/pages/caja.js',
                 'resources/js/pages/citas.js',
                 'resources/js/pages/dashboard.js',
                 'resources/js/pages/pacientes.js',
                 'resources/js/pages/reportes.js',
-                // Si tienes lógica global en componentes, también:
+                'resources/js/pages/usuarios.js',
+                // Componentes globales
                 'resources/js/componentes/global.js',
-                'resources/js/pages/pacientes.js',
             ],
             refresh: true,
         }),

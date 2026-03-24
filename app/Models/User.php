@@ -1,17 +1,13 @@
 <?php
-
 namespace App\Models;
-
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Tymon\JWTAuth\Contracts\JWTSubject; // <--- AGREGAR ESTO
 
-class User extends Authenticatable implements JWTSubject // <--- AGREGAR "implements JWTSubject"
+class User extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable;
-
     /**
      * The attributes that are mass assignable.
      *
@@ -21,8 +17,8 @@ class User extends Authenticatable implements JWTSubject // <--- AGREGAR "implem
         'name',
         'email',
         'password',
+        'user',
     ];
-
     /**
      * The attributes that should be hidden for serialization.
      *
@@ -32,7 +28,6 @@ class User extends Authenticatable implements JWTSubject // <--- AGREGAR "implem
         'password',
         'remember_token',
     ];
-
     /**
      * Get the attributes that should be cast.
      *
@@ -44,21 +39,5 @@ class User extends Authenticatable implements JWTSubject // <--- AGREGAR "implem
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
-    }
-
-    /**
-     * MÉTODOS OBLIGATORIOS PARA JWT
-     */
-
-    public function getJWTIdentifier()
-    {
-        // Devuelve el ID del usuario
-        return $this->getKey();
-    }
-
-    public function getJWTCustomClaims()
-    {
-        // Puedes añadir datos extra al token aquí si quieres (ej. 'role' => 'admin')
-        return [];
     }
 }

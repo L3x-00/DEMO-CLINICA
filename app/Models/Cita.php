@@ -25,4 +25,27 @@ class Cita extends Model
     {
         return $this->belongsTo(Paciente::class);
     }
+    /**
+     * Obtener la clase de CSS de Bootstrap según el estado de la cita.
+     */
+    public function getEstadoColorAttribute(): string
+    {
+        return [
+            'Pendiente'     => 'text-warning',
+            'Concluido'     => 'text-success',
+            'No presentado' => 'text-danger',
+        ][$this->estado] ?? 'text-info';
+    }
+
+    /**
+     * Retorna el texto con emoji según el estado
+     */
+    public function getEstadoTextoAttribute(): string
+    {
+        return [
+            'Pendiente'     => '⏳ Pendiente',
+            'Concluido'     => '✅ Concluido',
+            'No presentado' => '❌ No asistió',
+        ][$this->estado] ?? $this->estado;
+    }
 }

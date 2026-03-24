@@ -14,11 +14,10 @@ const validarCampoPaciente = (input) => {
     if (!form) return;
     
     // --- LÓGICA DINÁMICA DNI (8) / CUI (15) ---
-    // --- LÓGICA DINÁMICA DNI (8) / CUI (15) ---
     if (input.name === 'dni') {
         const selectTipo = form.querySelector('select[name="tipo_documento"]');
         const tipoDoc = selectTipo ? selectTipo.value : 'DNI';
-        const errorMsg = document.getElementById('dni-error-msg'); // El div del HTML
+        const errorMsg = document.getElementById('dni-error-msg'); 
 
         if (tipoDoc === 'DNI') {
             input.maxLength = 8;
@@ -41,7 +40,7 @@ const validarCampoPaciente = (input) => {
 
     // --- LÓGICA TELÉFONO (9) ---
     if (input.name === 'telefono') {
-        input.maxLength = 9; // Bloquea físicamente en 9
+        input.maxLength = 9; 
         if (input.value.length > 0 && input.value.length < 9) {
             input.setCustomValidity("El teléfono debe tener 9 dígitos.");
         } else {
@@ -69,7 +68,7 @@ const validarCampoPaciente = (input) => {
     }
 };
 
-// 2. FUNCIONES GLOBALES (ACCESIBLES DESDE EL HTML)
+// 2. FUNCIONES GLOBALES
 window.abrirModalDiagnostico = function(id, nombre, dni) {
     cerrarDropdowns();
     const inputId = document.getElementById('paciente_id_hidden');
@@ -116,10 +115,17 @@ window.cambiarMontoSugerido = function() {
 // 3. LÓGICA PRINCIPAL DEL DOM
 document.addEventListener("DOMContentLoaded", function() {
     
-    
-    console.log("Sistema de Pacientes: Listo.");
+    const tablaPacientes = document.getElementById('tabla-pacientes');
+    const formEdit = document.getElementById('form-editar-paciente');
 
-    // --- VALIDACIÓN DE FORMULARIOS (Crear y Editar) ---
+    if (formEdit) {
+        formEdit.addEventListener('submit', function() {
+            const btn = this.querySelector('button[type="submit"]');
+            if(btn) btn.disabled = true;
+        });
+    }
+
+    // --- VALIDACIÓN DE FORMULARIOS ---
     const formsPaciente = document.querySelectorAll('form[action*="pacientes"]');
     formsPaciente.forEach(form => {
         form.querySelectorAll('input, select, textarea').forEach(input => {
@@ -165,7 +171,7 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     }
 
-    // --- Auto-cierre de Dropdowns al sacar el puntero ---
+    // --- Auto-cierre de Dropdowns ---
     document.querySelectorAll('.dropdown').forEach(dropdown => {
         dropdown.addEventListener('mouseleave', function() {
             const toggle = this.querySelector('.dropdown-toggle');
@@ -216,7 +222,7 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     }
 
-    // --- Alerta de éxito (SweetAlert2) ---
+    // --- Alerta de éxito ---
     if (window.sessionSuccess) {
         Swal.fire({
             title: '¡Operación Exitosa!',
@@ -228,16 +234,14 @@ document.addEventListener("DOMContentLoaded", function() {
             customClass: { popup: 'rounded-4 shadow-lg border-0' }
         });
     }
+
     const selectDoc = document.querySelector('select[name="tipo_documento"]');
     const inputDoc = document.getElementById('dni');
 
     if (selectDoc && inputDoc) {
         selectDoc.addEventListener('change', function() {
-            // 1. Limpiamos el valor para evitar que queden 8 números si pasa a CUI o viceversa
             inputDoc.value = ""; 
-            // 2. Quitamos las clases de validación anteriores
             inputDoc.classList.remove('is-valid', 'is-invalid');
-            // 3. Ejecutamos la validación para que actualice el maxLength inmediatamente
             validarCampoPaciente(inputDoc); 
         });
     }

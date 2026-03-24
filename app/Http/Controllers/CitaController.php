@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use App\Http\Requests\StoreCitaRequest;
 use Illuminate\Http\Request;
 use App\Models\Paciente;
 use App\Models\Cita;
@@ -14,28 +14,23 @@ class CitaController extends Controller
      */
     public function index(Request $request)
     {
-        // 1. Capturamos la fecha del filtro (por defecto hoy)
         $fechaBusqueda = $request->get('fecha', Carbon::now()->format('Y-m-d'));
         
-        // 2. Iniciamos la consulta cargando la relación del paciente
-        $query = Cita::with('paciente');
+        // Seleccionamos solo las columnas necesarias del paciente para ahorrar memoria
+        $query = Cita::with(['paciente:id,nombre,apellido,dni']);
 
-        // 3. LÓGICA DE BÚSQUEDA GLOBAL
         if ($request->filled('buscar')) {
             $buscar = $request->buscar;
-            
-            // Usamos whereHas para buscar dentro de la tabla de Pacientes
             $query->whereHas('paciente', function($q) use ($buscar) {
                 $q->where('nombre', 'LIKE', "%$buscar%")
                   ->orWhere('apellido', 'LIKE', "%$buscar%")
                   ->orWhere('dni', 'LIKE', "%$buscar%");
             });
         } else {
-            // Si no hay búsqueda de texto, filtramos por la fecha seleccionada
             $query->whereDate('fecha', $fechaBusqueda);
         }
 
-        // 4. Ordenamos por fecha y hora
+        // Ordenamos y ejecutamos
         $citas = $query->orderBy('fecha', 'asc')
                        ->orderBy('hora', 'asc')
                        ->get();
@@ -48,6 +43,7 @@ class CitaController extends Controller
      */
     public function show($id)
     {
+        // Cargamos la relación completa aquí porque en el show sí solemos ver todo el perfil
         $cita = Cita::with('paciente')->findOrFail($id);
         return view('citas.show', compact('cita'));
     }
@@ -67,24 +63,15 @@ class CitaController extends Controller
     /**
      * Guarda la nueva cita.
      */
-    public function store(Request $request)
+    public function store(StoreCitaRequest $request) // <-- Usas tu nueva clase aquí
     {
-        $request->validate([
-            'paciente_id' => 'required|exists:pacientes,id',
-            'fecha'       => 'required|date|after_or_equal:today',
-            'hora'        => 'required',
-            'motivo'      => 'nullable|string|max:500',
-        ]);
+        // Si el código llega aquí, los datos YA SON VÁLIDOS.
+        // Si fallan, Laravel redirige atrás automáticamente con los errores.
+        
+        Cita::create($request->validated()); // Solo usa los datos que pasaron la regla
 
-        Cita::create([
-            'paciente_id' => $request->paciente_id,
-            'fecha'       => $request->fecha,
-            'hora'        => $request->hora,
-            'motivo'      => $request->motivo,
-            'estado'      => 'Pendiente', 
-        ]);
-
-        return redirect()->route('citas.index')->with('success', '¡Cita programada con éxito! 😊');
+        return redirect()->route('citas.index')
+            ->with('success', '¡Cita programada con éxito! 😊');
     }
 
     /**

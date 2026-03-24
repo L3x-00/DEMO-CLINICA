@@ -9,7 +9,11 @@ document.addEventListener("DOMContentLoaded", function () {
             data: {
                 labels: ['Atendidos', 'Pendientes'],
                 datasets: [{
-                    data: [canvasHoy.dataset.atendidos, canvasHoy.dataset.pendientes],
+                    // Usamos Number() para asegurar que Chart.js reciba valores numéricos
+                    data: [
+                        Number(canvasHoy.dataset.atendidos), 
+                        Number(canvasHoy.dataset.pendientes)
+                    ],
                     backgroundColor: ['#198754', '#e9ecef'],
                     borderWidth: 0,
                     spacing: 5
@@ -19,7 +23,12 @@ document.addEventListener("DOMContentLoaded", function () {
                 responsive: true,
                 maintainAspectRatio: false,
                 cutout: '80%',
-                plugins: { legend: { position: 'bottom', labels: { usePointStyle: true, padding: 20 } } }
+                plugins: { 
+                    legend: { 
+                        position: 'bottom', 
+                        labels: { usePointStyle: true, padding: 20 } 
+                    } 
+                }
             }
         });
     }
@@ -32,7 +41,10 @@ document.addEventListener("DOMContentLoaded", function () {
             data: {
                 labels: ['Ayer', 'Hoy'],
                 datasets: [{
-                    data: [canvasComp.dataset.ayer, canvasComp.dataset.hoy],
+                    data: [
+                        Number(canvasComp.dataset.ayer), 
+                        Number(canvasComp.dataset.hoy)
+                    ],
                     backgroundColor: ['#6c757d33', '#0d6efd'],
                     borderRadius: 12,
                     barThickness: 40
@@ -43,20 +55,29 @@ document.addEventListener("DOMContentLoaded", function () {
                 maintainAspectRatio: false,
                 plugins: { legend: { display: false } },
                 scales: {
-                    y: { beginAtZero: true, ticks: { stepSize: 1 } }
+                    y: { 
+                        beginAtZero: true, 
+                        ticks: { stepSize: 1, precision: 0 } // precision: 0 para no mostrar decimales en conteo de personas
+                    }
                 }
             }
         });
     }
 
-    // 3. Modal de Reprogramación
+    // 3. Modal de Reprogramación (Limpio y funcional)
     const modalReprogramar = document.getElementById('modalReprogramar');
     if (modalReprogramar) {
         modalReprogramar.addEventListener('show.bs.modal', function (event) {
             const button = event.relatedTarget;
             const form = document.getElementById('formReprogramar');
-            form.action = `/citas/${button.getAttribute('data-cita-id')}/reprogramar`;
-            document.getElementById('nombrePacienteModal').textContent = button.getAttribute('data-paciente');
+            
+            // Seteamos la ruta dinámicamente
+            const citaId = button.getAttribute('data-cita-id');
+            form.action = `/citas/${citaId}/reprogramar`;
+            
+            // Seteamos el nombre del paciente en el modal
+            const nombrePaciente = button.getAttribute('data-paciente');
+            document.getElementById('nombrePacienteModal').textContent = nombrePaciente;
         });
     }
 });

@@ -85,9 +85,12 @@ class ConsultaController extends Controller
     public function historial($paciente_id)
     {
         $paciente = Paciente::findOrFail($paciente_id);
-        $consultas = Consulta::where('paciente_id', $paciente_id)
-                             ->orderBy('created_at', 'desc')
-                             ->get();
+        
+        // Agregamos with('paciente') para evitar el error N+1 en la lista del historial
+        $consultas = Consulta::with('paciente') 
+                            ->where('paciente_id', $paciente_id)
+                            ->orderBy('created_at', 'desc')
+                            ->get();
 
         return view('consulta.index', compact('paciente', 'consultas'));
     }
