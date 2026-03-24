@@ -34,12 +34,14 @@
     <div class="app-layout">
         {{-- SIDEBAR FIJA Y ESTÁTICA --}}
         <aside class="sidebar-static">
-            <div class="brand-box">
-                <i class="bi bi-activity fs-3 text-primary"></i>
-                <span class="brand-name">Policlínico</span>
-                <span><strong> SAN PEDRO</strong></span>
-                
+        <div class="brand-box d-flex align-items-center">
+            <i class="bi bi-activity fs-1 text-primary me-2"></i>
+            
+            <div class="d-flex flex-column lh-1">
+                <span class="brand-name fs-5 fw-light text-secondary">Policlínico</span>
+                <span class="fs-4 fw-bold text-dark">SAN PEDRO</span>
             </div>
+        </div>
 
             <nav class="sidebar-nav">
                 <div class="nav-group">PRINCIPAL</div>
